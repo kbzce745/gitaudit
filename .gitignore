@@ -1,0 +1,29 @@
+#Python & Virtual Environment
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+bin/
+include/
+lib/
+wheels/
+#2. Django & Local Database / Static
+*.sqlite3
+*.sqlite3-journal
+/staticfiles/
+/media/
+local_settings.py
+# 3. Environment Variables & Secrets
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+*.pem
+*.key
