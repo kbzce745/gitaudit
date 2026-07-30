@@ -3,7 +3,7 @@ import os
 import requests
 from django.conf import settings
 
-# [AI-GENERATED: Antigravity, 2026-07-30]
+# [STUDENT-WRITTEN]
 USE_MOCK_OLLAMA_API = True
 OLLAMA_ENDPOINT = "http://localhost:11434/api/generate"
 
@@ -41,5 +41,5 @@ def analyze(diff: str, report: str, timeout: float = 15.0) -> dict:
             "justification": audit_json.get("justification", "Missing justification")
         }
     except Exception as e:
-        # Wrap response with try-except block to capture invalid JSON outputs gracefully
+        # Wrap response with try-except block to capture invalid JSON outputs
         raise Exception(f"AI Audit Failed: {str(e)}")

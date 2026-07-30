@@ -14,5 +14,5 @@ def get_telemetry(project_id: str) -> dict:
         with open(fixture_path, 'r', encoding='utf-8') as f:
             return json.load(f)
             
-    # For live API (placeholder for future implementation)
+    # For live API 
     raise NotImplementedError("Live GitLab API fetching is not implemented in this PoC yet.")
