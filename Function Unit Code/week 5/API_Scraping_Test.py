@@ -1,6 +1,11 @@
 import os
+import sys
 import django
 from pprint import pprint
+
+# Add the project root directory to sys.path so Python can find 'config' and 'auditor'
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, project_root)
 
 # Setup Django environment for consistency
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
@@ -27,7 +32,12 @@ def run_test():
     cleaned_commits = client.fetch_commits(PROJECT_ID, fetch_all=True)
     
     print(f"Total commits fetched: {len(cleaned_commits)}")
-    pprint(cleaned_commits)
+    # pprint(cleaned_commits) # Uncomment if you want to see all commits again
+    
+    # 替换成一个真实的 commit sha
+    print(f"\n[2] Testing Commit Diff:")
+    diffs = client.fetch_commit_diff(PROJECT_ID, "34480d37c221b2c5cbe7237c7423fa59c5079a84")
+    pprint(diffs)
 
 if __name__ == "__main__":
     run_test()

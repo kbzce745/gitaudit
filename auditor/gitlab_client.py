@@ -87,21 +87,16 @@ class GitLabAPIClient:
             
         return cleaned_commits
 
-    def fetch_merge_requests(self, project_id):
+    def fetch_commit_diff(self, project_id, commit_sha):
         """
-        Fetch Merge Requests for a project, extracting and filtering core fields.
+        Fetch the raw diff data for a specific commit.
+        Returns a list of diff objects from GitLab API.
         """
-        endpoint = f"projects/{project_id}/merge_requests"
-        cleaned_mrs = []
+        endpoint = f"projects/{project_id}/repository/commits/{commit_sha}/diff"
+        diffs = []
         
-        for mr in self._paginate(endpoint):
-            cleaned_mrs.append({
-                "mr_iid": mr.get("iid"),
-                "title": mr.get("title"),
-                "description": mr.get("description"),
-                "author": mr.get("author", {}).get("name") if mr.get("author") else None,
-                "created_at": mr.get("created_at"),
-                "state": mr.get("state")
-            })
+        # Diff endpoints also support pagination if the diff is large
+        for diff in self._paginate(endpoint):
+            diffs.append(diff)
             
-        return cleaned_mrs
+        return diffs
