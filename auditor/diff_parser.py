@@ -106,9 +106,9 @@ def parse_commit_diff(gitlab_diff_list):
     is_anomaly = False
     anomaly_reason = []
     
-    if total_loc > 1500:
+    if total_loc > 1000:
         is_anomaly = True
-        anomaly_reason.append(f"LOC > 1500 (Current: {total_loc})")
+        anomaly_reason.append(f"LOC > 1000 (Current: {total_loc})")
         
     if gini_loc > 0.8 and total_loc > 50:
         is_anomaly = True
