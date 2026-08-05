@@ -35,9 +35,15 @@ def run_test():
     # pprint(cleaned_commits) # Uncomment if you want to see all commits again
     
     # 替换成一个真实的 commit sha
-    print(f"\n[2] Testing Commit Diff:")
+    print(f"\n[2] Testing Commit Diff (Raw fetch):")
     diffs = client.fetch_commit_diff(PROJECT_ID, "34480d37c221b2c5cbe7237c7423fa59c5079a84")
-    pprint(diffs)
+    # pprint(diffs) # Uncomment to see raw diffs
+    print(f"Fetched {len(diffs)} file changes.")
+    
+    from auditor.diff_parser import parse_commit_diff
+    print(f"\n[3] Testing Tier 1 Diff Parser:")
+    parsed_metrics = parse_commit_diff(diffs)
+    pprint(parsed_metrics)
 
 if __name__ == "__main__":
     run_test()
