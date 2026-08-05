@@ -1,6 +1,4 @@
-# ==============================================================================
-# STUDENT-ATTRIBUTION
-# ==============================================================================
+# [STUDENT-WRITTEN]
 from django.db import models
 
 class Repository(models.Model):
@@ -17,6 +15,6 @@ class CommitLog(models.Model):
 
 class AuditSession(models.Model):
     repository = models.ForeignKey(Repository, on_delete=models.CASCADE)
-    prompt_context = models.JSONField(help_text="格式化的 LLM 提示词输入")
-    llm_response = models.JSONField(null=True, blank=True, help_text="LLM 解析后的 JSON 结果")
+    prompt_context = models.JSONField(help_text="Formatted LLM prompt input")
+    llm_response = models.JSONField(null=True, blank=True, help_text="LLM parsed JSON result")
     created_at = models.DateTimeField(auto_now_add=True)
