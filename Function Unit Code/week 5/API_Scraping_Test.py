@@ -44,6 +44,18 @@ def run_test():
     print(f"\n[3] Testing Tier 1 Diff Parser:")
     parsed_metrics = parse_commit_diff(diffs)
     pprint(parsed_metrics)
+    
+    print(f"\n[4] Testing LLM Context Builder:")
+    from auditor.context_builder import LLMContextBuilder
+    
+    # We need a single commit metadata dict. Let's use the first one fetched.
+    commit_meta = cleaned_commits[0] if cleaned_commits else {}
+    
+    user_prompt = LLMContextBuilder.build_commit_prompt(commit_meta, parsed_metrics)
+    
+    print("--- GENERATED USER PROMPT ---")
+    print(user_prompt)
+    print("-----------------------------")
 
 if __name__ == "__main__":
     run_test()
