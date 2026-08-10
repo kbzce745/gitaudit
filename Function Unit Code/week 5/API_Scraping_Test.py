@@ -34,7 +34,6 @@ def run_test():
     print(f"Total commits fetched: {len(cleaned_commits)}")
     # pprint(cleaned_commits) # Uncomment if you want to see all commits again
     
-    # 替换成一个真实的 commit sha
     print(f"\n[2] Testing Commit Diff (Raw fetch):")
     diffs = client.fetch_commit_diff(PROJECT_ID, "34480d37c221b2c5cbe7237c7423fa59c5079a84")
     # pprint(diffs) # Uncomment to see raw diffs

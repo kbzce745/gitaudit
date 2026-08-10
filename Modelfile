@@ -1,0 +1,2 @@
+FROM llama3
+ADAPTER ./gitaudit_lora.gguf

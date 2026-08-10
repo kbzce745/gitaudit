@@ -6,7 +6,7 @@ class LLMContextBuilder:
     Builds formatted prompts for the LLM based on extracted Git data and diff metrics.
     """
     
-    # 强制大模型只输出标准 JSON 的系统提示词
+    # Force LLM to output standard JSON System Prompt
     SYSTEM_PROMPT = """
 You are an expert code audit assistant. Your task is to analyze the provided git commit metadata and Tier 1 diff metrics.
 
@@ -32,7 +32,7 @@ Example of expected output:
         """
         Constructs the user prompt containing commit metadata and parsed Tier 1 metrics.
         """
-        # 组装我们要发送给大模型的上下文数据结构
+        # Assembling Context Data Structures
         prompt_data = {
             "commit_info": {
                 "sha": commit_meta.get("commit_sha", ""),
