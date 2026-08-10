@@ -28,7 +28,7 @@ class LLMJSONParser:
         cleaned_text = cls._clean_text(raw_text)
         
         try:
-            parsed_data = json.loads(cleaned_text)
+            parsed_data = json.loads(cleaned_text, strict=False)
             return cls._validate_data(parsed_data)
         except json.JSONDecodeError as e:
             logger.error(f"Failed to decode JSON from LLM: {e}. Raw text: {raw_text}")
