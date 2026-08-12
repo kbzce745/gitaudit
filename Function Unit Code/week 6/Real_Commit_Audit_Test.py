@@ -2,13 +2,17 @@ import os
 import sys
 import django
 import requests
+import io
 from pprint import pprint
+
+# Force UTF-8 encoding for Windows terminal
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8', errors='ignore')
 
 # Add the project root directory to sys.path so Python can find 'config' and 'auditor'
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, project_root)
 
-# Setup Django environment for consistency
+# Setup Django environment
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
@@ -28,7 +32,7 @@ def run_real_commit_audit():
     
     PROJECT_ID = 24961 
     # Here i am using a specific commit from my earlier test:
-    TARGET_COMMIT_SHA = "34480d37c221b2c5cbe7237c7423fa59c5079a84"
+    TARGET_COMMIT_SHA = "0e113034528ed4e1be23610d3c5be3b34e15ee83"
     
     print(f"\n[1] Fetching Commit Metadata for {TARGET_COMMIT_SHA}...")
     # Fetch all commits and find the one we want (or just use the first one if not found)
