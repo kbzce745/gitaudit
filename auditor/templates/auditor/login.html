@@ -4,44 +4,65 @@
 {% block title %}Login | GitAudit{% endblock %}
 
 {% block content %}
-<div class="background-orbs">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+<!-- Background Orbs built with Tailwind -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+    <div class="absolute -top-[100px] -left-[100px] w-[400px] h-[400px] rounded-full bg-glasgow-blue/60 blur-[80px] animate-[float_20s_infinite_ease-in-out_alternate]"></div>
+    <div class="absolute -bottom-[50px] -right-[50px] w-[300px] h-[300px] rounded-full bg-glasgow-gold/40 blur-[80px] animate-[float_20s_infinite_ease-in-out_alternate] [animation-delay:-5s]"></div>
+    <div class="absolute top-[40%] left-[50%] w-[250px] h-[250px] rounded-full bg-purple-500/30 blur-[80px] animate-[float_20s_infinite_ease-in-out_alternate] [animation-delay:-10s]"></div>
 </div>
 
-<div class="auth-wrapper">
-    <div class="glass-panel auth-card">
-        <div class="text-center mb-6">
-            <div class="glasgow-logo-container">
-                <img src="{% static 'img/crest.png' %}" alt="University of Glasgow" class="glasgow-crest">
-                <h1 class="logo-text">University of Glasgow</h1>
-            </div>
-            <p class="text-muted">GitAudit Platform</p>
-        </div>
+<div class="flex-1 flex items-center justify-center p-4">
+    <div class="relative w-full max-w-md group">
+        <!-- Glowing Ambient Background for Card -->
+        <div class="absolute -inset-1 bg-gradient-to-r from-glasgow-blue/40 to-glasgow-gold/20 opacity-50 blur-2xl group-hover:opacity-70 transition duration-1000 rounded-3xl"></div>
         
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-error">
-                    {{ message }}
+        <div class="relative bg-dark-panel backdrop-blur-xl border border-dark-border rounded-3xl p-8 sm:p-10 shadow-2xl">
+            <div class="flex flex-col items-center justify-center gap-3 mb-8">
+                <img src="{% static 'img/crest.png' %}" alt="University of Glasgow" class="h-16 w-auto drop-shadow-md">
+                <div class="text-center">
+                    <h1 class="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-glasgow-blue to-glasgow-gold">University of Glasgow</h1>
+                    <p class="text-slate-400 text-sm mt-1 tracking-wide uppercase font-medium">GitAudit Platform</p>
                 </div>
-            {% endfor %}
-        {% endif %}
+            </div>
+            
+            {% if messages %}
+                <div class="mb-6 space-y-2">
+                {% for message in messages %}
+                    <div class="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-sm flex items-center">
+                        <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
 
-        <form method="POST" action="{% url 'login' %}">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="username" class="form-label">Email or Username</label>
-                <input type="text" id="username" name="username" class="form-control" placeholder="Enter your email or username" required autofocus>
-            </div>
-            
-            <div class="form-group mb-6">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Sign In</button>
-        </form>
+            <form method="POST" action="{% url 'login' %}" class="space-y-6">
+                {% csrf_token %}
+                <div>
+                    <label for="username" class="block text-sm font-medium text-slate-300 mb-2">Email or Username</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        </div>
+                        <input type="text" id="username" name="username" class="block w-full pl-10 pr-3 py-3 bg-slate-900/50 border border-dark-border rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-glasgow-gold/50 focus:border-glasgow-gold transition duration-200" placeholder="Enter your email or username" required autofocus>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        </div>
+                        <input type="password" id="password" name="password" class="block w-full pl-10 pr-3 py-3 bg-slate-900/50 border border-dark-border rounded-xl text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-glasgow-gold/50 focus:border-glasgow-gold transition duration-200" placeholder="••••••••" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-sm font-bold text-white bg-gradient-to-r from-glasgow-blue to-glasgow-blueHover hover:from-glasgow-blueHover hover:to-[#005599] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-glasgow-gold transition-all duration-200 hover:-translate-y-0.5">
+                    Sign In
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

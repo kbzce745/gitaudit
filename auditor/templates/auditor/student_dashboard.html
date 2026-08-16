@@ -4,15 +4,49 @@
 {% block title %}Student Dashboard | GitAudit{% endblock %}
 
 {% block content %}
-<div class="dashboard-container">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    
     <!-- 1. Top Banner -->
-    <div class="top-banner glass-panel">
-        <div class="banner-left">
-            <h2>Week {{ current_week }} Status Update</h2>
-            <p class="text-muted">Next meeting with supervisor in {{ next_meeting_days }} days</p>
-        </div>
-        <div class="banner-right">
-            <span class="status-badge status-{{ report_status|lower }}">{{ report_status }}</span>
+    <div class="relative overflow-hidden rounded-2xl border border-dark-border bg-dark-panel backdrop-blur-xl shadow-2xl mb-8 group">
+        <!-- Glasgow Blue Accent Border -->
+        <div class="absolute left-0 top-0 bottom-0 w-2 bg-glasgow-blue"></div>
+        
+        <!-- Glowing Ambient Background -->
+        <div class="absolute -inset-1 bg-gradient-to-r from-glasgow-blue/20 to-glasgow-gold/10 opacity-50 blur-2xl group-hover:opacity-70 transition duration-1000"></div>
+
+        <div class="relative p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex-1">
+                <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-2">
+                    Week {{ current_week }} Status Update
+                </h2>
+                <div class="flex items-center text-slate-400 text-sm font-medium">
+                    <svg class="w-5 h-5 mr-2 text-glasgow-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Next meeting with supervisor in {{ next_meeting_days }} days
+                </div>
+            </div>
+            
+            <div class="flex-shrink-0">
+                <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider
+                    {% if report_status == 'Draft' %}
+                        bg-yellow-500/20 text-yellow-500 border border-yellow-500/30 shadow-[0_0_15px_rgba(234,179,8,0.2)]
+                    {% elif report_status == 'Locked' %}
+                        bg-red-500/20 text-red-500 border border-red-500/30 shadow-[0_0_15px_rgba(239,68,68,0.2)]
+                    {% elif report_status == 'Reviewed' %}
+                        bg-emerald-500/20 text-emerald-500 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)]
+                    {% endif %}
+                ">
+                    {% if report_status == 'Draft' %}
+                        <span class="w-2 h-2 rounded-full bg-yellow-500 mr-2 animate-pulse"></span>
+                    {% elif report_status == 'Locked' %}
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    {% elif report_status == 'Reviewed' %}
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    {% endif %}
+                    {{ report_status }}
+                </span>
+            </div>
         </div>
     </div>
     
