@@ -5,28 +5,35 @@
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
-    
+
     <!-- 1. Top Banner -->
-    <div class="relative overflow-hidden rounded-2xl border border-dark-border bg-dark-panel backdrop-blur-xl shadow-2xl mb-8 group">
+    <div
+        class="relative overflow-hidden rounded-2xl border border-dark-border bg-dark-panel backdrop-blur-xl shadow-2xl mb-8 group">
         <!-- Glasgow Blue Accent Border -->
         <div class="absolute left-0 top-0 bottom-0 w-2 bg-glasgow-blue"></div>
-        
+
         <!-- Glowing Ambient Background -->
-        <div class="absolute -inset-1 bg-gradient-to-r from-glasgow-blue/20 to-glasgow-gold/10 opacity-50 blur-2xl group-hover:opacity-70 transition duration-1000"></div>
+        <div
+            class="absolute -inset-1 bg-gradient-to-r from-glasgow-blue/20 to-glasgow-gold/10 opacity-50 blur-2xl group-hover:opacity-70 transition duration-1000">
+        </div>
 
         <div class="relative p-6 sm:p-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div class="flex-1">
-                <h2 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-2">
+                <h2
+                    class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 mb-2">
                     Week {{ current_week }} Status Update
                 </h2>
                 <div class="flex items-center text-slate-400 text-sm font-medium">
-                    <svg class="w-5 h-5 mr-2 text-glasgow-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    <svg class="w-5 h-5 mr-2 text-glasgow-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                        </path>
                     </svg>
                     Next meeting with supervisor in {{ next_meeting_days }} days
                 </div>
             </div>
-            
+
             <div class="flex-shrink-0">
                 <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider
                     {% if report_status == 'Draft' %}
@@ -38,38 +45,52 @@
                     {% endif %}
                 ">
                     {% if report_status == 'Draft' %}
-                        <span class="w-2 h-2 rounded-full bg-yellow-500 mr-2 animate-pulse"></span>
+                    <span class="w-2 h-2 rounded-full bg-yellow-500 mr-2 animate-pulse"></span>
                     {% elif report_status == 'Locked' %}
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                        </path>
+                    </svg>
                     {% elif report_status == 'Reviewed' %}
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
                     {% endif %}
                     {{ report_status }}
                 </span>
             </div>
         </div>
     </div>
-    
+
     <!-- Main Content Grid Layout (2/3 + 1/3) -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
+
         <!-- Left Column: Tracker Forms & Auto-Audit (2/3 Width) -->
         <div class="lg:col-span-2 space-y-8">
-            
+
             <!-- Module A: Key Milestones Status (TrackerPPT) -->
             <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-2xl p-6 shadow-xl">
                 <div class="flex justify-between items-center mb-6 border-b border-slate-700/50 pb-4">
                     <h3 class="text-xl font-bold text-white flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-glasgow-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <svg class="w-6 h-6 mr-2 text-glasgow-gold" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                         Key Milestones Status
                     </h3>
                     <span class="text-xs text-slate-400">Auto-saves on change</span>
                 </div>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {% for m in milestones %}
-                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-500/50 transition-colors">
-                        <span class="text-sm font-medium text-slate-300 w-1/2 truncate pr-2" title="{{ m.name }}">{{ m.name }}</span>
+                    <div
+                        class="flex items-center justify-between p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-500/50 transition-colors">
+                        <span class="text-sm font-medium text-slate-300 w-1/2 truncate pr-2" title="{{ m.name }}">{{
+                            m.name }}</span>
                         <select onchange="updateColor(this)" class="w-1/2 text-xs font-bold uppercase tracking-wider rounded-lg border-0 py-2 pl-3 pr-8 focus:ring-2 focus:ring-glasgow-gold transition-all cursor-pointer appearance-none bg-no-repeat bg-[right_0.5rem_center] bg-[length:1em_1em] 
                             {% if m.status == 'Not Started' %}bg-slate-700/50 text-slate-300 focus:bg-slate-700{% endif %}
                             {% if m.status == 'On track' %}bg-green-500/20 text-green-400 focus:bg-green-500/30{% endif %}
@@ -77,57 +98,175 @@
                             {% if m.status == 'Major issues' %}bg-red-500/20 text-red-400 focus:bg-red-500/30{% endif %}
                             {% if m.status == 'Completed' %}bg-blue-500/20 text-blue-400 focus:bg-blue-500/30{% endif %}
                         " style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');"
-                        {% if report_status != 'Draft' %}disabled{% endif %}>
-                            <option value="Not Started" {% if m.status == 'Not Started' %}selected{% endif %} class="bg-slate-800 text-slate-300">Not Started</option>
-                            <option value="On track" {% if m.status == 'On track' %}selected{% endif %} class="bg-slate-800 text-green-400">On track</option>
-                            <option value="Issues" {% if m.status == 'Issues' %}selected{% endif %} class="bg-slate-800 text-yellow-400">Issues</option>
-                            <option value="Major issues" {% if m.status == 'Major issues' %}selected{% endif %} class="bg-slate-800 text-red-400">Major issues</option>
-                            <option value="Completed" {% if m.status == 'Completed' %}selected{% endif %} class="bg-slate-800 text-blue-400">Completed</option>
+                            {% if report_status != 'Draft' %}disabled{% endif %}>
+                            <option value="Not Started" {% if m.status == 'Not Started' %}selected{% endif %}
+                                class="bg-slate-800 text-slate-300">Not Started</option>
+                            <option value="On track" {% if m.status == 'On track' %}selected{% endif %}
+                                class="bg-slate-800 text-green-400">On track</option>
+                            <option value="Issues" {% if m.status == 'Issues' %}selected{% endif %}
+                                class="bg-slate-800 text-yellow-400">Issues</option>
+                            <option value="Major issues" {% if m.status == 'Major issues' %}selected{% endif %}
+                                class="bg-slate-800 text-red-400">Major issues</option>
+                            <option value="Completed" {% if m.status == 'Completed' %}selected{% endif %}
+                                class="bg-slate-800 text-blue-400">Completed</option>
                         </select>
                     </div>
                     {% endfor %}
                 </div>
             </div>
 
-            <!-- Future Module B: Weekly Status Editor -->
-            
-        </div>
-        
-        <!-- Right Column: Agenda, Calendar, Submit Node (1/3 Width) -->
-        <div class="space-y-8">
-            <!-- Future Module D/E/F -->
-            <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-2xl p-6 shadow-xl min-h-[300px] flex items-center justify-center text-slate-500 border-dashed border-2 border-slate-700">
-                <p>Agenda & Calendar Space</p>
-            </div>
-        </div>
-        
-    </div>
-    
-</div>
+            <!-- Module B1: Weekly Progress Tracker -->
+            <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-2xl p-6 shadow-xl">
+                <div class="flex justify-between items-center mb-6 border-b border-slate-700/50 pb-4">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-glasgow-blue" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                            </path>
+                        </svg>
+                        Weekly Progress Tracker
+                    </h3>
+                </div>
 
-<script>
-function updateColor(selectEl) {
-    // Remove all old state classes
-    selectEl.classList.remove(
-        'bg-slate-700/50', 'text-slate-300', 'focus:bg-slate-700',
-        'bg-green-500/20', 'text-green-400', 'focus:bg-green-500/30',
-        'bg-yellow-500/20', 'text-yellow-400', 'focus:bg-yellow-500/30',
-        'bg-red-500/20', 'text-red-400', 'focus:bg-red-500/30',
-        'bg-blue-500/20', 'text-blue-400', 'focus:bg-blue-500/30'
-    );
-    
-    // Add new classes based on selection
-    if (selectEl.value === 'Not Started') {
-        selectEl.classList.add('bg-slate-700/50', 'text-slate-300', 'focus:bg-slate-700');
-    } else if (selectEl.value === 'On track') {
-        selectEl.classList.add('bg-green-500/20', 'text-green-400', 'focus:bg-green-500/30');
-    } else if (selectEl.value === 'Issues') {
-        selectEl.classList.add('bg-yellow-500/20', 'text-yellow-400', 'focus:bg-yellow-500/30');
-    } else if (selectEl.value === 'Major issues') {
-        selectEl.classList.add('bg-red-500/20', 'text-red-400', 'focus:bg-red-500/30');
-    } else if (selectEl.value === 'Completed') {
-        selectEl.classList.add('bg-blue-500/20', 'text-blue-400', 'focus:bg-blue-500/30');
-    }
-}
-</script>
-{% endblock %}
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Completed Activities This
+                            week</label>
+                        <textarea
+                            class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none"
+                            rows="3" placeholder="What have you achieved this week?" {% if report_status != 'Draft' %}disabled{% endif %}></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Upcoming Activities – Next
+                            week</label>
+                        <textarea
+                            class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none"
+                            rows="3" placeholder="What are your goals for next week?" {% if report_status != 'Draft' %}disabled{% endif %}></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Issues, Risks and Concerns</label>
+                        <textarea
+                            class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none"
+                            rows="3" placeholder="Any blockers, API rate limits?" {% if report_status != 'Draft' %}disabled{% endif %}></textarea>
+                    </div>
+                </div>
+            </div>
+
+            {% if bi_weekly_data %}
+            <!-- Module B2: Bi-Weekly Status Update (With 250 word limit) -->
+            <div
+                class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-2xl p-6 shadow-xl relative overflow-hidden group">
+                <div class="absolute left-0 top-0 bottom-0 w-1 bg-glasgow-gold"></div>
+                <div class="flex justify-between items-center mb-4 border-b border-slate-700/50 pb-4">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-glasgow-gold" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                            </path>
+                        </svg>
+                        {{ bi_weekly_data.title }}
+                    </h3>
+                    <div class="flex items-center space-x-3">
+                        <span id="wordCountError" class="text-xs font-bold text-red-400 hidden animate-pulse">Exceeds
+                            250 words limit!</span>
+                        <span id="wordCountDisplay"
+                            class="text-sm font-bold px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 transition-colors">0
+                            / 250 Words</span>
+                    </div>
+                </div>
+
+                <div class="mb-4 text-sm text-slate-400 bg-slate-800/50 p-4 rounded-xl border border-slate-700">
+                    <p class="font-medium text-slate-200 mb-2">{{ bi_weekly_data.intro }}</p>
+                    <ul class="list-disc list-inside space-y-1 ml-2">
+                        {% for item in bi_weekly_data.items %}
+                        <li>{{ item|safe }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <textarea id="biWeeklyTextarea"
+                    class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none"
+                    rows="6"
+                    placeholder="Write your status report here (250 words max)... GitAudit will use LLM to automatically cross-check your claims with your GitLab commits."
+                    oninput="calculateTotalWords()" {% if report_status != 'Draft' %}disabled{% endif %}></textarea>
+            </div>
+            {% endif %}
+
+            <!-- Right Column: Agenda, Calendar, Submit Node (1/3 Width) -->
+            <div class="space-y-8">
+                <!-- Future Module D/E/F -->
+                <div
+                    class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-2xl p-6 shadow-xl min-h-[300px] flex items-center justify-center text-slate-500 border-dashed border-2 border-slate-700">
+                    <p>Agenda & Calendar Space</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function updateColor(selectEl) {
+            // Remove all old state classes
+            selectEl.classList.remove(
+                'bg-slate-700/50', 'text-slate-300', 'focus:bg-slate-700',
+                'bg-green-500/20', 'text-green-400', 'focus:bg-green-500/30',
+                'bg-yellow-500/20', 'text-yellow-400', 'focus:bg-yellow-500/30',
+                'bg-red-500/20', 'text-red-400', 'focus:bg-red-500/30',
+                'bg-blue-500/20', 'text-blue-400', 'focus:bg-blue-500/30'
+            );
+
+            // Add new classes based on selection
+            if (selectEl.value === 'Not Started') {
+                selectEl.classList.add('bg-slate-700/50', 'text-slate-300', 'focus:bg-slate-700');
+            } else if (selectEl.value === 'On track') {
+                selectEl.classList.add('bg-green-500/20', 'text-green-400', 'focus:bg-green-500/30');
+            } else if (selectEl.value === 'Issues') {
+                selectEl.classList.add('bg-yellow-500/20', 'text-yellow-400', 'focus:bg-yellow-500/30');
+            } else if (selectEl.value === 'Major issues') {
+                selectEl.classList.add('bg-red-500/20', 'text-red-400', 'focus:bg-red-500/30');
+            } else if (selectEl.value === 'Completed') {
+                selectEl.classList.add('bg-blue-500/20', 'text-blue-400', 'focus:bg-blue-500/30');
+            }
+        }
+
+        function calculateTotalWords() {
+            const textarea = document.getElementById('biWeeklyTextarea');
+            let totalWords = 0;
+
+            if (textarea) {
+                const text = textarea.value.trim();
+                if (text.length > 0) {
+                    // Split by whitespace to count words
+                    totalWords = text.split(/\s+/).length;
+                }
+            }
+
+            const display = document.getElementById('wordCountDisplay');
+            const errorMsg = document.getElementById('wordCountError');
+
+            if (display) {
+                display.innerText = `${totalWords} / 250 Words`;
+
+                if (totalWords > 250) {
+                    // Exceeded limit: Change pill to red and show error message
+                    display.classList.remove('bg-slate-800', 'text-slate-300', 'border-slate-700');
+                    display.classList.add('bg-red-500/20', 'text-red-400', 'border-red-500/50');
+                    if (errorMsg) errorMsg.classList.remove('hidden');
+
+                    // Dispatch custom event to notify Module F (Submit Node) to disable the button
+                    document.dispatchEvent(new CustomEvent('wordCountExceeded', { detail: { exceeded: true } }));
+                } else {
+                    // Within limit: Revert to normal
+                    display.classList.add('bg-slate-800', 'text-slate-300', 'border-slate-700');
+                    display.classList.remove('bg-red-500/20', 'text-red-400', 'border-red-500/50');
+                    if (errorMsg) errorMsg.classList.add('hidden');
+
+                    document.dispatchEvent(new CustomEvent('wordCountExceeded', { detail: { exceeded: false } }));
+                }
+            }
+        }
+    </script>
+    {% endblock %}
