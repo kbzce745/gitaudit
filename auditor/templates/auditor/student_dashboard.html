@@ -50,7 +50,84 @@
         </div>
     </div>
     
-    <!-- Future Grid Layout goes here -->
+    <!-- Main Content Grid Layout (2/3 + 1/3) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Column: Tracker Forms & Auto-Audit (2/3 Width) -->
+        <div class="lg:col-span-2 space-y-8">
+            
+            <!-- Module A: Key Milestones Status (TrackerPPT) -->
+            <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-2xl p-6 shadow-xl">
+                <div class="flex justify-between items-center mb-6 border-b border-slate-700/50 pb-4">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-glasgow-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Key Milestones Status
+                    </h3>
+                    <span class="text-xs text-slate-400">Auto-saves on change</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {% for m in milestones %}
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-500/50 transition-colors">
+                        <span class="text-sm font-medium text-slate-300 w-1/2 truncate pr-2" title="{{ m.name }}">{{ m.name }}</span>
+                        <select onchange="updateColor(this)" class="w-1/2 text-xs font-bold uppercase tracking-wider rounded-lg border-0 py-2 pl-3 pr-8 focus:ring-2 focus:ring-glasgow-gold transition-all cursor-pointer appearance-none bg-no-repeat bg-[right_0.5rem_center] bg-[length:1em_1em] 
+                            {% if m.status == 'Not Started' %}bg-slate-700/50 text-slate-300 focus:bg-slate-700{% endif %}
+                            {% if m.status == 'On track' %}bg-green-500/20 text-green-400 focus:bg-green-500/30{% endif %}
+                            {% if m.status == 'Issues' %}bg-yellow-500/20 text-yellow-400 focus:bg-yellow-500/30{% endif %}
+                            {% if m.status == 'Major issues' %}bg-red-500/20 text-red-400 focus:bg-red-500/30{% endif %}
+                            {% if m.status == 'Completed' %}bg-blue-500/20 text-blue-400 focus:bg-blue-500/30{% endif %}
+                        " style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');"
+                        {% if report_status != 'Draft' %}disabled{% endif %}>
+                            <option value="Not Started" {% if m.status == 'Not Started' %}selected{% endif %} class="bg-slate-800 text-slate-300">Not Started</option>
+                            <option value="On track" {% if m.status == 'On track' %}selected{% endif %} class="bg-slate-800 text-green-400">On track</option>
+                            <option value="Issues" {% if m.status == 'Issues' %}selected{% endif %} class="bg-slate-800 text-yellow-400">Issues</option>
+                            <option value="Major issues" {% if m.status == 'Major issues' %}selected{% endif %} class="bg-slate-800 text-red-400">Major issues</option>
+                            <option value="Completed" {% if m.status == 'Completed' %}selected{% endif %} class="bg-slate-800 text-blue-400">Completed</option>
+                        </select>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Future Module B: Weekly Status Editor -->
+            
+        </div>
+        
+        <!-- Right Column: Agenda, Calendar, Submit Node (1/3 Width) -->
+        <div class="space-y-8">
+            <!-- Future Module D/E/F -->
+            <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-2xl p-6 shadow-xl min-h-[300px] flex items-center justify-center text-slate-500 border-dashed border-2 border-slate-700">
+                <p>Agenda & Calendar Space</p>
+            </div>
+        </div>
+        
+    </div>
     
 </div>
+
+<script>
+function updateColor(selectEl) {
+    // Remove all old state classes
+    selectEl.classList.remove(
+        'bg-slate-700/50', 'text-slate-300', 'focus:bg-slate-700',
+        'bg-green-500/20', 'text-green-400', 'focus:bg-green-500/30',
+        'bg-yellow-500/20', 'text-yellow-400', 'focus:bg-yellow-500/30',
+        'bg-red-500/20', 'text-red-400', 'focus:bg-red-500/30',
+        'bg-blue-500/20', 'text-blue-400', 'focus:bg-blue-500/30'
+    );
+    
+    // Add new classes based on selection
+    if (selectEl.value === 'Not Started') {
+        selectEl.classList.add('bg-slate-700/50', 'text-slate-300', 'focus:bg-slate-700');
+    } else if (selectEl.value === 'On track') {
+        selectEl.classList.add('bg-green-500/20', 'text-green-400', 'focus:bg-green-500/30');
+    } else if (selectEl.value === 'Issues') {
+        selectEl.classList.add('bg-yellow-500/20', 'text-yellow-400', 'focus:bg-yellow-500/30');
+    } else if (selectEl.value === 'Major issues') {
+        selectEl.classList.add('bg-red-500/20', 'text-red-400', 'focus:bg-red-500/30');
+    } else if (selectEl.value === 'Completed') {
+        selectEl.classList.add('bg-blue-500/20', 'text-blue-400', 'focus:bg-blue-500/30');
+    }
+}
+</script>
 {% endblock %}

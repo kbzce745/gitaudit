@@ -39,11 +39,23 @@ def logout_view(request):
 
 @login_required
 def student_dashboard(request):
+    milestones = [
+        {'name': 'Project Topic & High Level scope', 'status': 'Completed'},
+        {'name': 'Requirements / Analysis', 'status': 'On track'},
+        {'name': 'Tools, Stack, Dev. Environment', 'status': 'On track'},
+        {'name': 'Prototype and Design', 'status': 'Not Started'},
+        {'name': 'Development', 'status': 'Not Started'},
+        {'name': 'System testing', 'status': 'Not Started'},
+        {'name': 'User Evaluations', 'status': 'Not Started'},
+        {'name': 'Dissertation & Video', 'status': 'Not Started'},
+    ]
+    
     # Dummy context data for the Top Banner
     context = {
         'current_week': 8,
         'report_status': 'Draft', # Options: Draft, Locked, Reviewed
-        'next_meeting_days': 2
+        'next_meeting_days': 2,
+        'milestones': milestones,
     }
     return render(request, 'auditor/student_dashboard.html', context)
 
