@@ -39,8 +39,13 @@ def logout_view(request):
 
 @login_required
 def student_dashboard(request):
-    # Temporary placeholder
-    return render(request, 'auditor/base.html')
+    # Dummy context data for the Top Banner
+    context = {
+        'current_week': 8,
+        'report_status': 'Draft', # Options: Draft, Locked, Reviewed
+        'next_meeting_days': 2
+    }
+    return render(request, 'auditor/student_dashboard.html', context)
 
 @login_required
 def teacher_dashboard(request):

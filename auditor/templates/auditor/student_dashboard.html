@@ -1,0 +1,22 @@
+{% extends 'auditor/base.html' %}
+{% load static %}
+
+{% block title %}Student Dashboard | GitAudit{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- 1. Top Banner -->
+    <div class="top-banner glass-panel">
+        <div class="banner-left">
+            <h2>Week {{ current_week }} Status Update</h2>
+            <p class="text-muted">Next meeting with supervisor in {{ next_meeting_days }} days</p>
+        </div>
+        <div class="banner-right">
+            <span class="status-badge status-{{ report_status|lower }}">{{ report_status }}</span>
+        </div>
+    </div>
+    
+    <!-- Future Grid Layout goes here -->
+    
+</div>
+{% endblock %}
