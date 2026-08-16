@@ -1,14 +1,20 @@
 {% extends 'auditor/base.html' %}
+{% load static %}
 
 {% block title %}Login | GitAudit{% endblock %}
 
 {% block content %}
+<div class="background-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+
 <div class="auth-wrapper">
     <div class="glass-panel auth-card">
         <div class="text-center mb-6">
             <div class="glasgow-logo-container">
-                <!-- Using a placeholder/styled div for the University of Glasgow Logo -->
-                <div class="glasgow-crest"></div>
+                <img src="{% static 'img/crest.png' %}" alt="University of Glasgow" class="glasgow-crest">
                 <h1 class="logo-text">University of Glasgow</h1>
             </div>
             <p class="text-muted">GitAudit Platform</p>

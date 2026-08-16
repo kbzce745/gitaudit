@@ -130,13 +130,63 @@ h1, h2, h3 {
 }
 
 .glasgow-crest {
-    width: 60px;
-    height: 60px;
-    background-image: url('https://upload.wikimedia.org/wikipedia/en/thumb/5/52/University_of_Glasgow_logo.svg/1200px-University_of_Glasgow_logo.svg.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+    height: 70px;
+    width: auto;
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    margin-bottom: 5px;
+}
+
+/* Background Orbs */
+.background-orbs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    animation: float 20s infinite ease-in-out alternate;
+}
+
+.orb-1 {
+    width: 400px;
+    height: 400px;
+    background: rgba(0, 56, 101, 0.6); /* Glasgow Blue */
+    top: -100px;
+    left: -100px;
+    animation-delay: 0s;
+}
+
+.orb-2 {
+    width: 300px;
+    height: 300px;
+    background: rgba(243, 213, 78, 0.4); /* Glasgow Gold */
+    bottom: -50px;
+    right: -50px;
+    animation-delay: -5s;
+}
+
+.orb-3 {
+    width: 250px;
+    height: 250px;
+    background: rgba(139, 92, 246, 0.3); /* Purple */
+    top: 40%;
+    left: 50%;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -50px) scale(1.1); }
+    100% { transform: translate(-30px, 30px) scale(0.9); }
 }
 
 .logo-text {

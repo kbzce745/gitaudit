@@ -10,10 +10,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    {% if user.is_authenticated %}
+    <nav style="padding: 1rem; text-align: right; background: rgba(0,0,0,0.2);">
+        <span style="margin-right: 1rem;">Welcome, {{ user.username }}</span>
+        <a href="{% url 'logout' %}" class="btn btn-primary" style="padding: 0.5rem 1rem; width: auto; text-decoration: none;">Logout</a>
+    </nav>
+    {% endif %}
+
     {% block content %}
     {% endblock %}
     
