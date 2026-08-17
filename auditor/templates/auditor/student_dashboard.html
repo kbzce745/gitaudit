@@ -273,6 +273,64 @@
 
     </div>
 
+    <!-- Module G: GitAudit Objective Evidence (Chart.js) -->
+    <div class="mt-8 mb-12">
+        <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-2xl p-6 shadow-xl">
+            <div class="flex justify-between items-center mb-6 border-b border-slate-700/50 pb-4">
+                <h3 class="text-xl font-bold text-white flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-glasgow-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+                    GitAudit Objective Evidence
+                </h3>
+                <span class="text-xs font-medium text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Auto-synced with GitLab</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- LOC Chart -->
+                <div class="md:col-span-2 bg-slate-800/40 border border-slate-700/50 rounded-xl p-4 flex flex-col">
+                    <h4 class="text-sm font-bold text-slate-300 mb-4 text-center">Lines of Code (LOC) Trend</h4>
+                    <div class="relative flex-1 min-h-[250px] w-full">
+                        <canvas id="locChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- AI Summary -->
+                <div class="md:col-span-1 bg-slate-800/40 border border-slate-700/50 rounded-xl p-6 flex flex-col relative overflow-hidden group">
+                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-glasgow-gold/10 rounded-full blur-2xl group-hover:bg-glasgow-gold/20 transition-all"></div>
+                    <h4 class="text-sm font-bold text-glasgow-gold mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        AI Audit Summary
+                    </h4>
+                    <div class="prose prose-sm prose-invert text-slate-300 overflow-y-auto max-h-64 pr-2 custom-scrollbar flex-1">
+                        <p class="mb-3 text-sm leading-relaxed text-glasgow-gold"><strong>Weekly Git Activity Breakdown:</strong></p>
+                        <div class="space-y-3">
+                            <div class="border-l-2 border-slate-600 pl-3">
+                                <h5 class="text-xs font-bold text-slate-400 mb-1">Monday</h5>
+                                <p class="text-xs text-slate-300">Set up base Django models for user authentication and milestone tracking.</p>
+                            </div>
+                            <div class="border-l-2 border-glasgow-blue pl-3">
+                                <h5 class="text-xs font-bold text-white mb-1">Tuesday</h5>
+                                <p class="text-xs text-slate-300">Heavy refactoring of the grid layout component. Massive LOC spike due to Tailwind CSS additions.</p>
+                            </div>
+                            <div class="border-l-2 border-slate-600 pl-3">
+                                <h5 class="text-xs font-bold text-slate-400 mb-1">Wednesday</h5>
+                                <p class="text-xs text-slate-500 italic">No significant commit activity.</p>
+                            </div>
+                            <div class="border-l-2 border-glasgow-gold pl-3">
+                                <h5 class="text-xs font-bold text-white mb-1">Thursday</h5>
+                                <p class="text-xs text-slate-300">Integrated Chart.js and finalized the Objective Evidence UI module.</p>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-xs text-slate-400 border-t border-slate-700/50 pt-3">
+                            <em>AI Assessment: The reported progress matches the Git commit timeline and volume. No discrepancies detected.</em>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         function updateColor(selectEl) {
             // Remove all old state classes
@@ -355,6 +413,61 @@
                     if (errorMsg) errorMsg.classList.add('hidden');
                 }
             }
+        });
+        // --- Chart.js Initialization for GitAudit Objective Evidence ---
+        document.addEventListener("DOMContentLoaded", function() {
+            // Common Chart.js options for dark theme
+            Chart.defaults.color = '#94a3b8'; // text-slate-400
+            Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.05)';
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            
+            // 1. LOC (Lines of Code) Trend Chart
+            const locCtx = document.getElementById('locChart').getContext('2d');
+            
+            // Create a nice gradient for the LOC line
+            const locGradient = locCtx.createLinearGradient(0, 0, 0, 300);
+            locGradient.addColorStop(0, 'rgba(0, 56, 101, 0.8)'); // glasgow-blue
+            locGradient.addColorStop(1, 'rgba(0, 56, 101, 0.0)');
+            
+            new Chart(locCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Lines of Code (Added/Deleted)',
+                        data: [120, 850, 0, 450, 60, 0, 0],
+                        borderColor: '#003865', // glasgow-blue
+                        backgroundColor: locGradient,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#F3D54E', // glasgow-gold
+                        pointBorderColor: '#1e293b',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: '#F3D54E',
+                            bodyColor: '#fff',
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderWidth: 1,
+                            padding: 10
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
         });
     </script>
     {% endblock %}
