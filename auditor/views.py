@@ -50,8 +50,13 @@ def student_dashboard(request):
         {'name': 'Dissertation & Video', 'status': 'Not Started'},
     ]
     
-    current_week = 8
+    # For testing Week 1-4 Project Initiation phase
+    current_week = 3
     
+    report_status = 'Draft' 
+
+    # Dynamic Bi-Weekly Status Logic based on current_week
+    # Mapping based on the exact requirements provided
     BI_WEEKLY_REPORTS = {
         '3/4': {
             'title': 'Week 3/4 Status Update',
@@ -94,7 +99,7 @@ def student_dashboard(request):
     }
     
     bi_weekly_key = None
-    if current_week in [3, 4]:
+    if current_week <= 4:
         bi_weekly_key = '3/4'
     elif current_week in [6, 7]:
         bi_weekly_key = '6/7'
@@ -118,5 +123,42 @@ def student_dashboard(request):
 
 @login_required
 def teacher_dashboard(request):
-    # Temporary placeholder
-    return render(request, 'auditor/base.html')
+    # Dummy data for the student roster
+    students = [
+        {
+            'id': 1,
+            'name': 'Alice Smith',
+            'avatar': 'https://ui-avatars.com/api/?name=Alice+Smith&background=003865&color=fff',
+            'project_title': 'AI-driven Malware Detection',
+            'status': 'Locked', # Pending review
+            'last_updated': '2 hours ago',
+            'current_week': 6
+        },
+        {
+            'id': 2,
+            'name': 'Bob Jones',
+            'avatar': 'https://ui-avatars.com/api/?name=Bob+Jones&background=F3D54E&color=0f172a',
+            'project_title': 'Blockchain Voting System',
+            'status': 'Draft',
+            'last_updated': '1 day ago',
+            'current_week': 6
+        },
+        {
+            'id': 3,
+            'name': 'Charlie Davis',
+            'avatar': 'https://ui-avatars.com/api/?name=Charlie+Davis&background=10b981&color=fff',
+            'project_title': 'IoT Smart Home Security',
+            'status': 'Reviewed',
+            'last_updated': '3 days ago',
+            'current_week': 6
+        }
+    ]
+    
+    # Sort so 'Locked' (Pending Review) students are at the top
+    status_priority = {'Locked': 1, 'Draft': 2, 'Reviewed': 3}
+    students.sort(key=lambda x: status_priority.get(x['status'], 99))
+    
+    context = {
+        'students': students
+    }
+    return render(request, 'auditor/teacher_dashboard.html', context)
