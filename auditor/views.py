@@ -109,7 +109,8 @@ def student_dashboard(request):
     context = {
         'current_week': current_week,
         'report_status': 'Draft', # Options: Draft, Locked, Reviewed
-        'next_meeting_days': 2,
+        'next_meeting_date': '2026-10-24',
+        'next_meeting_days': 12,
         'milestones': milestones,
         'bi_weekly_data': bi_weekly_data,
     }

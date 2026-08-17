@@ -89,8 +89,7 @@
                     {% for m in milestones %}
                     <div
                         class="flex items-center justify-between p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-500/50 transition-colors">
-                        <span class="text-sm font-medium text-slate-300 w-1/2 truncate pr-2" title="{{ m.name }}">{{
-                            m.name }}</span>
+                        <span class="text-sm font-medium text-slate-300 w-1/2 truncate pr-2" title="{{ m.name }}">{{ m.name }}</span>
                         <select onchange="updateColor(this)" class="w-1/2 text-xs font-bold uppercase tracking-wider rounded-lg border-0 py-2 pl-3 pr-8 focus:ring-2 focus:ring-glasgow-gold transition-all cursor-pointer appearance-none bg-no-repeat bg-[right_0.5rem_center] bg-[length:1em_1em] 
                             {% if m.status == 'Not Started' %}bg-slate-700/50 text-slate-300 focus:bg-slate-700{% endif %}
                             {% if m.status == 'On track' %}bg-green-500/20 text-green-400 focus:bg-green-500/30{% endif %}
@@ -238,10 +237,37 @@
                 </div>
             </div>
 
-            <!-- Future Module D/E -->
-            <div
-                class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-2xl p-6 shadow-xl min-h-[200px] flex items-center justify-center text-slate-500 border-dashed border-2 border-slate-700">
-                <p>Agenda & Calendar Space</p>
+            <!-- Module D/E: Next Meeting Agenda & Calendar -->
+            <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-2xl p-6 shadow-xl flex-1">
+                <div class="flex justify-between items-center mb-6 border-b border-slate-700/50 pb-4">
+                    <h3 class="text-xl font-bold text-white flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-glasgow-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        Meeting Agenda
+                    </h3>
+                </div>
+                
+                <!-- "Calendar" / Next Meeting indicator (Supervisor Assigned) -->
+                <div class="flex items-center space-x-4 mb-6 bg-slate-800/40 p-4 rounded-xl border border-slate-700/50">
+                    <div class="flex flex-col items-center justify-center bg-slate-900 border border-slate-700 rounded-lg p-2 min-w-[4.5rem]">
+                        <span class="text-xs font-bold text-glasgow-gold uppercase tracking-wider">In</span>
+                        <span class="text-2xl font-black text-white leading-none my-1">{{ next_meeting_days }}</span>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Days</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white mb-1">Next Supervisor Meeting</h4>
+                        <div class="flex items-center text-xs font-medium text-glasgow-blue bg-glasgow-blue/10 px-2 py-1 rounded-md w-max mb-2">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            {{ next_meeting_date }}
+                        </div>
+                        <p class="text-xs text-slate-400 leading-tight">Prepare your agenda items below. This date is set by your supervisor.</p>
+                    </div>
+                </div>
+
+                <!-- Agenda Input -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Points for Discussion</label>
+                    <textarea class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none" rows="5" placeholder="What do you want to discuss with your supervisor?" {% if report_status != 'Draft' %}disabled{% endif %}></textarea>
+                </div>
             </div>
         </div>
 
