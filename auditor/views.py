@@ -201,6 +201,18 @@ def teacher_student_review(request, student_id):
         ]
     }
 
+    # Milestones data
+    milestones = [
+        {'name': 'Project Topic & High Level scope', 'status': 'Completed'},
+        {'name': 'Requirements / Analysis', 'status': 'On track'},
+        {'name': 'Tools, Stack, Dev. Environment', 'status': 'On track'},
+        {'name': 'Prototype and Design', 'status': 'Not Started'},
+        {'name': 'Development', 'status': 'Not Started'},
+        {'name': 'System testing', 'status': 'Not Started'},
+        {'name': 'User Evaluations', 'status': 'Not Started'},
+        {'name': 'Dissertation & Video', 'status': 'Not Started'},
+    ]
+
     # Daily Audit Logs (Mon-Fri) for the right panel
     daily_audits = [
         {
@@ -244,5 +256,6 @@ def teacher_student_review(request, student_id):
         'student': student_info,
         'bi_weekly_data': bi_weekly_data,
         'daily_audits': daily_audits,
+        'milestones': milestones,
     }
     return render(request, 'auditor/teacher_student_review.html', context)

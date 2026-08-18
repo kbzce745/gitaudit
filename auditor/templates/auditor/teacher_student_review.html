@@ -38,6 +38,25 @@
                 <svg class="w-5 h-5 mr-2 text-glasgow-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                 Student's Submission
             </h2>
+
+            <!-- Key Milestones -->
+            <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-xl p-5 shadow-lg">
+                <h3 class="font-bold text-white mb-3 text-sm">Key Milestones</h3>
+                <div class="space-y-2">
+                    {% for ms in milestones %}
+                    <div class="flex items-center justify-between bg-slate-800/40 p-2 rounded-lg border border-slate-700">
+                        <span class="text-xs text-slate-300 truncate pr-2" title="{{ ms.name }}">{{ ms.name }}</span>
+                        <span class="text-[10px] font-bold px-2 py-1 rounded
+                            {% if ms.status == 'Completed' %}bg-blue-900/50 text-blue-400 border border-blue-500/30
+                            {% elif ms.status == 'On track' %}bg-green-900/50 text-green-400 border border-green-500/30
+                            {% elif ms.status == 'Behind schedule' %}bg-red-900/50 text-red-400 border border-red-500/30
+                            {% else %}bg-slate-800 text-slate-400 border border-slate-600{% endif %}">
+                            {{ ms.status|upper }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
             
             <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-xl p-5 shadow-lg">
                 <h3 class="font-bold text-white mb-2">{{ bi_weekly_data.title }}</h3>
@@ -76,6 +95,17 @@
                 <svg class="w-5 h-5 mr-2 text-glasgow-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                 GitAudit Intelligence Log
             </h2>
+
+            <!-- LOC Chart -->
+            <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-xl shadow-md p-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-sm font-bold text-slate-300">Weekly Lines of Code (LOC) Trend</h4>
+                    <span class="text-xs font-medium text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Auto-synced</span>
+                </div>
+                <div class="relative w-full h-[200px]">
+                    <canvas id="locChart"></canvas>
+                </div>
+            </div>
 
             <!-- Daily Audit Logs -->
             <div class="space-y-4">
@@ -298,5 +328,60 @@
             btn.classList.remove('ring-4', 'ring-white/20');
         });
     }
+</script>
+
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.05)';
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        
+        const locCtx = document.getElementById('locChart').getContext('2d');
+        const locGradient = locCtx.createLinearGradient(0, 0, 0, 200);
+        locGradient.addColorStop(0, 'rgba(0, 56, 101, 0.8)');
+        locGradient.addColorStop(1, 'rgba(0, 56, 101, 0.0)');
+        
+        new Chart(locCtx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Lines of Code (Added/Deleted)',
+                    data: [120, 850, 0, 450, 60, 0, 0],
+                    borderColor: '#003865',
+                    backgroundColor: locGradient,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#F3D54E',
+                    pointBorderColor: '#1e293b',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleColor: '#F3D54E',
+                        bodyColor: '#fff',
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        padding: 10
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    });
 </script>
 {% endblock %}
