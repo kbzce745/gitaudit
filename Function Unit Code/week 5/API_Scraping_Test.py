@@ -17,10 +17,11 @@ def run_test():
     print("--- Starting Day 2 API Fetch Test ---")
     
     # Initialize the client. 
-    # Note: Pass `private_token="glpat-y4QxdOlpMh5EIhTHsRJLPm86MQp1OjR2Ywk.01.0z0s9a1ws"` if testing against a private project
+    # Note: Fetching the private_token from the .env file for security
+    private_token = os.environ.get("GITLAB_PRIVATE_TOKEN")
     client = GitLabAPIClient(
         base_url="https://stgit.dcs.gla.ac.uk",
-        private_token="glpat-y4QxdOlpMh5EIhTHsRJLPm86MQp1OjR2Ywk.01.0z0s9a1ws"
+        private_token=private_token
     ) 
     
     PROJECT_ID = 24961 

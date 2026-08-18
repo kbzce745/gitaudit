@@ -64,7 +64,7 @@ class GitLabAPIClient:
                 
             params['page'] += 1
 
-    def fetch_commits(self, project_id, ref_name=None, fetch_all=False):
+    def fetch_commits(self, project_id, ref_name=None, fetch_all=False, since=None, until=None):
         """
         Fetch commits for a project, extracting and filtering core fields.
         """
@@ -74,6 +74,11 @@ class GitLabAPIClient:
             params['all'] = 'true'
         elif ref_name:
             params['ref_name'] = ref_name
+            
+        if since:
+            params['since'] = since.isoformat() if hasattr(since, 'isoformat') else since
+        if until:
+            params['until'] = until.isoformat() if hasattr(until, 'isoformat') else until
             
         cleaned_commits = []
         
