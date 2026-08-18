@@ -41,6 +41,48 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <!-- Global Toast Notifications -->
+    {% if messages %}
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col space-y-2">
+        {% for message in messages %}
+        <div class="px-6 py-3 rounded-xl shadow-2xl backdrop-blur-md border 
+            {% if message.tags == 'error' %}bg-red-500/20 border-red-500 text-red-100
+            {% elif message.tags == 'success' %}bg-green-500/20 border-green-500 text-green-100
+            {% else %}bg-slate-800/80 border-slate-600 text-slate-200{% endif %}
+            transform transition-all duration-500 translate-y-0 opacity-100 flex items-center justify-between min-w-[300px]">
+            <div class="flex items-center">
+                {% if message.tags == 'error' %}
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                {% elif message.tags == 'success' %}
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                {% else %}
+                <svg class="w-5 h-5 mr-3 flex-shrink-0 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                {% endif %}
+                <span class="font-medium">{{ message }}</span>
+            </div>
+            <button onclick="this.parentElement.style.opacity='0'; setTimeout(()=>this.parentElement.remove(), 500);" class="ml-4 text-white/50 hover:text-white transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    <script>
+        // Auto-dismiss toasts after 4 seconds
+        setTimeout(() => {
+            const container = document.getElementById('toast-container');
+            if (container) {
+                Array.from(container.children).forEach((child, index) => {
+                    setTimeout(() => {
+                        child.style.opacity = '0';
+                        child.style.transform = 'translateY(-10px)';
+                        setTimeout(() => child.remove(), 500);
+                    }, index * 150); // Stagger removal
+                });
+            }
+        }, 4000);
+    </script>
+    {% endif %}
+
     {% if user.is_authenticated %}
     <nav style="padding: 1rem; text-align: right; background: rgba(0,0,0,0.2);">
         <span style="margin-right: 1rem;">Welcome, {{ user.username }}</span>

@@ -72,8 +72,22 @@
         </div>
     </div>
 
-    <!-- Main Content Grid Layout (2/3 + 1/3) -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    {% if report.supervisor_feedback and report_status == 'Changes Requested' %}
+    <!-- Supervisor Feedback Banner -->
+    <div class="mb-8 bg-red-900/30 border border-red-500/50 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-2 bg-red-500"></div>
+        <h3 class="text-lg font-bold text-red-400 mb-2 flex items-center">
+            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            Supervisor Feedback
+        </h3>
+        <p class="text-slate-300">{{ report.supervisor_feedback }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Main Dashboard Grid -->
+    <form method="POST" enctype="multipart/form-data" action="{% url 'student_dashboard' %}">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
 
         <!-- Left Column: Tracker Forms & Auto-Audit (2/3 Width) -->
         <div class="lg:col-span-2 space-y-8">
@@ -104,7 +118,7 @@
                             {% if m.status == 'Major issues' %}bg-red-500/20 text-red-400 focus:bg-red-500/30{% endif %}
                             {% if m.status == 'Completed' %}bg-blue-500/20 text-blue-400 focus:bg-blue-500/30{% endif %}
                         " style="background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2394a3b8%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');"
-                            {% if report_status != 'Draft' %}disabled{% endif %}>
+                            {% if report_status == 'Locked' or report_status == 'Reviewed' %}disabled{% endif %}>
                             <option value="Not Started" {% if m.status == 'Not Started' %}selected{% endif %}
                                 class="bg-slate-800 text-slate-300">Not Started</option>
                             <option value="On track" {% if m.status == 'On track' %}selected{% endif %}
@@ -141,20 +155,20 @@
                             week</label>
                         <textarea
                             class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none"
-                            rows="3" placeholder="What have you achieved this week?" {% if report_status != 'Draft' %}disabled{% endif %}></textarea>
+                            rows="3" placeholder="What have you achieved this week?" {% if report_status == 'Locked' or report_status == 'Reviewed' %}disabled{% endif %}></textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-2">Upcoming Activities – Next
                             week</label>
-                        <textarea
+                        <textarea name="design"
                             class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none"
-                            rows="3" placeholder="What are your goals for next week?" {% if report_status != 'Draft' %}disabled{% endif %}></textarea>
+                            rows="3" placeholder="What are your goals for next week?" {% if report_status == 'Locked' or report_status == 'Reviewed' %}disabled{% endif %}>{{ report.text_design }}</textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-2">Issues, Risks and Concerns</label>
-                        <textarea
+                        <textarea name="prototype"
                             class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none"
-                            rows="3" placeholder="Any blockers, API rate limits?" {% if report_status != 'Draft' %}disabled{% endif %}></textarea>
+                            rows="3" placeholder="Any blockers, API rate limits?" {% if report_status == 'Locked' or report_status == 'Reviewed' %}disabled{% endif %}>{{ report.text_prototype }}</textarea>
                     </div>
                 </div>
             </div>
@@ -192,11 +206,11 @@
                     </ul>
                 </div>
 
-                <textarea id="biWeeklyTextarea"
+                <textarea id="biWeeklyTextarea" name="dissertation"
                     class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none"
                     rows="6"
                     placeholder="Write your status report here (250 words max)... GitAudit will use LLM to automatically cross-check your claims with your GitLab commits."
-                    oninput="calculateTotalWords()" {% if report_status != 'Draft' %}disabled{% endif %}></textarea>
+                    oninput="calculateTotalWords()" {% if report_status == 'Locked' or report_status == 'Reviewed' %}disabled{% endif %}>{{ report.text_dissertation }}</textarea>
             </div>
             {% endif %}
 
@@ -216,7 +230,8 @@
                 </p>
 
                 <!-- Drag & Drop Zone (UI Mockup) -->
-                <div class="border-2 border-dashed border-slate-600 hover:border-glasgow-blue rounded-xl p-8 flex flex-col items-center justify-center bg-slate-900/30 transition-colors cursor-pointer group">
+                <div class="border-2 border-dashed border-slate-600 hover:border-glasgow-blue rounded-xl p-8 flex flex-col items-center justify-center bg-slate-900/30 transition-colors cursor-pointer group" onclick="document.getElementById('file-upload').click()">
+                    <input id="file-upload" type="file" name="images" multiple class="hidden">
                     <div class="p-3 bg-slate-800 rounded-full mb-3 group-hover:bg-glasgow-blue/20 transition-colors">
                         <svg class="w-8 h-8 text-slate-400 group-hover:text-glasgow-blue transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     </div>
@@ -224,18 +239,59 @@
                     <p class="text-xs text-slate-500 mt-1">PNG, JPG, PDF up to 10MB</p>
                 </div>
 
-                <!-- Mock Uploaded Files List -->
+                <!-- Uploaded Files List -->
                 <div class="mt-4 space-y-2">
+                    {% for img in report.evidence_images.all %}
                     <div class="flex items-center justify-between p-3 bg-slate-800/50 border border-slate-700 rounded-lg">
-                        <div class="flex items-center space-x-3">
-                            <svg class="w-5 h-5 text-glasgow-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            <span class="text-sm text-slate-200">system_architecture_draft.png</span>
+                        <div class="flex items-center space-x-3 overflow-hidden">
+                            {% if img.image %}
+                            <a href="{{ img.image.url }}" target="_blank" class="flex items-center text-sm text-slate-200 hover:text-glasgow-gold truncate">
+                                <svg class="w-5 h-5 text-glasgow-blue mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                View File
+                            </a>
+                            {% endif %}
                         </div>
-                        <button class="text-slate-400 hover:text-red-400 transition-colors">
+                        {% if report_status == 'Draft' or report_status == 'Changes Requested' %}
+                        <button type="submit" name="action" value="delete_image_{{ img.id }}" class="text-slate-400 hover:text-red-400 transition-colors p-1" title="Delete">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
+                        {% endif %}
                     </div>
+                    {% empty %}
+                    <div class="text-center p-3 text-sm text-slate-500 italic">No files uploaded yet.</div>
+                    {% endfor %}
                 </div>
+
+                <!-- JS Preview for newly selected files -->
+                <div id="new-files-preview" class="mt-2 space-y-2 hidden">
+                    <div class="flex justify-between items-center mb-2">
+                        <p class="text-xs font-semibold text-glasgow-gold uppercase tracking-wider">Pending Uploads (Will save on submit)</p>
+                        <button type="button" onclick="document.getElementById('file-upload').value=''; document.getElementById('new-files-preview').classList.add('hidden');" class="text-xs text-slate-400 hover:text-red-400 transition-colors bg-slate-800/50 px-2 py-1 rounded">Cancel</button>
+                    </div>
+                    <div id="new-files-list" class="space-y-1"></div>
+                </div>
+                
+                <script>
+                    document.getElementById('file-upload').addEventListener('change', function(e) {
+                        const fileList = e.target.files;
+                        const previewContainer = document.getElementById('new-files-preview');
+                        const listContainer = document.getElementById('new-files-list');
+                        
+                        listContainer.innerHTML = '';
+                        if (fileList.length > 0) {
+                            previewContainer.classList.remove('hidden');
+                            for(let i=0; i<fileList.length; i++) {
+                                listContainer.innerHTML += `
+                                <div class="flex items-center p-2 bg-slate-800/30 border border-slate-700/50 rounded text-sm text-slate-300">
+                                    <svg class="w-4 h-4 mr-2 text-glasgow-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path></svg>
+                                    ${fileList[i].name}
+                                </div>`;
+                            }
+                        } else {
+                            previewContainer.classList.add('hidden');
+                        }
+                    });
+                </script>
             </div>
 
         </div>
@@ -256,19 +312,21 @@
                 </p>
                 
                 <!-- The button -->
-                <button id="submitReportBtn" class="w-full relative group transition-all duration-300 {% if report_status != 'Draft' %}opacity-50 cursor-not-allowed{% endif %}" {% if report_status != 'Draft' %}disabled{% endif %}>
-                    <div class="absolute -inset-0.5 bg-gradient-to-r from-glasgow-blue to-glasgow-gold rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-300 {% if report_status != 'Draft' %}hidden{% endif %}" id="submitBtnGlow"></div>
-                    <div class="relative bg-slate-900 border border-slate-700 text-white font-bold text-lg py-4 px-6 rounded-xl flex items-center justify-center space-x-2 w-full transition-colors {% if report_status == 'Draft' %}group-hover:bg-slate-800{% endif %}">
+                <button type="submit" name="action" value="freeze_and_submit" id="submitReportBtn" class="w-full relative group transition-all duration-300 {% if report_status == 'Locked' or report_status == 'Reviewed' %}opacity-50 cursor-not-allowed{% endif %}" {% if report_status == 'Locked' or report_status == 'Reviewed' %}disabled{% endif %}>
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-glasgow-blue to-glasgow-gold rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-300 {% if report_status == 'Locked' or report_status == 'Reviewed' %}hidden{% endif %}" id="submitBtnGlow"></div>
+                    <div class="relative bg-slate-900 border border-slate-700 text-white font-bold text-lg py-4 px-6 rounded-xl flex items-center justify-center space-x-2 w-full transition-colors {% if report_status == 'Draft' or report_status == 'Changes Requested' %}group-hover:bg-slate-800{% endif %}">
                         <span id="submitBtnText">
                             {% if report_status == 'Draft' %}
                                 Freeze & Submit
+                            {% elif report_status == 'Changes Requested' %}
+                                Re-Submit (Changes Made)
                             {% elif report_status == 'Locked' %}
                                 Report Locked (Pending Review)
                             {% elif report_status == 'Reviewed' %}
                                 Report Reviewed
                             {% endif %}
                         </span>
-                        {% if report_status == 'Draft' %}
+                        {% if report_status == 'Draft' or report_status == 'Changes Requested' %}
                         <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         {% else %}
                         <svg class="w-5 h-5 text-glasgow-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
@@ -311,7 +369,7 @@
                 <!-- Agenda Input -->
                 <div>
                     <label class="block text-sm font-medium text-slate-300 mb-2">Points for Discussion</label>
-                    <textarea class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none" rows="5" placeholder="What do you want to discuss with your supervisor?" {% if report_status != 'Draft' %}disabled{% endif %}></textarea>
+                    <textarea name="agenda" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none" rows="5" placeholder="What do you want to discuss with your supervisor?" {% if report_status == 'Locked' or report_status == 'Reviewed' %}disabled{% endif %}>{{ report.text_agenda }}</textarea>
                 </div>
             </div>
         </div>

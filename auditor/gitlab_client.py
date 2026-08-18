@@ -24,18 +24,25 @@ class GitLabAPIClient:
         max_retries = 3
         retry_delay = 2
 
+        if 'timeout' not in kwargs:
+            kwargs['timeout'] = 5
+
         for attempt in range(max_retries):
-            response = self.session.request(method, url, **kwargs)
-            
-            if response.status_code == 429:
-                logger.warning(f"Rate limit exceeded (429) for {url}. Retrying in {retry_delay} seconds...")
-                time.sleep(retry_delay)
-                retry_delay *= 2  # Exponential backoff
-                continue
+            try:
+                response = self.session.request(method, url, **kwargs)
                 
-            response.raise_for_status()
-            return response
-            
+                if response.status_code == 429:
+                    logger.warning(f"Rate limit exceeded (429) for {url}. Retrying in {retry_delay} seconds...")
+                    time.sleep(retry_delay)
+                    retry_delay *= 2  # Exponential backoff
+                    continue
+                    
+                response.raise_for_status()
+                return response
+            except requests.exceptions.RequestException as e:
+                logger.error(f"GitLab API Error on {url}: {e}")
+                raise Exception(f"GitLab connection failed: {e}")
+                
         raise Exception("Max retries exceeded due to rate limit (429)")
 
     def _paginate(self, endpoint, params=None):

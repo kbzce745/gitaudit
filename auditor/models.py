@@ -72,6 +72,10 @@ class BiWeeklyReport(models.Model):
     text_design = models.TextField(blank=True, null=True)
     text_prototype = models.TextField(blank=True, null=True)
     text_dissertation = models.TextField(blank=True, null=True)
+    text_agenda = models.TextField(blank=True, null=True)
+    
+    # Feedback from supervisor
+    supervisor_feedback = models.TextField(blank=True, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

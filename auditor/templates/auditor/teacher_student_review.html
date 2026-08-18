@@ -58,6 +58,24 @@
                 </div>
             </div>
             
+            <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-xl p-5 shadow-lg mb-6">
+                <h3 class="font-bold text-white mb-4 border-b border-slate-700/50 pb-2">Weekly Progress Tracker</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Upcoming Activities – Next week</label>
+                        <div class="bg-slate-900/50 border border-slate-700 rounded-lg p-3 text-sm text-slate-300 whitespace-pre-wrap">{{ report.text_design }}</div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Issues, Risks and Concerns</label>
+                        <div class="bg-slate-900/50 border border-slate-700 rounded-lg p-3 text-sm text-slate-300 whitespace-pre-wrap">{{ report.text_prototype }}</div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Points for Discussion (Meeting Agenda)</label>
+                        <div class="bg-slate-900/50 border border-slate-700 rounded-lg p-3 text-sm text-slate-300 whitespace-pre-wrap">{{ report.text_agenda }}</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-xl p-5 shadow-lg">
                 <h3 class="font-bold text-white mb-2">{{ bi_weekly_data.title }}</h3>
                 <div class="mb-4 text-xs text-slate-400 bg-slate-800/50 p-3 rounded-lg border border-slate-700">
@@ -71,7 +89,7 @@
                 
                 <textarea disabled
                     class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 resize-none opacity-80 cursor-not-allowed"
-                    rows="8">I have finalized the database schema and successfully integrated the Django ORM with the authentication module. I also wrote several unit tests for the core components, which increased coverage by 15%. Minor UI adjustments were also completed.</textarea>
+                    rows="8">{{ report.text_dissertation }}</textarea>
             </div>
             
             <!-- Read-only Image Gallery -->
@@ -81,10 +99,16 @@
                     Attached Evidence
                 </h3>
                 <div class="grid grid-cols-2 gap-2">
-                    <div class="bg-slate-800 border border-slate-700 rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-700 transition">
-                        <svg class="w-6 h-6 text-slate-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        <span class="text-[10px] text-slate-300 truncate w-full text-center">schema.pdf</span>
-                    </div>
+                    {% for img in report.evidence_images.all %}
+                    <a href="{{ img.image.url }}" target="_blank" class="bg-slate-800 border border-slate-700 rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-700 transition">
+                        {% if img.image %}
+                        <svg class="w-6 h-6 text-glasgow-blue mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <span class="text-[10px] text-slate-300 truncate w-full text-center">View Evidence</span>
+                        {% endif %}
+                    </a>
+                    {% empty %}
+                    <div class="col-span-2 text-center text-xs text-slate-500 py-4">No evidence uploaded.</div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -110,7 +134,7 @@
             <!-- Daily Audit Logs -->
             <div class="space-y-4">
                 {% for log in daily_audits %}
-                <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-xl shadow-md" data-day="{{ log.day }}">
+                <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-xl shadow-md" data-day="{{ log.id }}">
                     <div class="p-4 flex items-start justify-between bg-slate-800/20 rounded-xl">
                         <div class="flex-1">
                             <div class="flex items-center space-x-3 mb-2">
@@ -158,7 +182,7 @@
                                     {% elif log.ai_status == 'yellow' %}border-yellow-500 bg-yellow-500/20 text-yellow-500 hover:bg-yellow-500/30
                                     {% elif log.ai_status == 'red' %}border-red-500 bg-red-500/20 text-red-500 hover:bg-red-500/30
                                     {% endif %}"
-                                    onclick="toggleDropdown('dropdown-{{ log.day }}')">
+                                    onclick="toggleDropdown('dropdown-{{ log.id }}')">
                                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                         {% if log.ai_status == 'green' %}
                                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
@@ -171,15 +195,15 @@
                                 </button>
                                 
                                 <!-- Dropdown Menu -->
-                                <div id="dropdown-{{ log.day }}" class="hidden origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-slate-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                                <div id="dropdown-{{ log.id }}" class="hidden origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-slate-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
                                     <div class="py-1">
-                                        <a href="#" onclick="updateStatus('{{ log.day }}', 'green'); return false;" class="block px-4 py-2 text-sm text-green-400 hover:bg-slate-700">Set Normal</a>
-                                        <a href="#" onclick="updateStatus('{{ log.day }}', 'yellow'); return false;" class="block px-4 py-2 text-sm text-yellow-500 hover:bg-slate-700">Set Warning</a>
-                                        <a href="#" onclick="updateStatus('{{ log.day }}', 'red'); return false;" class="block px-4 py-2 text-sm text-red-500 hover:bg-slate-700">Set Critical</a>
+                                        <a href="#" onclick="updateStatus('{{ log.id }}', 'green'); return false;" class="block px-4 py-2 text-sm text-green-400 hover:bg-slate-700">Set Normal</a>
+                                        <a href="#" onclick="updateStatus('{{ log.id }}', 'yellow'); return false;" class="block px-4 py-2 text-sm text-yellow-500 hover:bg-slate-700">Set Warning</a>
+                                        <a href="#" onclick="updateStatus('{{ log.id }}', 'red'); return false;" class="block px-4 py-2 text-sm text-red-500 hover:bg-slate-700">Set Critical</a>
                                     </div>
                                 </div>
                             </div>
-                            <span class="text-[10px] text-slate-500 mt-1 cursor-pointer hover:text-slate-300" onclick="toggleDropdown('dropdown-{{ log.day }}')">Override</span>
+                            <span class="text-[10px] text-slate-500 mt-1 cursor-pointer hover:text-slate-300" onclick="toggleDropdown('dropdown-{{ log.id }}')">Override</span>
                         </div>
                     </div>
                 </div>
@@ -193,19 +217,22 @@
                 
                 <h3 class="text-xl font-bold text-white mb-4">Supervisor Verdict</h3>
                 
-                <textarea class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:ring-2 focus:ring-glasgow-blue focus:border-transparent transition-all mb-6 relative z-10"
-                    rows="4" placeholder="Provide feedback or instructions for the student..."></textarea>
-                
-                <div class="flex items-center space-x-4 relative z-10">
-                    <button class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-green-900/50 flex justify-center items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                        Approve & Freeze
-                    </button>
-                    <button class="flex-1 bg-slate-800 hover:bg-slate-700 text-red-400 font-bold py-3 px-6 rounded-xl border border-red-500/30 transition-colors flex justify-center items-center">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Request Changes
-                    </button>
-                </div>
+                <form method="POST" action="{% url 'teacher_student_review' student.id %}">
+                    {% csrf_token %}
+                    <textarea name="feedback" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:ring-2 focus:ring-glasgow-blue focus:border-transparent transition-all mb-6 relative z-10"
+                        rows="4" placeholder="Provide feedback or instructions for the student..."></textarea>
+                    
+                    <div class="flex items-center space-x-4 relative z-10">
+                        <button type="submit" name="verdict" value="approve" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-green-900/50 flex justify-center items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Approve & Freeze
+                        </button>
+                        <button type="submit" name="verdict" value="reject" class="flex-1 bg-slate-800 hover:bg-slate-700 text-red-400 font-bold py-3 px-6 rounded-xl border border-red-500/30 transition-colors flex justify-center items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Request Changes
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -272,13 +299,13 @@
     });
 
     // Handle AJAX status update
-    function updateStatus(day, newStatus) {
+    function updateStatus(audit_id, newStatus) {
         const studentId = "{{ student.id }}";
         // Hide dropdown
-        document.getElementById(`dropdown-${day}`).classList.add('hidden');
+        document.getElementById(`dropdown-${audit_id}`).classList.add('hidden');
         
         // Visual feedback immediately (optimistic UI)
-        const container = document.querySelector(`[data-day="${day}"]`);
+        const container = document.querySelector(`[data-day="${audit_id}"]`);
         const btn = container.querySelector('.status-btn');
         const iconSvg = container.querySelector('.status-btn svg');
         
@@ -308,7 +335,7 @@
                 'X-CSRFToken': getCookie('csrftoken')
             },
             body: JSON.stringify({
-                day: day,
+                audit_id: audit_id,
                 status: newStatus
             })
         })

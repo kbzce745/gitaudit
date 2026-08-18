@@ -25,12 +25,16 @@ def fetch_weekly_diffs(student, start_date, end_date):
         end_date = datetime.strptime(end_date, "%Y-%m-%d")
         
     # Fetch commits in range
-    commits = client.fetch_commits(
-        project_id=repo.gitlab_project_id, 
-        since=start_date, 
-        until=end_date,
-        fetch_all=True
-    )
+    try:
+        commits = client.fetch_commits(
+            project_id=repo.gitlab_project_id, 
+            since=start_date, 
+            until=end_date,
+            fetch_all=True
+        )
+    except Exception as e:
+        logger.error(f"Failed to fetch commits from GitLab (possibly VPN disconnected): {e}")
+        return {}
     
     # Dictionary to aggregate diffs by date string (YYYY-MM-DD)
     daily_data = {}
@@ -49,7 +53,11 @@ def fetch_weekly_diffs(student, start_date, end_date):
         daily_data[commit_date_str]['commits_count'] += 1
         
         # Fetch the diff for this commit
-        diffs = client.fetch_commit_diff(repo.gitlab_project_id, commit['commit_sha'])
+        try:
+            diffs = client.fetch_commit_diff(repo.gitlab_project_id, commit['commit_sha'])
+        except Exception as e:
+            logger.error(f"Failed to fetch diffs for commit {commit['commit_sha']}: {e}")
+            continue
         
         for diff_file in diffs:
             raw_diff_content = diff_file.get('diff', '')
