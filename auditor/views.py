@@ -51,7 +51,7 @@ def student_dashboard(request):
         report = BiWeeklyReport.objects.create(
             student=request.user, 
             status='Draft',
-            title='Week 6/7 Status Update'
+            title='Week 9 Status Update'
         )
 
     if request.method == 'POST':
@@ -116,21 +116,6 @@ def student_dashboard(request):
                             diff_snippet=analysis['diff_snippet'],
                             ai_status=analysis['ai_status']
                         )
-            else:
-                # Fallback for MVP demonstration if no commits were found in the last 7 days
-                # This ensures the Teacher UI is populated and functional for testing
-                today_str = date.today().strftime('%Y-%m-%d')
-                DailyGitAudit.objects.create(
-                    report=report,
-                    date=today_str,
-                    day_of_week=date.today().strftime('%A'),
-                    raw_diff="--- a/test.py\n+++ b/test.py\n+print('Hello World')",
-                    loc_added=1,
-                    loc_deleted=0,
-                    llm_summary="[MOCK DATA - No recent commits found on GitLab] Student added a simple print statement.",
-                    diff_snippet="+print('Hello World')",
-                    ai_status="yellow"
-                )
             
             
             messages.success(request, 'Report submitted successfully and AI Audit completed!')
@@ -168,7 +153,7 @@ def student_dashboard(request):
     
     context = {
         'report': report,
-        'current_week': 6,
+        'current_week': 9,
         'report_status': report.status,
         'next_meeting_date': report.meeting_date or '2026-10-24',
         'next_meeting_days': 12,
@@ -195,7 +180,7 @@ def teacher_dashboard(request):
             'project_title': 'CS Project', # Placeholder or could be added to Profile
             'status': status,
             'last_updated': latest_report.updated_at.strftime('%Y-%m-%d %H:%M') if latest_report else 'Never',
-            'current_week': 6,
+            'current_week': 9,
             'report_id': latest_report.id if latest_report else None
         })
         
