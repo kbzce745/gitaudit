@@ -1,0 +1,264 @@
+{% extends 'auditor/base.html' %}
+{% load static %}
+
+{% block title %}Review {{ student.name }} | GitAudit{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+    <!-- Top Banner -->
+    <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between bg-dark-panel backdrop-blur-xl border border-dark-border p-6 rounded-2xl shadow-xl">
+        <div class="flex items-center space-x-4">
+            <a href="{% url 'teacher_dashboard' %}" class="text-slate-400 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            </a>
+            <img src="{{ student.avatar }}" class="w-12 h-12 rounded-full border-2 border-slate-700 shadow-md">
+            <div>
+                <h1 class="text-2xl font-bold text-white">{{ student.name }}</h1>
+                <p class="text-sm text-slate-400">{{ student.project_title }} • Week {{ student.current_week }}</p>
+            </div>
+        </div>
+        <div class="mt-4 md:mt-0 flex items-center space-x-3">
+            <span class="text-sm font-medium text-slate-400">Current Status:</span>
+            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
+                {% if student.report_status == 'Draft' %}bg-slate-800 text-slate-400
+                {% elif student.report_status == 'Locked' %}bg-yellow-500/20 text-yellow-500 border border-yellow-500/30
+                {% else %}bg-green-500/20 text-green-400{% endif %}">
+                {{ student.report_status }}
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Column: Student Self-Report (1/3 Width) -->
+        <div class="space-y-6">
+            <h2 class="text-lg font-bold text-slate-300 flex items-center border-b border-slate-700/50 pb-2">
+                <svg class="w-5 h-5 mr-2 text-glasgow-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                Student's Submission
+            </h2>
+            
+            <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-xl p-5 shadow-lg">
+                <h3 class="font-bold text-white mb-2">{{ bi_weekly_data.title }}</h3>
+                <div class="mb-4 text-xs text-slate-400 bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                    <p class="font-medium text-slate-200 mb-1">{{ bi_weekly_data.intro }}</p>
+                    <ul class="list-disc list-inside space-y-1 ml-1">
+                        {% for item in bi_weekly_data.items %}
+                        <li>{{ item|safe }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <textarea disabled
+                    class="w-full bg-slate-900/50 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-300 resize-none opacity-80 cursor-not-allowed"
+                    rows="8">I have finalized the database schema and successfully integrated the Django ORM with the authentication module. I also wrote several unit tests for the core components, which increased coverage by 15%. Minor UI adjustments were also completed.</textarea>
+            </div>
+            
+            <!-- Read-only Image Gallery -->
+            <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-xl p-5 shadow-lg">
+                <h3 class="text-sm font-bold text-white mb-3 flex items-center">
+                    <svg class="w-4 h-4 mr-2 text-glasgow-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    Attached Evidence
+                </h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-slate-800 border border-slate-700 rounded-lg p-2 flex flex-col items-center justify-center cursor-pointer hover:bg-slate-700 transition">
+                        <svg class="w-6 h-6 text-slate-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <span class="text-[10px] text-slate-300 truncate w-full text-center">schema.pdf</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: AI Audit & Verdict (2/3 Width) -->
+        <div class="lg:col-span-2 space-y-6">
+            <h2 class="text-lg font-bold text-white flex items-center border-b border-slate-700/50 pb-2">
+                <svg class="w-5 h-5 mr-2 text-glasgow-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                GitAudit Intelligence Log
+            </h2>
+
+            <!-- Daily Audit Logs -->
+            <div class="space-y-4">
+                {% for log in daily_audits %}
+                <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-xl shadow-md" data-day="{{ log.day }}">
+                    <div class="p-4 flex items-start justify-between bg-slate-800/20 rounded-xl">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h3 class="text-md font-bold text-white">{{ log.day }}</h3>
+                                <span class="text-xs text-slate-500">{{ log.date }}</span>
+                            </div>
+                            <p class="text-sm text-slate-300 mb-4">{{ log.llm_summary }}</p>
+                            
+                            <!-- Git Diff Snippet -->
+                            <div class="bg-[#0d1117] border border-slate-700 rounded-md p-3 font-mono text-xs overflow-x-auto">
+                                {% for line in log.diff_snippet.splitlines %}
+                                    {% if line|first == '+' %}
+                                    <div class="text-green-400 bg-green-500/10 px-1">{{ line }}</div>
+                                    {% elif line|first == '-' %}
+                                    <div class="text-red-400 bg-red-500/10 px-1">{{ line }}</div>
+                                    {% else %}
+                                    <div class="text-slate-400 px-1">{{ line }}</div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Manual Status Override Module -->
+                        <div class="ml-6 flex flex-col items-end">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">AI Status</span>
+                            
+                            <!-- Status Dropdown Trigger -->
+                            <div class="relative inline-block text-left">
+                                <button type="button" class="status-btn inline-flex items-center justify-center w-8 h-8 rounded-full border-2 shadow-sm transition-all
+                                    {% if log.ai_status == 'green' %}border-green-500 bg-green-500/20 text-green-500 hover:bg-green-500/30
+                                    {% elif log.ai_status == 'yellow' %}border-yellow-500 bg-yellow-500/20 text-yellow-500 hover:bg-yellow-500/30
+                                    {% elif log.ai_status == 'red' %}border-red-500 bg-red-500/20 text-red-500 hover:bg-red-500/30
+                                    {% endif %}"
+                                    onclick="toggleDropdown('dropdown-{{ log.day }}')">
+                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        {% if log.ai_status == 'green' %}
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                        {% elif log.ai_status == 'yellow' %}
+                                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                        {% elif log.ai_status == 'red' %}
+                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        {% endif %}
+                                    </svg>
+                                </button>
+                                
+                                <!-- Dropdown Menu -->
+                                <div id="dropdown-{{ log.day }}" class="hidden origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-slate-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+                                    <div class="py-1">
+                                        <a href="#" onclick="updateStatus('{{ log.day }}', 'green'); return false;" class="block px-4 py-2 text-sm text-green-400 hover:bg-slate-700">Set Normal</a>
+                                        <a href="#" onclick="updateStatus('{{ log.day }}', 'yellow'); return false;" class="block px-4 py-2 text-sm text-yellow-500 hover:bg-slate-700">Set Warning</a>
+                                        <a href="#" onclick="updateStatus('{{ log.day }}', 'red'); return false;" class="block px-4 py-2 text-sm text-red-500 hover:bg-slate-700">Set Critical</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="text-[10px] text-slate-500 mt-1 cursor-pointer hover:text-slate-300" onclick="toggleDropdown('dropdown-{{ log.day }}')">Override</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Verdict & Feedback Hub -->
+            <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-2xl p-6 shadow-xl relative overflow-hidden mt-8">
+                <!-- Decorative glow -->
+                <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-glasgow-blue/10 rounded-full blur-3xl"></div>
+                
+                <h3 class="text-xl font-bold text-white mb-4">Supervisor Verdict</h3>
+                
+                <textarea class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:ring-2 focus:ring-glasgow-blue focus:border-transparent transition-all mb-6 relative z-10"
+                    rows="4" placeholder="Provide feedback or instructions for the student..."></textarea>
+                
+                <div class="flex items-center space-x-4 relative z-10">
+                    <button class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-green-900/50 flex justify-center items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        Approve & Freeze
+                    </button>
+                    <button class="flex-1 bg-slate-800 hover:bg-slate-700 text-red-400 font-bold py-3 px-6 rounded-xl border border-red-500/30 transition-colors flex justify-center items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Request Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // CSRF Token helper for AJAX
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Toggle dropdown visibility
+    function toggleDropdown(id) {
+        // Close all other dropdowns first
+        document.querySelectorAll('[id^="dropdown-"]').forEach(el => {
+            if (el.id !== id) el.classList.add('hidden');
+        });
+        const dropdown = document.getElementById(id);
+        dropdown.classList.toggle('hidden');
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.status-btn') && !event.target.closest('[id^="dropdown-"]')) {
+            document.querySelectorAll('[id^="dropdown-"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+        }
+    });
+
+    // Handle AJAX status update
+    function updateStatus(day, newStatus) {
+        const studentId = "{{ student.id }}";
+        // Hide dropdown
+        document.getElementById(`dropdown-${day}`).classList.add('hidden');
+        
+        // Visual feedback immediately (optimistic UI)
+        const container = document.querySelector(`[data-day="${day}"]`);
+        const btn = container.querySelector('.status-btn');
+        const iconSvg = container.querySelector('.status-btn svg');
+        
+        // Remove old classes
+        btn.className = 'status-btn inline-flex items-center justify-center w-8 h-8 rounded-full border-2 shadow-sm transition-all';
+        
+        // Add new classes and icon
+        if (newStatus === 'green') {
+            btn.classList.add('border-green-500', 'bg-green-500/20', 'text-green-500', 'hover:bg-green-500/30');
+            iconSvg.innerHTML = '<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>';
+        } else if (newStatus === 'yellow') {
+            btn.classList.add('border-yellow-500', 'bg-yellow-500/20', 'text-yellow-500', 'hover:bg-yellow-500/30');
+            iconSvg.innerHTML = '<path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>';
+        } else if (newStatus === 'red') {
+            btn.classList.add('border-red-500', 'bg-red-500/20', 'text-red-500', 'hover:bg-red-500/30');
+            iconSvg.innerHTML = '<path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>';
+        }
+        
+        // Add a temporary loading ring
+        btn.classList.add('ring-4', 'ring-white/20');
+
+        // Send POST request
+        fetch(`/teacher/student/${studentId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                day: day,
+                status: newStatus
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Remove loading ring
+            setTimeout(() => btn.classList.remove('ring-4', 'ring-white/20'), 300);
+            if(data.success) {
+                console.log('Successfully saved override to DB');
+            } else {
+                console.error('Error saving:', data.error);
+                alert("Failed to save status override to database.");
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            btn.classList.remove('ring-4', 'ring-white/20');
+        });
+    }
+</script>
+{% endblock %}

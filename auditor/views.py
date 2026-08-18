@@ -162,3 +162,87 @@ def teacher_dashboard(request):
         'students': students
     }
     return render(request, 'auditor/teacher_dashboard.html', context)
+
+@login_required
+def teacher_student_review(request, student_id):
+    if request.method == 'POST':
+        # Simulate saving the manual status override to the database
+        import json
+        from django.http import JsonResponse
+        try:
+            data = json.loads(request.body)
+            day = data.get('day')
+            new_status = data.get('status')
+            # Here we would update the database record for this student and day
+            print(f"Database Updated: Student {student_id}, Day {day}, New Status: {new_status}")
+            return JsonResponse({'success': True, 'message': 'Status successfully updated in database.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+    
+    # Mock data for the student
+    student_info = {
+        'id': student_id,
+        'name': 'Alice Smith',
+        'avatar': 'https://ui-avatars.com/api/?name=Alice+Smith&background=003865&color=fff',
+        'project_title': 'AI-driven Malware Detection',
+        'current_week': 6,
+        'report_status': 'Locked',
+    }
+
+    # Re-use the bi-weekly data structure for the left panel
+    bi_weekly_data = {
+        'title': 'Week 6/7 Status Update',
+        'intro': 'By the Week 6/7 meeting, you should be able to update your supervisor on:',
+        'items': [
+            'The <strong>final design and aims</strong> of the project',
+            'Any <strong>prototyping activities</strong> undertaken',
+            'The <strong>current status of your build</strong>, including a live demonstration of your development environment.',
+            '<strong>Dissertation progress</strong>.'
+        ]
+    }
+
+    # Daily Audit Logs (Mon-Fri) for the right panel
+    daily_audits = [
+        {
+            'day': 'Monday',
+            'date': '2026-10-19',
+            'ai_status': 'green',
+            'llm_summary': 'Normal progression. Commits align perfectly with the "Database Integration" task claimed in the checklist.',
+            'diff_snippet': '+ class User(models.Model):\n+     email = models.EmailField(unique=True)\n+     is_active = models.BooleanField(default=True)\n- # TODO: Add user model'
+        },
+        {
+            'day': 'Tuesday',
+            'date': '2026-10-20',
+            'ai_status': 'yellow',
+            'llm_summary': 'Low commit volume compared to the hours logged. Most changes were just formatting and comment updates.',
+            'diff_snippet': '- def process_data(data): # old comment\n+ def process_data(data): # processes raw input'
+        },
+        {
+            'day': 'Wednesday',
+            'date': '2026-10-21',
+            'ai_status': 'red',
+            'llm_summary': 'High risk of copypasta. A huge block of uncredited code was pasted into the utils file in a single commit, matching external libraries.',
+            'diff_snippet': '+ def _complex_crypto_hash(val):\n+     # 250 lines of complex hashing logic pasted at once\n+     h = hashlib.sha256()\n+     h.update(val.encode("utf-8"))\n+     return h.hexdigest()'
+        },
+        {
+            'day': 'Thursday',
+            'date': '2026-10-22',
+            'ai_status': 'green',
+            'llm_summary': 'Solid unit tests added. Test coverage increased by 15%.',
+            'diff_snippet': '+ def test_user_creation():\n+     user = User.objects.create(email="test@test.com")\n+     assert user.is_active == True'
+        },
+        {
+            'day': 'Friday',
+            'date': '2026-10-23',
+            'ai_status': 'green',
+            'llm_summary': 'Minor bug fixes and UI styling adjustments using Tailwind.',
+            'diff_snippet': '- <div class="bg-red-500">\n+ <div class="bg-red-600 rounded-lg shadow-sm">'
+        }
+    ]
+
+    context = {
+        'student': student_info,
+        'bi_weekly_data': bi_weekly_data,
+        'daily_audits': daily_audits,
+    }
+    return render(request, 'auditor/teacher_student_review.html', context)

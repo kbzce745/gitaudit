@@ -74,11 +74,11 @@
 
                 <!-- Action Button -->
                 {% if student.status == 'Locked' %}
-                <a href="#" class="inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-glasgow-blue to-glasgow-gold hover:from-glasgow-blueHover hover:to-yellow-400 text-white text-sm font-bold rounded-lg transition-all shadow-lg shadow-glasgow-blue/20">
+                <a href="{% url 'teacher_student_review' student.id %}" class="inline-flex items-center justify-center px-4 py-2 bg-gradient-to-r from-glasgow-blue to-glasgow-gold hover:from-glasgow-blueHover hover:to-yellow-400 text-white text-sm font-bold rounded-lg transition-all shadow-lg shadow-glasgow-blue/20">
                     Review Now
                 </a>
                 {% else %}
-                <a href="#" class="inline-flex items-center justify-center px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-bold rounded-lg border border-slate-700 transition-colors">
+                <a href="{% url 'teacher_student_review' student.id %}" class="inline-flex items-center justify-center px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-bold rounded-lg border border-slate-700 transition-colors">
                     View
                 </a>
                 {% endif %}
