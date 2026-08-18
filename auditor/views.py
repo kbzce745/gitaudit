@@ -222,7 +222,7 @@ def teacher_student_review(request, student_id):
             'date': '2026-10-21',
             'ai_status': 'red',
             'llm_summary': 'High risk of copypasta. A huge block of uncredited code was pasted into the utils file in a single commit, matching external libraries.',
-            'diff_snippet': '+ def _complex_crypto_hash(val):\n+     # 250 lines of complex hashing logic pasted at once\n+     h = hashlib.sha256()\n+     h.update(val.encode("utf-8"))\n+     return h.hexdigest()'
+            'diff_snippet': '+ def _complex_crypto_hash(val):\n+     # 250 lines of complex hashing logic pasted at once\n+     h = hashlib.sha256()\n+     h.update(val.encode("utf-8"))\n+     h.update(b"salt")\n+     for i in range(1000):\n+         h.update(str(i).encode("utf-8"))\n+         if i % 100 == 0:\n+             print("hashing...", i)\n+     # More fake lines to ensure scrolling\n+     h.update(b"extra padding")\n+     h.update(b"extra padding")\n+     h.update(b"extra padding")\n+     h.update(b"extra padding")\n+     h.update(b"extra padding")\n+     h.update(b"extra padding")\n+     h.update(b"extra padding")\n+     h.update(b"extra padding")\n+     h.update(b"extra padding")\n+     h.update(b"extra padding")\n+     return h.hexdigest()'
         },
         {
             'day': 'Thursday',

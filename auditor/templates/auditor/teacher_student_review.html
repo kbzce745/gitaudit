@@ -89,17 +89,31 @@
                             </div>
                             <p class="text-sm text-slate-300 mb-4">{{ log.llm_summary }}</p>
                             
-                            <!-- Git Diff Snippet -->
-                            <div class="bg-[#0d1117] border border-slate-700 rounded-md p-3 font-mono text-xs overflow-x-auto">
-                                {% for line in log.diff_snippet.splitlines %}
-                                    {% if line|first == '+' %}
-                                    <div class="text-green-400 bg-green-500/10 px-1">{{ line }}</div>
-                                    {% elif line|first == '-' %}
-                                    <div class="text-red-400 bg-red-500/10 px-1">{{ line }}</div>
-                                    {% else %}
-                                    <div class="text-slate-400 px-1">{{ line }}</div>
-                                    {% endif %}
-                                {% endfor %}
+                            <!-- Git Diff Snippet with Expand/Collapse -->
+                            <div class="relative mt-2">
+                                {% with diff_lines=log.diff_snippet.splitlines %}
+                                <div id="diff-container-{{ log.day }}" class="bg-[#0d1117] border border-slate-700 rounded-md p-3 font-mono text-xs transition-all duration-300 {% if diff_lines|length > 6 %}overflow-hidden max-h-32{% else %}overflow-x-auto{% endif %}">
+                                    {% for line in diff_lines %}
+                                        {% if line|first == '+' %}
+                                        <div class="text-green-400 bg-green-500/10 px-1 whitespace-pre">{{ line }}</div>
+                                        {% elif line|first == '-' %}
+                                        <div class="text-red-400 bg-red-500/10 px-1 whitespace-pre">{{ line }}</div>
+                                        {% else %}
+                                        <div class="text-slate-400 px-1 whitespace-pre">{{ line }}</div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                
+                                {% if diff_lines|length > 6 %}
+                                <!-- Fade out gradient -->
+                                <div id="diff-gradient-{{ log.day }}" class="absolute bottom-6 left-0 right-0 h-16 bg-gradient-to-t from-slate-800/60 to-transparent pointer-events-none rounded-b-md"></div>
+                                <!-- Toggle Button -->
+                                <button type="button" onclick="toggleDiff('{{ log.day }}')" class="mt-2 text-xs font-bold text-glasgow-blue hover:text-glasgow-gold transition-colors flex items-center relative z-10">
+                                    <span id="diff-btn-text-{{ log.day }}">View Full Diff</span>
+                                    <svg id="diff-btn-icon-{{ log.day }}" class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+                                {% endif %}
+                                {% endwith %}
                             </div>
                         </div>
 
@@ -182,6 +196,30 @@
             }
         }
         return cookieValue;
+    }
+
+    // Toggle diff expansion
+    function toggleDiff(day) {
+        const container = document.getElementById(`diff-container-${day}`);
+        const gradient = document.getElementById(`diff-gradient-${day}`);
+        const btnText = document.getElementById(`diff-btn-text-${day}`);
+        const btnIcon = document.getElementById(`diff-btn-icon-${day}`);
+
+        if (container.classList.contains('max-h-32')) {
+            // Expand
+            container.classList.remove('max-h-32', 'overflow-hidden');
+            container.classList.add('max-h-64', 'overflow-y-auto', 'overflow-x-auto');
+            gradient.classList.add('hidden');
+            btnText.innerText = 'Collapse Diff';
+            btnIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>';
+        } else {
+            // Collapse
+            container.classList.add('max-h-32', 'overflow-hidden');
+            container.classList.remove('max-h-64', 'overflow-y-auto', 'overflow-x-auto');
+            gradient.classList.remove('hidden');
+            btnText.innerText = 'View Full Diff';
+            btnIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>';
+        }
     }
 
     // Toggle dropdown visibility
