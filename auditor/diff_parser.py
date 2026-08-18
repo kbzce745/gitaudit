@@ -1,23 +1,6 @@
 # [STUDENT-WRITTEN]
 import re
 
-def calculate_gini(values):
-    """
-    Calculate the Gini coefficient of a list of numeric values.
-    Returns a value between 0.0 and 1.0.
-    """
-    if not values:
-        return 0.0
-    values = sorted(values)
-    n = len(values)
-    mean_val = sum(values) / n
-    if mean_val == 0:
-        return 0.0
-    
-    # Gini index formula: G = sum( (2i - n - 1) * x_i ) / (n * sum(x_i))
-    gini = sum((2 * (i + 1) - n - 1) * v for i, v in enumerate(values)) / (n * sum(values))
-    return round(gini, 4)
-
 def parse_commit_diff(gitlab_diff_list):
     """
     Parse a list of diff objects from GitLab API into a structured feature dictionary
@@ -95,9 +78,7 @@ def parse_commit_diff(gitlab_diff_list):
     test_loc = sum(loc for path, loc in loc_per_file.items() if re.search(r'(test|spec|mock)', path, re.IGNORECASE))
     tsr = round(test_loc / total_loc, 4) if total_loc > 0 else 0.0
     
-    # Gini Coefficient (G_LOC)
-    gini_loc = calculate_gini(list(loc_per_file.values()))
-    
+
     # Burstiness (B) - Evaluated on a weekly historical basis.
     # Currently acting as a reserved placeholder in the payload (0.0).
     burstiness = 0.0
@@ -110,10 +91,7 @@ def parse_commit_diff(gitlab_diff_list):
         is_anomaly = True
         anomaly_reason.append(f"LOC > 1000 (Current: {total_loc})")
         
-    if gini_loc > 0.8 and total_loc > 50:
-        is_anomaly = True
-        anomaly_reason.append(f"Gini > 0.8 (Highly concentrated changes, G_LOC: {gini_loc})")
-        
+
     return {
         "files_changed": files_changed,
         "lines_added": lines_added,
@@ -121,7 +99,6 @@ def parse_commit_diff(gitlab_diff_list):
         "total_loc": total_loc,
         "cdr": cdr,
         "tsr": tsr,
-        "gini_loc": gini_loc,
         "burstiness": burstiness,
         "is_anomaly": is_anomaly,
         "anomaly_reason": anomaly_reason,

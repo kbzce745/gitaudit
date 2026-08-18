@@ -95,12 +95,6 @@ class TestDiffParser(unittest.TestCase):
         
         # TSR = test_loc (4) / total_loc (6) = 0.6667
         self.assertEqual(result["tsr"], 0.6667)
-        
-        # Gini for [2, 4]: 
-        # Mean = 3. 
-        # sum(|xi-xj|) = |2-2| + |2-4| + |4-2| + |4-4| = 4
-        # G = 4 / (2 * 2^2 * 3) = 4 / 24 = 0.1667
-        self.assertEqual(result["gini_loc"], 0.1667)
         self.assertFalse(result["is_anomaly"])
 
     def test_anomalies(self):
@@ -111,15 +105,6 @@ class TestDiffParser(unittest.TestCase):
         self.assertTrue(res1["is_anomaly"])
         self.assertIn("LOC > 1000", res1["anomaly_reason"][0])
         
-        # Test Gini anomaly
-        # 1 file with 100 changes, 9 files with 1 change -> highly concentrated
-        mock_diff_gini = [{"new_path": "core.py", "old_path": "core.py", "diff": "+line\n" * 100}]
-        for i in range(9):
-            mock_diff_gini.append({"new_path": f"file{i}.txt", "old_path": f"file{i}.txt", "diff": "+line\n"})
-        
-        res2 = parse_commit_diff(mock_diff_gini)
-        self.assertTrue(res2["is_anomaly"])
-        self.assertTrue(any("Gini > 0.8" in reason for reason in res2["anomaly_reason"]))
 
 if __name__ == '__main__':
     unittest.main()

@@ -49,7 +49,7 @@ Please audit the following commit based on its metadata and Tier 1 diff metrics.
 Commit Data:
 {json.dumps(prompt_data, indent=2, ensure_ascii=False)}
 
-Analyze the metrics carefully. Pay special attention to 'is_anomaly', 'tsr' (Test to Source Ratio), 'cdr' (Code Deletion Ratio), and 'gini_loc'. 
+Analyze the metrics carefully. Pay special attention to 'is_anomaly', 'tsr' (Test to Source Ratio), and 'cdr' (Code Deletion Ratio). 
 Determine the appropriate risk level and status, and extract any anomalies. Provide your response purely as the requested JSON object.
 """
         return user_prompt.strip()
