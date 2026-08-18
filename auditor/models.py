@@ -54,3 +54,56 @@ class AuditSession(models.Model):
     prompt_context = models.JSONField(help_text="Formatted LLM prompt input")
     llm_response = models.JSONField(null=True, blank=True, help_text="LLM parsed JSON result")
     created_at = models.DateTimeField(auto_now_add=True)
+
+class BiWeeklyReport(models.Model):
+    REPORT_STATUS = (
+        ('Draft', 'Draft'),
+        ('Locked', 'Locked'),
+        ('Reviewed', 'Reviewed'),
+        ('Changes Requested', 'Changes Requested'),
+    )
+    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bi_weekly_reports')
+    title = models.CharField(max_length=255, default='Bi-Weekly Report')
+    status = models.CharField(max_length=50, choices=REPORT_STATUS, default='Draft')
+    meeting_date = models.DateField(null=True, blank=True)
+    milestones = models.JSONField(null=True, blank=True, help_text="List of milestone objects with status")
+    
+    # Textual submissions
+    text_design = models.TextField(blank=True, null=True)
+    text_prototype = models.TextField(blank=True, null=True)
+    text_dissertation = models.TextField(blank=True, null=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.title} - {self.student.username} ({self.status})"
+
+class EvidenceImage(models.Model):
+    report = models.ForeignKey(BiWeeklyReport, on_delete=models.CASCADE, related_name='evidence_images')
+    image = models.ImageField(upload_to='evidence_images/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class DailyGitAudit(models.Model):
+    STATUS_CHOICES = (
+        ('green', 'Green'),
+        ('yellow', 'Yellow'),
+        ('red', 'Red'),
+    )
+    report = models.ForeignKey(BiWeeklyReport, on_delete=models.CASCADE, related_name='daily_audits')
+    date = models.DateField()
+    day_of_week = models.CharField(max_length=20)
+    raw_diff = models.TextField(blank=True, null=True)
+    loc_added = models.IntegerField(default=0)
+    loc_deleted = models.IntegerField(default=0)
+    
+    # LLM Output
+    llm_summary = models.TextField(blank=True, null=True)
+    diff_snippet = models.TextField(blank=True, null=True)
+    ai_status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='green')
+
+    class Meta:
+        ordering = ['date']
+        
+    def __str__(self):
+        return f"{self.day_of_week} ({self.date}) - {self.report.title}"
