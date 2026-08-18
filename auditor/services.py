@@ -3,6 +3,7 @@ from datetime import datetime
 from django.conf import settings
 from .models import Repository
 from .gitlab_client import GitLabAPIClient
+import re
 
 def fetch_weekly_diffs(student, start_date, end_date):
     """
@@ -102,7 +103,8 @@ def analyze_diff_with_ollama(diff_text):
         
     payload = {
         "model": "gitaudit_model",
-        "prompt": f"Analyze this git diff and evaluate code quality/risks:\n\n{prompt_diff}",
+        "format": "json",
+        "prompt": f"Analyze this git diff and evaluate code quality/risks. You MUST return ONLY a JSON object in this exact format: {{\"status\": \"PASS\" or \"WARN\" or \"REJECT\", \"summary\": \"Your analysis\"}}.\n\n{prompt_diff}",
         "stream": False,
         "options": {
             "temperature": 0.1 # Keep it deterministic
@@ -122,7 +124,23 @@ def analyze_diff_with_ollama(diff_text):
         elif "```" in model_output:
             model_output = model_output.replace("```", "").strip()
             
-        parsed = json.loads(model_output)
+        try:
+            parsed = json.loads(model_output)
+        except json.JSONDecodeError:
+            # Fallback if model truncates or hallucinates
+            status_match = re.search(r'"status"\s*:\s*"([^"]+)"', model_output, re.IGNORECASE)
+            summary_match = re.search(r'"summary"\s*:\s*"([^"]*)', model_output, re.IGNORECASE)
+            
+            parsed = {}
+            if status_match:
+                parsed["status"] = status_match.group(1)
+            else:
+                parsed["status"] = "WARN"
+                
+            if summary_match:
+                parsed["summary"] = summary_match.group(1) + "..."
+            else:
+                parsed["summary"] = "Model output was not valid JSON. Raw output: " + model_output[:200]
         
         # Map PASS/WARN/REJECT to green/yellow/red
         raw_status = parsed.get("status", "PASS").upper()

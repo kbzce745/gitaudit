@@ -51,7 +51,7 @@ def student_dashboard(request):
         report = BiWeeklyReport.objects.create(
             student=request.user, 
             status='Draft',
-            title='Week 9 Status Update'
+            title='Week 8 Status Update'
         )
 
     if request.method == 'POST':
@@ -94,9 +94,9 @@ def student_dashboard(request):
             # Delete old audits for this report to refresh
             DailyGitAudit.objects.filter(report=report).delete()
             
-            # Fetch last 7 days
-            start_date = date.today() - timedelta(days=7)
-            end_date = date.today()
+            # Fetch Week 8 explicitly (Aug 10 - Aug 16)
+            start_date = datetime(2026, 8, 10).date()
+            end_date = datetime(2026, 8, 16).date()
             diff_data = fetch_weekly_diffs(request.user, start_date, end_date)
             
             # Process each day and run through Ollama
