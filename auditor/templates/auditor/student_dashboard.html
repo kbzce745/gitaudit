@@ -229,6 +229,7 @@
                     <span class="block mt-1 text-glasgow-gold text-xs">These will be visible to your supervisor during their review.</span>
                 </p>
 
+                {% if report_status == 'Draft' or report_status == 'Changes Requested' %}
                 <!-- Drag & Drop Zone (UI Mockup) -->
                 <div class="border-2 border-dashed border-slate-600 hover:border-glasgow-blue rounded-xl p-8 flex flex-col items-center justify-center bg-slate-900/30 transition-colors cursor-pointer group" onclick="document.getElementById('file-upload').click()">
                     <input id="file-upload" type="file" name="images" multiple class="hidden">
@@ -238,6 +239,15 @@
                     <p class="text-sm font-medium text-slate-300">Click to upload or drag and drop</p>
                     <p class="text-xs text-slate-500 mt-1">PNG, JPG, PDF up to 10MB</p>
                 </div>
+                {% else %}
+                <!-- Disabled Zone -->
+                <div class="border-2 border-dashed border-slate-700 rounded-xl p-8 flex flex-col items-center justify-center bg-slate-900/50 opacity-60 cursor-not-allowed">
+                    <div class="p-3 bg-slate-800 rounded-full mb-3">
+                        <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <p class="text-sm font-medium text-slate-400">Uploads disabled (Report Locked)</p>
+                </div>
+                {% endif %}
 
                 <!-- Uploaded Files List -->
                 <div class="mt-4 space-y-2">
