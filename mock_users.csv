@@ -1,5 +1,5 @@
 name,email,password,role,supervisor_email,gitlab_project_id,repo_name,repo_url
 Quintin Cutts,quintin.cutts@glasgow.ac.uk,password123,teacher,,,,
-Colin,colin@student.gla.ac.uk,password123,student,quintin.cutts@glasgow.ac.uk,1234567,colin-project,https://stgit.dcs.gla.ac.uk/colin/project
+Colin,colin@student.gla.ac.uk,password123,student,quintin.cutts@glasgow.ac.uk,24961,Development Project,https://stgit.dcs.gla.ac.uk/msc-project-for-information-technology/2025/it-project-3075146z/gitaudit.git
 Alice,alice@student.gla.ac.uk,password123,student,quintin.cutts@glasgow.ac.uk,9999991,alice-project,https://stgit.dcs.gla.ac.uk/alice/project
 Bob,bob@student.gla.ac.uk,password123,student,quintin.cutts@glasgow.ac.uk,9999992,bob-project,https://stgit.dcs.gla.ac.uk/bob/project

@@ -373,10 +373,10 @@
         new Chart(locCtx, {
             type: 'line',
             data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                labels: [{% for audit in daily_audits %}"{{ audit.date|date:'m-d' }} ({{ audit.day_of_week|slice:'0:3' }})",{% empty %}"No Data"{% endfor %}],
                 datasets: [{
                     label: 'Lines of Code (Added/Deleted)',
-                    data: [120, 850, 0, 450, 60, 0, 0],
+                    data: [{% for audit in daily_audits %}{{ audit.loc_added }}, {% empty %}0{% endfor %}],
                     borderColor: '#003865',
                     backgroundColor: locGradient,
                     borderWidth: 3,

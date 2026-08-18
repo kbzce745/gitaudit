@@ -101,7 +101,7 @@ def analyze_diff_with_ollama(diff_text):
         prompt_diff = diff_text
         
     payload = {
-        "model": "gitaudit_lora",
+        "model": "gitaudit_model",
         "prompt": f"Analyze this git diff and evaluate code quality/risks:\n\n{prompt_diff}",
         "stream": False,
         "options": {

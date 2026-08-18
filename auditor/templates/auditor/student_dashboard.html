@@ -394,7 +394,14 @@
                     <svg class="w-6 h-6 mr-2 text-glasgow-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
                     GitAudit Objective Evidence
                 </h3>
-                <span class="text-xs font-medium text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Auto-synced with GitLab</span>
+                <div class="flex items-center space-x-3">
+                    <span class="text-xs font-medium text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Auto-synced with GitLab</span>
+                    {% if report_status == 'Draft' or report_status == 'Changes Requested' %}
+                    <button type="submit" name="action" value="generate_audit" onclick="this.innerHTML='Generating... Please wait'; this.style.pointerEvents='none';" class="text-xs font-bold bg-glasgow-blue hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors shadow-lg">
+                        Fetch / Refresh Results
+                    </button>
+                    {% endif %}
+                </div>
             </div>
 
             {% if current_week <= 4 %}
@@ -430,22 +437,14 @@
                     <div class="prose prose-sm prose-invert text-slate-300 overflow-y-auto max-h-64 pr-2 custom-scrollbar flex-1">
                         <p class="mb-3 text-sm leading-relaxed text-glasgow-gold"><strong>Weekly Git Activity Breakdown:</strong></p>
                         <div class="space-y-3">
-                            <div class="border-l-2 border-slate-600 pl-3">
-                                <h5 class="text-xs font-bold text-slate-400 mb-1">Monday</h5>
-                                <p class="text-xs text-slate-300">Set up base Django models for user authentication and milestone tracking.</p>
+                            {% for audit in report.daily_audits.all %}
+                            <div class="border-l-2 {% if audit.ai_status == 'green' %}border-green-500{% elif audit.ai_status == 'yellow' %}border-yellow-500{% elif audit.ai_status == 'red' %}border-red-500{% else %}border-slate-600{% endif %} pl-3">
+                                <h5 class="text-xs font-bold text-white mb-1">{{ audit.day_of_week }} ({{ audit.date }})</h5>
+                                <p class="text-xs text-slate-300">{{ audit.llm_summary }}</p>
                             </div>
-                            <div class="border-l-2 border-glasgow-blue pl-3">
-                                <h5 class="text-xs font-bold text-white mb-1">Tuesday</h5>
-                                <p class="text-xs text-slate-300">Heavy refactoring of the grid layout component. Massive LOC spike due to Tailwind CSS additions.</p>
-                            </div>
-                            <div class="border-l-2 border-slate-600 pl-3">
-                                <h5 class="text-xs font-bold text-slate-400 mb-1">Wednesday</h5>
-                                <p class="text-xs text-slate-500 italic">No significant commit activity.</p>
-                            </div>
-                            <div class="border-l-2 border-glasgow-gold pl-3">
-                                <h5 class="text-xs font-bold text-white mb-1">Thursday</h5>
-                                <p class="text-xs text-slate-300">Integrated Chart.js and finalized the Objective Evidence UI module.</p>
-                            </div>
+                            {% empty %}
+                            <p class="text-xs text-slate-500 italic">Click "Fetch / Refresh Results" to run the AI audit.</p>
+                            {% endfor %}
                         </div>
                         <p class="mt-4 text-xs text-slate-400 border-t border-slate-700/50 pt-3">
                             <em>AI Assessment: The reported progress matches the Git commit timeline and volume. No discrepancies detected.</em>
@@ -560,10 +559,10 @@
             new Chart(locCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    labels: [{% for audit in report.daily_audits.all %}"{{ audit.date|date:'m-d' }} ({{ audit.day_of_week|slice:'0:3' }})",{% empty %}"No Data"{% endfor %}],
                     datasets: [{
                         label: 'Lines of Code (Added/Deleted)',
-                        data: [120, 850, 0, 450, 60, 0, 0],
+                        data: [{% for audit in report.daily_audits.all %}{{ audit.loc_added }}, {% empty %}0{% endfor %}],
                         borderColor: '#003865', // glasgow-blue
                         backgroundColor: locGradient,
                         borderWidth: 3,

@@ -90,12 +90,11 @@ def student_dashboard(request):
         for img in request.FILES.getlist('images'):
             EvidenceImage.objects.create(report=report, image=img)
             
-        if action == 'freeze_and_submit':
-            report.status = 'Locked'
-            report.save()
+        if action == 'generate_audit':
+            # Delete old audits for this report to refresh
+            DailyGitAudit.objects.filter(report=report).delete()
             
-            # Trigger GitAudit Engine
-            # Fetch last 7 days for the MVP demonstration
+            # Fetch last 7 days
             start_date = date.today() - timedelta(days=7)
             end_date = date.today()
             diff_data = fetch_weekly_diffs(request.user, start_date, end_date)
@@ -116,9 +115,13 @@ def student_dashboard(request):
                             diff_snippet=analysis['diff_snippet'],
                             ai_status=analysis['ai_status']
                         )
+            report.save()
+            messages.success(request, 'Audit generated successfully from your recent commits!')
             
-            
-            messages.success(request, 'Report submitted successfully and AI Audit completed!')
+        elif action == 'freeze_and_submit':
+            report.status = 'Locked'
+            report.save()
+            messages.success(request, 'Report submitted and locked successfully!')
         else:
             report.save()
             messages.success(request, 'Draft saved.')
