@@ -1,5 +1,4 @@
-FROM llama3
-ADAPTER ./gitaudit_lora.gguf
+FROM ./gitaudit_model.gguf
 
 # Llama 3 default stop tokens
 PARAMETER stop "<|eot_id|>"
@@ -28,6 +27,4 @@ CRITICAL INSTRUCTION: Your response MUST be a single, valid JSON object. Do NOT 
 
 The JSON object MUST contain exactly the following keys:
 - "status": A string indicating the audit result. Must be exactly one of ["PASS", "WARN", "REJECT"].
-- "summary": A one-sentence natural language summary of what the code changes accomplish.
-- "risk_level": A string indicating the risk level. Must be exactly one of ["Low", "Medium", "High"].
-- "anomalies": A list of strings describing any potential issues, bugs, or architectural anomalies found. (Empty list if none)"""
+- "summary": A one-sentence natural language summary of what the code changes accomplish."""
