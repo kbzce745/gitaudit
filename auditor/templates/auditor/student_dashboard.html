@@ -456,9 +456,29 @@
             {% endif %}
         </div>
     </div>
+    </form>
+</div>
 
     <!-- Chart.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script id="chart-data" type="application/json">
+    {
+        "labels": [
+            {% for audit in report.daily_audits.all %}
+            "{{ audit.date|date:'m-d' }} ({{ audit.day_of_week|slice:'0:3' }})"{% if not forloop.last %},{% endif %}
+            {% empty %}
+            "No Data"
+            {% endfor %}
+        ],
+        "data": [
+            {% for audit in report.daily_audits.all %}
+            {{ audit.loc_added }}{% if not forloop.last %},{% endif %}
+            {% empty %}
+            0
+            {% endfor %}
+        ]
+    }
+    </script>
     <script>
         function updateColor(selectEl) {
             // Remove all old state classes
@@ -571,13 +591,15 @@
             locGradient.addColorStop(0, 'rgba(0, 56, 101, 0.8)'); // glasgow-blue
             locGradient.addColorStop(1, 'rgba(0, 56, 101, 0.0)');
             
+            const chartData = JSON.parse(document.getElementById('chart-data').textContent);
+            
             new Chart(locCtx, {
                 type: 'line',
                 data: {
-                    labels: [{% for audit in report.daily_audits.all %}"{{ audit.date|date:'m-d' }} ({{ audit.day_of_week|slice:'0:3' }})",{% empty %}"No Data"{% endfor %}],
+                    labels: chartData.labels,
                     datasets: [{
                         label: 'Lines of Code (Added/Deleted)',
-                        data: [{% for audit in report.daily_audits.all %}{{ audit.loc_added }}, {% empty %}0{% endfor %}],
+                        data: chartData.data,
                         borderColor: '#003865', // glasgow-blue
                         backgroundColor: locGradient,
                         borderWidth: 3,
