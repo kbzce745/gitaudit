@@ -53,13 +53,15 @@ def run():
                     defaults={
                         'name': row['repo_name'],
                         'url': row['repo_url'],
-                        'student': user
+                        'student': user,
+                        'access_token': row.get('access_token', '')
                     }
                 )
                 if repo_created:
                     print(f"  Created repository for {username}: {repo.name}")
                 else:
                     repo.student = user
+                    repo.access_token = row.get('access_token', '')
                     repo.save()
                     
     print("Done loading data!")

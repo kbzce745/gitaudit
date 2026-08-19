@@ -1,5 +1,6 @@
-name,email,password,role,supervisor_email,gitlab_project_id,repo_name,repo_url
-Quintin Cutts,quintin.cutts@glasgow.ac.uk,password123,teacher,,,,
-Colin,colin@student.gla.ac.uk,password123,student,quintin.cutts@glasgow.ac.uk,24961,Development Project,https://stgit.dcs.gla.ac.uk/msc-project-for-information-technology/2025/it-project-3075146z/gitaudit.git
-Alice,alice@student.gla.ac.uk,password123,student,quintin.cutts@glasgow.ac.uk,9999991,alice-project,https://stgit.dcs.gla.ac.uk/alice/project
-Bob,bob@student.gla.ac.uk,password123,student,quintin.cutts@glasgow.ac.uk,9999992,bob-project,https://stgit.dcs.gla.ac.uk/bob/project
+name,email,password,role,supervisor_email,gitlab_project_id,repo_name,repo_url,access_token
+Quintin Cutts,quintin.cutts@glasgow.ac.uk,password123,teacher,,,,,
+Colin,colin@student.gla.ac.uk,password123,student,quintin.cutts@glasgow.ac.uk,24961,Development Project,https://stgit.dcs.gla.ac.uk/msc-project-for-information-technology/2025/it-project-3075146z/gitaudit.git,glpat-y4QxdOlpMh5EIhTHsRJLPm86MQp1OjR2Ywk.01.0z0s9a1ws
+Alice,alice@student.gla.ac.uk,password123,student,quintin.cutts@glasgow.ac.uk,9999991,alice-project,https://stgit.dcs.gla.ac.uk/alice/project,
+Bob,bob@student.gla.ac.uk,password123,student,quintin.cutts@glasgow.ac.uk,9999992,bob-project,https://stgit.dcs.gla.ac.uk/bob/project,
+Owen,owen@student.gla.ac.uk,password123,student,quintin.cutts@glasgow.ac.uk,25004,Owen CS Project,https://stgit.dcs.gla.ac.uk/owen/project,glpat-A_8L1WZWbnW7mhpozQw4pm86MQp1OjR2ZAk.01.0z0dyu3sz

@@ -102,19 +102,23 @@ def student_dashboard(request):
             # Process each day and run through Ollama
             if diff_data:
                 for date_str, data in diff_data.items():
-                    if data['raw_diff'].strip():
-                        analysis = analyze_diff_with_ollama(data['raw_diff'])
-                        DailyGitAudit.objects.create(
-                            report=report,
-                            date=date_str,
-                            day_of_week=datetime.strptime(date_str, "%Y-%m-%d").strftime('%A'),
-                            raw_diff=data['raw_diff'],
-                            loc_added=data['loc_added'],
-                            loc_deleted=data['loc_deleted'],
-                            llm_summary=analysis['llm_summary'],
-                            diff_snippet=analysis['diff_snippet'],
-                            ai_status=analysis['ai_status']
-                        )
+                    analysis = analyze_diff_with_ollama(
+                        data['raw_diff'],
+                        loc_added=data['loc_added'],
+                        loc_deleted=data['loc_deleted'],
+                        commits_count=data['commits_count']
+                    )
+                    DailyGitAudit.objects.create(
+                        report=report,
+                        date=date_str,
+                        day_of_week=datetime.strptime(date_str, "%Y-%m-%d").strftime('%A'),
+                        raw_diff=data['raw_diff'],
+                        loc_added=data['loc_added'],
+                        loc_deleted=data['loc_deleted'],
+                        llm_summary=analysis['llm_summary'],
+                        diff_snippet=analysis['diff_snippet'],
+                        ai_status=analysis['ai_status']
+                    )
             report.save()
             messages.success(request, 'Audit generated successfully from your recent commits!')
             
@@ -156,7 +160,7 @@ def student_dashboard(request):
     
     context = {
         'report': report,
-        'current_week': 9,
+        'current_week': 8,
         'report_status': report.status,
         'next_meeting_date': report.meeting_date or '2026-10-24',
         'next_meeting_days': 12,
@@ -172,18 +176,25 @@ def teacher_dashboard(request):
     students = User.objects.filter(profile__supervisor=teacher)
     
     student_data_list = []
+    action_required_count = 0
     for st in students:
         latest_report = st.bi_weekly_reports.order_by('-created_at').first()
         status = latest_report.status if latest_report else 'Draft'
+        
+        if status == 'Locked':
+            action_required_count += 1
+            
+        repo = st.repositories.first()
+        project_title = repo.name if repo else 'CS Project'
         
         student_data_list.append({
             'id': st.id,
             'name': st.get_full_name() or st.username,
             'avatar': f'https://ui-avatars.com/api/?name={st.username}&background=random&color=fff',
-            'project_title': 'CS Project', # Placeholder or could be added to Profile
+            'project_title': project_title,
             'status': status,
             'last_updated': latest_report.updated_at.strftime('%Y-%m-%d %H:%M') if latest_report else 'Never',
-            'current_week': 9,
+            'current_week': 8,
             'report_id': latest_report.id if latest_report else None
         })
         
@@ -192,7 +203,8 @@ def teacher_dashboard(request):
     student_data_list.sort(key=lambda x: status_priority.get(x['status'], 99))
     
     context = {
-        'students': student_data_list
+        'students': student_data_list,
+        'action_required_count': action_required_count
     }
     return render(request, 'auditor/teacher_dashboard.html', context)
 
@@ -239,12 +251,15 @@ def teacher_student_review(request, student_id):
         messages.success(request, f'Report status updated to {report.status}')
         return redirect('teacher_dashboard')
 
+    repo = student.repositories.first()
+    project_title = repo.name if repo else 'CS Project'
+    
     student_info = {
         'id': student.id,
         'name': student.get_full_name() or student.username,
         'avatar': f'https://ui-avatars.com/api/?name={student.username}&background=003865&color=fff',
-        'project_title': 'CS Project',
-        'current_week': 6,
+        'project_title': project_title,
+        'current_week': 8,
         'report_status': report.status,
     }
 

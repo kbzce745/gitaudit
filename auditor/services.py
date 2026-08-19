@@ -1,5 +1,5 @@
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.conf import settings
 from .models import Repository
 from .gitlab_client import GitLabAPIClient
@@ -12,10 +12,11 @@ def fetch_weekly_diffs(student, start_date, end_date):
     Returns a dictionary mapping date strings to aggregated diff data.
     """
     repo = Repository.objects.filter(student=student).first()
-    if not repo:
+    if not repo or not repo.access_token:
+        logger.error(f"Student {student.username} has no repository or access token configured.")
         return {}
         
-    private_token = os.environ.get("GITLAB_PRIVATE_TOKEN")
+    private_token = repo.access_token
     # For MVP, assume stgit base URL or take from repo.url if it matches
     client = GitLabAPIClient(base_url="https://stgit.dcs.gla.ac.uk", private_token=private_token)
     
@@ -40,18 +41,23 @@ def fetch_weekly_diffs(student, start_date, end_date):
     # Dictionary to aggregate diffs by date string (YYYY-MM-DD)
     daily_data = {}
     
+    # Initialize all dates in the range
+    curr = start_date
+    while curr <= end_date:
+        date_str = curr.strftime("%Y-%m-%d")
+        daily_data[date_str] = {
+            'raw_diff': '',
+            'loc_added': 0,
+            'loc_deleted': 0,
+            'commits_count': 0
+        }
+        curr += timedelta(days=1)
+        
     for commit in commits:
         commit_date_str = commit['committed_at'][:10] # YYYY-MM-DD
         
-        if commit_date_str not in daily_data:
-            daily_data[commit_date_str] = {
-                'raw_diff': '',
-                'loc_added': 0,
-                'loc_deleted': 0,
-                'commits_count': 0
-            }
-            
-        daily_data[commit_date_str]['commits_count'] += 1
+        if commit_date_str in daily_data:
+            daily_data[commit_date_str]['commits_count'] += 1
         
         # Fetch the diff for this commit
         try:
@@ -79,7 +85,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def analyze_diff_with_ollama(diff_text):
+def analyze_diff_with_ollama(diff_text, loc_added=0, loc_deleted=0, commits_count=0):
     """
     Sends the raw git diff to the local Ollama instance (gitaudit_lora model).
     Returns a parsed JSON object containing the model's analysis.
@@ -100,6 +106,10 @@ def analyze_diff_with_ollama(diff_text):
         prompt_diff = diff_text[:max_diff_len] + "\n...[DIFF TRUNCATED]..."
     else:
         prompt_diff = diff_text
+        
+    # Prepend the expected metadata so the model does not hallucinate LOC
+    metadata_header = f"Commit Message:\nMultiple commits ({commits_count})\n[Metadata] LOC Added: {loc_added} | LOC Deleted: {loc_deleted}\n\n"
+    prompt_diff = metadata_header + prompt_diff
         
     payload = {
         "model": "gitaudit_model",

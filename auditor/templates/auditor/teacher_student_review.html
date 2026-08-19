@@ -136,17 +136,17 @@
                 {% for log in daily_audits %}
                 <div class="bg-dark-panel backdrop-blur-xl border border-dark-border rounded-xl shadow-md" data-day="{{ log.id }}">
                     <div class="p-4 flex items-start justify-between bg-slate-800/20 rounded-xl">
-                        <div class="flex-1">
+                        <div class="flex-1 min-w-0">
                             <div class="flex items-center space-x-3 mb-2">
-                                <h3 class="text-md font-bold text-white">{{ log.day }}</h3>
+                                <h3 class="text-md font-bold text-white">{{ log.day_of_week }}</h3>
                                 <span class="text-xs text-slate-500">{{ log.date }}</span>
                             </div>
                             <p class="text-sm text-slate-300 mb-4">{{ log.llm_summary }}</p>
                             
                             <!-- Git Diff Snippet with Expand/Collapse -->
                             <div class="relative mt-2">
-                                {% with diff_lines=log.diff_snippet.splitlines %}
-                                <div id="diff-container-{{ log.day }}" class="bg-[#0d1117] border border-slate-700 rounded-md p-3 font-mono text-xs transition-all duration-300 {% if diff_lines|length > 6 %}overflow-hidden max-h-32{% else %}overflow-x-auto{% endif %}">
+                                {% with diff_lines=log.raw_diff.splitlines %}
+                                <div id="diff-container-{{ log.id }}" class="bg-[#0d1117] border border-slate-700 rounded-md p-3 font-mono text-xs transition-all duration-300 {% if diff_lines|length > 6 %}overflow-hidden max-h-32{% else %}overflow-x-auto{% endif %}">
                                     {% for line in diff_lines %}
                                         {% if line|first == '+' %}
                                         <div class="text-green-400 bg-green-500/10 px-1 whitespace-pre">{{ line }}</div>
@@ -160,11 +160,11 @@
                                 
                                 {% if diff_lines|length > 6 %}
                                 <!-- Fade out gradient -->
-                                <div id="diff-gradient-{{ log.day }}" class="absolute bottom-6 left-0 right-0 h-16 bg-gradient-to-t from-slate-800/60 to-transparent pointer-events-none rounded-b-md"></div>
+                                <div id="diff-gradient-{{ log.id }}" class="absolute bottom-6 left-0 right-0 h-16 bg-gradient-to-t from-slate-800/60 to-transparent pointer-events-none rounded-b-md"></div>
                                 <!-- Toggle Button -->
-                                <button type="button" onclick="toggleDiff('{{ log.day }}')" class="mt-2 text-xs font-bold text-glasgow-blue hover:text-glasgow-gold transition-colors flex items-center relative z-10">
-                                    <span id="diff-btn-text-{{ log.day }}">View Full Diff</span>
-                                    <svg id="diff-btn-icon-{{ log.day }}" class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                <button type="button" onclick="toggleDiff('{{ log.id }}')" class="mt-2 text-xs font-bold text-glasgow-blue hover:text-glasgow-gold transition-colors flex items-center relative z-10">
+                                    <span id="diff-btn-text-{{ log.id }}">View Full Diff</span>
+                                    <svg id="diff-btn-icon-{{ log.id }}" class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                                 {% endif %}
                                 {% endwith %}

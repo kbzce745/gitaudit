@@ -41,6 +41,7 @@ class Repository(models.Model):
     name = models.CharField(max_length=255)
     url = models.URLField()
     student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='repositories', null=True, blank=True)
+    access_token = models.CharField(max_length=255, null=True, blank=True, help_text="The student’s personal GitLab access token")
 
 class CommitLog(models.Model):
     repository = models.ForeignKey(Repository, on_delete=models.CASCADE)
