@@ -70,6 +70,7 @@ class BiWeeklyReport(models.Model):
     milestones = models.JSONField(null=True, blank=True, help_text="List of milestone objects with status")
     
     # Textual submissions
+    text_completed = models.TextField(blank=True, null=True)
     text_design = models.TextField(blank=True, null=True)
     text_prototype = models.TextField(blank=True, null=True)
     text_dissertation = models.TextField(blank=True, null=True)
@@ -86,8 +87,13 @@ class BiWeeklyReport(models.Model):
 
 class EvidenceImage(models.Model):
     report = models.ForeignKey(BiWeeklyReport, on_delete=models.CASCADE, related_name='evidence_images')
-    image = models.ImageField(upload_to='evidence_images/')
+    image = models.FileField(upload_to='evidence_images/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def filename(self):
+        import os
+        return os.path.basename(self.image.name) if self.image else ""
 
 class DailyGitAudit(models.Model):
     STATUS_CHOICES = (

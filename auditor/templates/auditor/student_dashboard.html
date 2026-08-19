@@ -85,8 +85,9 @@
     {% endif %}
 
     <!-- Main Dashboard Grid -->
-    <form method="POST" enctype="multipart/form-data" action="{% url 'student_dashboard' %}">
+    <form id="reportForm" method="POST" enctype="multipart/form-data" action="{% url 'student_dashboard' %}">
         {% csrf_token %}
+        <input type="hidden" name="milestones_json" id="milestones_json_input">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-10">
 
         <!-- Left Column: Tracker Forms & Auto-Audit (2/3 Width) -->
@@ -111,7 +112,7 @@
                     <div
                         class="flex items-center justify-between p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 hover:border-slate-500/50 transition-colors">
                         <span class="text-sm font-medium text-slate-300 w-1/2 truncate pr-2" title="{{ m.name }}">{{ m.name }}</span>
-                        <select onchange="updateColor(this)" class="w-1/2 text-xs font-bold uppercase tracking-wider rounded-lg border-0 py-2 pl-3 pr-8 focus:ring-2 focus:ring-glasgow-gold transition-all cursor-pointer appearance-none bg-no-repeat bg-[right_0.5rem_center] bg-[length:1em_1em] 
+                        <select onchange="updateColor(this)" data-name="{{ m.name }}" class="milestone-select w-1/2 text-xs font-bold uppercase tracking-wider rounded-lg border-0 py-2 pl-3 pr-8 focus:ring-2 focus:ring-glasgow-gold transition-all cursor-pointer appearance-none bg-no-repeat bg-[right_0.5rem_center] bg-[length:1em_1em] 
                             {% if m.status == 'Not Started' %}bg-slate-700/50 text-slate-300 focus:bg-slate-700{% endif %}
                             {% if m.status == 'On track' %}bg-green-500/20 text-green-400 focus:bg-green-500/30{% endif %}
                             {% if m.status == 'Issues' %}bg-yellow-500/20 text-yellow-400 focus:bg-yellow-500/30{% endif %}
@@ -153,9 +154,9 @@
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-2">Completed Activities This
                             week</label>
-                        <textarea
+                        <textarea name="completed"
                             class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:ring-2 focus:ring-glasgow-gold focus:border-transparent transition-all resize-none"
-                            rows="3" placeholder="What have you achieved this week?" {% if report_status == 'Locked' or report_status == 'Reviewed' %}disabled{% endif %}></textarea>
+                            rows="3" placeholder="What have you achieved this week?" {% if report_status == 'Locked' or report_status == 'Reviewed' %}disabled{% endif %}>{{ report.text_completed|default_if_none:"" }}</textarea>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-300 mb-2">Upcoming Activities – Next
@@ -255,9 +256,9 @@
                     <div class="flex items-center justify-between p-3 bg-slate-800/50 border border-slate-700 rounded-lg">
                         <div class="flex items-center space-x-3 overflow-hidden">
                             {% if img.image %}
-                            <a href="{{ img.image.url }}" target="_blank" class="flex items-center text-sm text-slate-200 hover:text-glasgow-gold truncate">
-                                <svg class="w-5 h-5 text-glasgow-blue mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                View File
+                            <a href="{{ img.image.url }}" target="_blank" class="flex items-center text-sm text-slate-200 hover:text-glasgow-gold truncate" title="{{ img.filename }}">
+                                <svg class="w-5 h-5 flex-shrink-0 text-glasgow-blue mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <span class="truncate">{{ img.filename }}</span>
                             </a>
                             {% endif %}
                         </div>
@@ -541,6 +542,20 @@
                 }
             }
         });
+        
+        // Serialize milestones before form submission
+        document.getElementById('reportForm').addEventListener('submit', function() {
+            const milestones = [];
+            const selects = document.querySelectorAll('.milestone-select');
+            selects.forEach(sel => {
+                milestones.push({
+                    name: sel.getAttribute('data-name'),
+                    status: sel.value
+                });
+            });
+            document.getElementById('milestones_json_input').value = JSON.stringify(milestones);
+        });
+        
         // --- Chart.js Initialization for GitAudit Objective Evidence ---
         document.addEventListener("DOMContentLoaded", function() {
             // Common Chart.js options for dark theme

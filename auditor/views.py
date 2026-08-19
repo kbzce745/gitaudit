@@ -9,6 +9,50 @@ from django.http import JsonResponse
 from .models import BiWeeklyReport, DailyGitAudit, EvidenceImage
 from .services import fetch_weekly_diffs, analyze_diff_with_ollama
 
+def get_bi_weekly_data(week):
+    if week <= 4:
+        return {
+            'title': 'Week 3/4 Status Update',
+            'intro': 'By your meeting in Week 3/4, you should be able to update your supervisor on:',
+            'items': [
+                'A <strong>clearly defined project topic</strong>',
+                'What <strong>requirements capture, background reading, and literature review</strong> you\'ve conducted, and what you\'ve found.',
+                'Any <strong>additional research</strong> into tools, frameworks, APIs you\'ve done that will help you toward design and implementation.'
+            ]
+        }
+    elif week <= 7:
+        return {
+            'title': 'Week 6/7 Status Update',
+            'intro': 'By the Week 6/7 meeting, you should be able to update your supervisor on:',
+            'items': [
+                'The <strong>final design and aims</strong> of the project',
+                'Any <strong>prototyping</strong> activities undertaken',
+                'The <strong>current status of your build</strong>, including a <strong>live demonstration</strong> of your development environment.',
+                '<strong>Dissertation progress</strong> (e.g. writing up the introduction, background/requirements and design chapters).'
+            ]
+        }
+    elif week <= 9:
+        return {
+            'title': 'Week 8/9 Status Update',
+            'intro': 'By the Week 8/9 meeting, you should be able to update your supervisor on:',
+            'items': [
+                'A <strong>demonstration of the current state of your build</strong>, and how close you are to your "minimum viable product"',
+                'Your <strong>plan and remaining objectives</strong> to complete development',
+                'Your plan on how you are going to <strong>evaluate that your system is fit-for-purpose</strong> (testing, user evaluations etc)',
+                '<strong>Dissertation progress</strong> (e.g. writing up the implementation chapter), and any draft chapter that you would like supervisor feedback on.'
+            ]
+        }
+    else:
+        return {
+            'title': 'Week 10/11 Status Update',
+            'intro': 'By the Week 10/11 meeting, you should be able to update your supervisor on:',
+            'items': [
+                'The <strong>results of any evaluations and testing</strong> conducted or in-progress',
+                '<strong>Remaining dissertation writing</strong> (e.g. evaluation, discussion, conclusions), and your plan for the last 2 weeks and final write-up.',
+                'Any remaining content you would like supervisor feedback on, if they have time.'
+            ]
+        }
+
 def login_view(request):
     if request.user.is_authenticated:
         if hasattr(request.user, 'profile') and request.user.profile.role == 'teacher':
@@ -46,8 +90,8 @@ def student_dashboard(request):
     # Fetch the latest report for this student
     report = BiWeeklyReport.objects.filter(student=request.user).order_by('-created_at').first()
     
-    # If no report exists, or the latest one is fully reviewed, start a new draft
-    if not report or report.status == 'Reviewed':
+    # If no report exists, start a new draft
+    if not report:
         report = BiWeeklyReport.objects.create(
             student=request.user, 
             status='Draft',
@@ -61,23 +105,13 @@ def student_dashboard(request):
             
         action = request.POST.get('action', '')
         
-        # Handle Image Deletion
-        if action.startswith('delete_image_'):
-            image_id = action.replace('delete_image_', '')
-            try:
-                img = EvidenceImage.objects.get(id=image_id, report=report)
-                img.delete()
-                messages.success(request, 'Image deleted successfully.')
-            except EvidenceImage.DoesNotExist:
-                messages.error(request, 'Image not found or already deleted.')
-            return redirect('student_dashboard')
-            
         # Regardless of action, save the text areas
+        report.text_completed = request.POST.get('completed', report.text_completed)
         report.text_design = request.POST.get('design', report.text_design)
         report.text_prototype = request.POST.get('prototype', report.text_prototype)
         report.text_dissertation = request.POST.get('dissertation', report.text_dissertation)
         report.text_agenda = request.POST.get('agenda', report.text_agenda)
-        report.save()
+        
         # Save milestones if sent from frontend
         milestones_json = request.POST.get('milestones_json')
         if milestones_json:
@@ -85,6 +119,18 @@ def student_dashboard(request):
                 report.milestones = json.loads(milestones_json)
             except:
                 pass
+        report.save()
+        
+        # Handle Image Deletion
+        if action.startswith('delete_image_'):
+            image_id = action.replace('delete_image_', '')
+            try:
+                img = EvidenceImage.objects.get(id=image_id, report=report)
+                img.delete()
+                messages.success(request, 'Evidence deleted successfully.')
+            except EvidenceImage.DoesNotExist:
+                messages.error(request, 'Evidence not found or already deleted.')
+            return redirect('student_dashboard')
                 
         # Handle images
         for img in request.FILES.getlist('images'):
@@ -147,20 +193,12 @@ def student_dashboard(request):
         report.save()
 
     # Dynamic Bi-Weekly Status Logic
-    bi_weekly_data = {
-        'title': report.title,
-        'intro': f'By your next meeting, you should be able to update your supervisor on:',
-        'items': [
-            'The <strong>final design and aims</strong> of the project',
-            'Any <strong>prototyping activities</strong> undertaken',
-            'The <strong>current status of your build</strong>, including a live demonstration.',
-            '<strong>Dissertation progress</strong>.'
-        ]
-    }
+    current_week = 8
+    bi_weekly_data = get_bi_weekly_data(current_week)
     
     context = {
         'report': report,
-        'current_week': 8,
+        'current_week': current_week,
         'report_status': report.status,
         'next_meeting_date': report.meeting_date or '2026-10-24',
         'next_meeting_days': 12,
@@ -245,7 +283,7 @@ def teacher_student_review(request, student_id):
         if verdict == 'approve':
             report.status = 'Reviewed'
         elif verdict == 'reject':
-            report.status = 'Changes Requested'
+            report.status = 'Draft'
             
         report.save()
         messages.success(request, f'Report status updated to {report.status}')
@@ -254,25 +292,17 @@ def teacher_student_review(request, student_id):
     repo = student.repositories.first()
     project_title = repo.name if repo else 'CS Project'
     
+    current_week = 8
     student_info = {
         'id': student.id,
         'name': student.get_full_name() or student.username,
         'avatar': f'https://ui-avatars.com/api/?name={student.username}&background=003865&color=fff',
         'project_title': project_title,
-        'current_week': 8,
+        'current_week': current_week,
         'report_status': report.status,
     }
 
-    bi_weekly_data = {
-        'title': report.title,
-        'intro': 'By the next meeting, you should be able to update your supervisor on:',
-        'items': [
-            'The <strong>final design and aims</strong> of the project',
-            'Any <strong>prototyping activities</strong> undertaken',
-            'The <strong>current status of your build</strong>, including a live demonstration.',
-            '<strong>Dissertation progress</strong>.'
-        ]
-    }
+    bi_weekly_data = get_bi_weekly_data(current_week)
 
     # Fetch daily audits for this report
     daily_audits = report.daily_audits.all().order_by('date')
