@@ -192,16 +192,22 @@ def student_dashboard(request):
         ]
         report.save()
 
-    # Dynamic Bi-Weekly Status Logic
     current_week = 8
     bi_weekly_data = get_bi_weekly_data(current_week)
     
+    if report.meeting_date:
+        next_meeting_date = report.meeting_date.strftime("%b %d, %Y")
+        next_meeting_days = (report.meeting_date - date.today()).days
+    else:
+        next_meeting_date = 'Not scheduled'
+        next_meeting_days = '--'
+
     context = {
         'report': report,
         'current_week': current_week,
         'report_status': report.status,
-        'next_meeting_date': report.meeting_date or '2026-10-24',
-        'next_meeting_days': 12,
+        'next_meeting_date': next_meeting_date,
+        'next_meeting_days': next_meeting_days,
         'milestones': report.milestones,
         'bi_weekly_data': bi_weekly_data,
     }
@@ -276,9 +282,13 @@ def teacher_student_review(request, student_id):
         # Handle Verdict (Form POST)
         verdict = request.POST.get('verdict')
         feedback = request.POST.get('feedback', '')
+        meeting_date = request.POST.get('meeting_date', '')
         
         if feedback:
             report.supervisor_feedback = feedback
+            
+        if meeting_date:
+            report.meeting_date = meeting_date
             
         if verdict == 'approve':
             report.status = 'Reviewed'

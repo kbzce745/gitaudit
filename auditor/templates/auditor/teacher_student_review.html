@@ -71,7 +71,12 @@
                         <div class="bg-slate-900/50 border border-slate-700 rounded-lg p-3 text-sm text-slate-300 whitespace-pre-wrap">{{ report.text_prototype }}</div>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Points for Discussion (Meeting Agenda)</label>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="block text-xs font-medium text-slate-400">Points for Discussion (Meeting Agenda)</label>
+                            <span class="text-xs font-bold text-glasgow-gold">
+                                Next Meeting: {% if report.meeting_date %}{{ report.meeting_date|date:"M d, Y" }}{% else %}Not scheduled{% endif %}
+                            </span>
+                        </div>
                         <div class="bg-slate-900/50 border border-slate-700 rounded-lg p-3 text-sm text-slate-300 whitespace-pre-wrap">{{ report.text_agenda }}</div>
                     </div>
                 </div>
@@ -220,8 +225,19 @@
                 
                 <form method="POST" action="{% url 'teacher_student_review' student.id %}">
                     {% csrf_token %}
-                    <textarea name="feedback" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:ring-2 focus:ring-glasgow-blue focus:border-transparent transition-all mb-6 relative z-10"
-                        rows="4" placeholder="Provide feedback or instructions for the student..."></textarea>
+                    <div class="mb-4 relative z-10">
+                        <label class="block text-sm font-medium text-slate-300 mb-2 flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-glasgow-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            Schedule Next Meeting (Optional)
+                        </label>
+                        <input type="date" name="meeting_date" value="{{ report.meeting_date|date:'Y-m-d' }}" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 focus:ring-2 focus:ring-glasgow-blue focus:border-transparent transition-all cursor-pointer">
+                    </div>
+                    
+                    <div class="mb-6 relative z-10">
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Feedback & Instructions</label>
+                        <textarea name="feedback" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:ring-2 focus:ring-glasgow-blue focus:border-transparent transition-all resize-none"
+                            rows="4" placeholder="Provide feedback or instructions for the student..."></textarea>
+                    </div>
                     
                     <div class="flex items-center space-x-4 relative z-10">
                         <button type="submit" name="verdict" value="approve" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-green-900/50 flex justify-center items-center">
