@@ -35,8 +35,8 @@
                     <h2 class="text-xl font-bold text-slate-300 mb-6 z-10">Overall Health Score</h2>
                     <div class="relative flex items-center justify-center w-48 h-48 rounded-full border-8 border-slate-700 z-10 shadow-inner">
                         <!-- Progress circle using conic-gradient -->
-                        <div class="absolute inset-[-8px] rounded-full" style="background: conic-gradient(#3b82f6 86.25%, transparent 0); -webkit-mask: radial-gradient(transparent 58%, black 60%);"></div>
-                        <span class="text-6xl font-black text-white">86</span>
+                        <div class="absolute inset-[-8px] rounded-full" style="background: conic-gradient(#3b82f6 81.0%, transparent 0); -webkit-mask: radial-gradient(transparent 58%, black 60%);"></div>
+                        <span class="text-6xl font-black text-white">81</span>
                     </div>
                 </div>
                 
@@ -71,28 +71,34 @@ cachedir: .pytest_cache
 django: version: 6.0.7, settings: config.settings (from ini)
 rootdir: D:\intern_project\gitaudit
 configfile: pytest.ini
-plugins: anyio-4.14.0, Faker-40.37.0, cov-7.1.0, django-4.14.0, mock-3.15.1
-collecting ... collected 19 items
+plugins: anyio-4.14.0, Faker-40.37.0, base-url-2.1.0, cov-7.1.0, django-4.14.0, mock-3.15.1, playwright-0.9.0
+collecting ... collected 22 items
 
-auditor/tests/test_services.py::test_fetch_weekly_diffs_no_repo PASSED   [  5%]
-auditor/tests/test_services.py::test_fetch_weekly_diffs_success PASSED   [ 10%]
-auditor/tests/test_usability.py::UsabilityTests::test_login_page_renders PASSED [ 15%]
-auditor/tests/test_usability.py::UsabilityTests::test_student_login_and_dashboard PASSED [ 21%]
-auditor/tests/test_usability.py::UsabilityTests::test_student_report_submission PASSED [ 26%]
-auditor/tests/test_usability.py::UsabilityTests::test_teacher_login_and_dashboard PASSED [ 31%]
-auditor/tests/test_usability.py::UsabilityTests::test_teacher_review_page PASSED [ 36%]
-auditor/tests/test_gitlab_client.py::test_request_success PASSED         [ 42%]
-auditor/tests/test_gitlab_client.py::test_request_rate_limit_retry PASSED [ 47%]
-auditor/tests/test_gitlab_client.py::test_request_max_retries_exceeded PASSED [ 52%]
-auditor/tests/test_gitlab_client.py::test_request_exception PASSED       [ 57%]
-auditor/tests/test_gitlab_client.py::test_paginate_single_page PASSED    [ 63%]
-auditor/tests/test_gitlab_client.py::test_paginate_multiple_pages PASSED [ 68%]
-auditor/tests/test_gitlab_client.py::test_fetch_commits PASSED           [ 73%]
-auditor/tests/test_gitlab_client.py::test_fetch_commit_diff PASSED       [ 78%]
-auditor/tests/test_services.py::test_analyze_diff_empty PASSED           [ 84%]
-auditor/tests/test_services.py::test_analyze_diff_success PASSED         [ 89%]
-auditor/tests/test_services.py::test_analyze_diff_fallback PASSED        [ 94%]
-auditor/tests/test_services.py::test_analyze_diff_network_error PASSED   [100%]
+auditor/tests/test_services.py::test_fetch_weekly_diffs_no_repo PASSED
+auditor/tests/test_services.py::test_fetch_weekly_diffs_success PASSED
+auditor/tests/test_usability.py::UsabilityTests::test_login_page_renders PASSED
+auditor/tests/test_usability.py::UsabilityTests::test_student_login_and_dashboard PASSED
+auditor/tests/test_usability.py::UsabilityTests::test_student_report_submission PASSED
+auditor/tests/test_usability.py::UsabilityTests::test_teacher_login_and_dashboard PASSED
+auditor/tests/test_usability.py::UsabilityTests::test_teacher_review_page PASSED
+auditor/tests/test_a11y.py::test_login_page_a11y[chromium] Login page violations: 2
+PASSED
+auditor/tests/test_a11y.py::test_student_dashboard_a11y[chromium] Student dashboard violations: 4
+PASSED
+auditor/tests/test_a11y.py::test_teacher_dashboard_a11y[chromium] Supervisor dashboard violations: 2
+PASSED
+auditor/tests/test_gitlab_client.py::test_request_success PASSED
+auditor/tests/test_gitlab_client.py::test_request_rate_limit_retry PASSED
+auditor/tests/test_gitlab_client.py::test_request_max_retries_exceeded PASSED
+auditor/tests/test_gitlab_client.py::test_request_exception PASSED
+auditor/tests/test_gitlab_client.py::test_paginate_single_page PASSED
+auditor/tests/test_gitlab_client.py::test_paginate_multiple_pages PASSED
+auditor/tests/test_gitlab_client.py::test_fetch_commits PASSED
+auditor/tests/test_gitlab_client.py::test_fetch_commit_diff PASSED
+auditor/tests/test_services.py::test_analyze_diff_empty PASSED
+auditor/tests/test_services.py::test_analyze_diff_success PASSED
+auditor/tests/test_services.py::test_analyze_diff_fallback PASSED
+auditor/tests/test_services.py::test_analyze_diff_network_error PASSED
 
 ============================== warnings summary ===============================
 auditor/tests/test_services.py::test_fetch_weekly_diffs_no_repo
@@ -107,7 +113,11 @@ auditor/tests/test_services.py::test_fetch_weekly_diffs_success
 _______________ coverage: platform win32, python 3.14.0-final-0 _______________
 
 Coverage HTML written to dir htmlcov
-======================= 19 passed, 2 warnings in 13.45s =======================
+======================= 22 passed, 2 warnings in 29.60s =======================
+Creating test database for alias 'default'...
+
+Destroying test database for alias 'default'...
+
 </pre>
                         </div>
                     </details>
@@ -122,7 +132,7 @@ Coverage HTML written to dir htmlcov
                         </h3>
                         <span class="px-4 py-1.5 rounded-full bg-yellow-500/20 text-yellow-400 font-bold border border-yellow-500/30">45 / 100</span>
                     </div>
-                    <p class="text-slate-300 mb-4">PEP-8 and structural analysis resulted in a score of 4.56/10.</p>
+                    <p class="text-slate-300 mb-4">PEP-8 and structural analysis resulted in a score of 4.55/10.</p>
                     <details class="group">
                         <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Detailed Linter Warnings</summary>
                         <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
@@ -402,6 +412,20 @@ auditor\tests\factories.py:33:4: R0903: Too few public methods (0/2) (too-few-pu
 auditor\tests\factories.py:4:0: C0411: third party import "django.utils.timezone" should be placed before first party import "auditor.models.UserProfile"  (wrong-import-order)
 auditor\tests\factories.py:4:0: C0412: Imports from package django are not grouped (ungrouped-imports)
 auditor\tests\factories.py:4:0: W0611: Unused timezone imported from django.utils (unused-import)
+************* Module auditor.tests.test_a11y
+auditor\tests\test_a11y.py:25:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_a11y.py:31:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_a11y.py:34:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_a11y.py:46:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_a11y.py:52:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_a11y.py:55:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_a11y.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\tests\test_a11y.py:4:0: C0413: Import "from axe_playwright_python.sync_playwright import Axe" should be placed at the top of the module (wrong-import-position)
+auditor\tests\test_a11y.py:5:0: C0413: Import "from django.contrib.auth.models import User" should be placed at the top of the module (wrong-import-position)
+auditor\tests\test_a11y.py:6:0: C0413: Import "from auditor.models import UserProfile" should be placed at the top of the module (wrong-import-position)
+auditor\tests\test_a11y.py:24:4: E1101: Class 'UserProfile' has no 'objects' member (no-member)
+auditor\tests\test_a11y.py:45:4: E1101: Class 'UserProfile' has no 'objects' member (no-member)
+auditor\tests\test_a11y.py:2:0: C0411: standard import "os" should be placed before third party import "pytest" (wrong-import-order)
 ************* Module auditor.tests.test_gitlab_client
 auditor\tests\test_gitlab_client.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
 auditor\tests\test_gitlab_client.py:51:0: C0303: Trailing whitespace (trailing-whitespace)
@@ -533,7 +557,7 @@ auditor\tests\__init__.py:1:0: R0801: Similar lines in 2 files
                 ), (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 4.56/10 (previous run: 4.56/10, +0.00)
+Your code has been rated at 4.55/10 (previous run: 4.55/10, +0.00)
 
 </pre>
                         </div>
@@ -549,7 +573,7 @@ Your code has been rated at 4.56/10 (previous run: 4.56/10, +0.00)
                         </h3>
                         <span class="px-4 py-1.5 rounded-full bg-purple-500/20 text-purple-400 font-bold border border-purple-500/30">100 / 100</span>
                     </div>
-                    <p class="text-slate-300 mb-4">Average Cyclomatic Complexity (CC) across all blocks is 3.44 (lower is better).</p>
+                    <p class="text-slate-300 mb-4">Average Cyclomatic Complexity (CC) across all blocks is 3.45 (lower is better).</p>
                     <details class="group">
                         <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Complexity Breakdown per Function</summary>
                         <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
@@ -616,6 +640,10 @@ D:\intern_project\gitaudit\auditor\tests\factories.py
     C 14:0 UserProfileFactory - A
     C 22:0 RepositoryFactory - A
     C 32:0 BiWeeklyReportFactory - A
+D:\intern_project\gitaudit\auditor\tests\test_a11y.py
+    F 20:0 test_student_dashboard_a11y - A
+    F 41:0 test_teacher_dashboard_a11y - A
+    F 11:0 test_login_page_a11y - A
 D:\intern_project\gitaudit\auditor\tests\test_gitlab_client.py
     F 32:0 test_request_rate_limit_retry - A
     F 77:0 test_paginate_multiple_pages - A
@@ -646,8 +674,8 @@ D:\intern_project\gitaudit\auditor\tests\test_usability.py
     M 45:4 UsabilityTests.test_student_report_submission - A
     M 67:4 UsabilityTests.test_teacher_review_page - A
 
-73 blocks (classes, functions, methods) analyzed.
-Average complexity: A (3.4383561643835616)
+76 blocks (classes, functions, methods) analyzed.
+Average complexity: A (3.4473684210526314)
 </pre>
                         </div>
                     </details>
@@ -668,7 +696,7 @@ Average complexity: A (3.4383561643835616)
                         <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
                             <pre class="text-xs text-slate-400 whitespace-pre-wrap">{
   "errors": [],
-  "generated_at": "2026-08-25T17:14:57Z",
+  "generated_at": "2026-08-25T19:18:51Z",
   "metrics": {
     "D:\\intern_project\\gitaudit\\auditor\\__init__.py": {
       "CONFIDENCE.HIGH": 0,
@@ -923,6 +951,75 @@ Average complexity: A (3.4383561643835616)
                         </div>
                     </details>
                 </div>
+                
+                <!-- Accessibility -->
+                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-bold text-cyan-400 flex items-center">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                            Accessibility (Axe-core)
+                        </h3>
+                        <span class="px-4 py-1.5 rounded-full bg-cyan-500/20 text-cyan-400 font-bold border border-cyan-500/30">60 / 100</span>
+                    </div>
+                    <p class="text-slate-300 mb-4">Axe-core Accessibility Scan found 8 violations across tested views.</p>
+                    <details class="group">
+                        <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Accessibility Violations</summary>
+                        <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
+                            <pre class="text-xs text-slate-400 whitespace-pre-wrap">Total Violations Detected: 8
+
+============================= test session starts =============================
+platform win32 -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Lenovo\AppData\Local\Programs\Python\Python314\python.exe
+cachedir: .pytest_cache
+django: version: 6.0.7, settings: config.settings (from ini)
+rootdir: D:\intern_project\gitaudit
+configfile: pytest.ini
+plugins: anyio-4.14.0, Faker-40.37.0, base-url-2.1.0, cov-7.1.0, django-4.14.0, mock-3.15.1, playwright-0.9.0
+collecting ... collected 22 items
+
+auditor/tests/test_services.py::test_fetch_weekly_diffs_no_repo PASSED
+auditor/tests/test_services.py::test_fetch_weekly_diffs_success PASSED
+auditor/tests/test_usability.py::UsabilityTests::test_login_page_renders PASSED
+auditor/tests/test_usability.py::UsabilityTests::test_student_login_and_dashboard PASSED
+auditor/tests/test_usability.py::UsabilityTests::test_student_report_submission PASSED
+auditor/tests/test_usability.py::UsabilityTests::test_teacher_login_and_dashboard PASSED
+auditor/tests/test_usability.py::UsabilityTests::test_teacher_review_page PASSED
+auditor/tests/test_a11y.py::test_login_page_a11y[chromium] Login page violations: 2
+PASSED
+auditor/tests/test_a11y.py::test_student_dashboard_a11y[chromium] Student dashboard violations: 4
+PASSED
+auditor/tests/test_a11y.py::test_teacher_dashboard_a11y[chromium] Supervisor dashboard violations: 2
+PASSED
+auditor/tests/test_gitlab_client.py::test_request_success PASSED
+auditor/tests/test_gitlab_client.py::test_request_rate_limit_retry PASSED
+auditor/tests/test_gitlab_client.py::test_request_max_retries_exceeded PASSED
+auditor/tests/test_gitlab_client.py::test_request_exception PASSED
+auditor/tests/test_gitlab_client.py::test_paginate_single_page PASSED
+auditor/tests/test_gitlab_client.py::test_paginate_multiple_pages PASSED
+auditor/tests/test_gitlab_client.py::test_fetch_commits PASSED
+auditor/tests/test_gitlab_client.py::test_fetch_commit_diff PASSED
+auditor/tests/test_services.py::test_analyze_diff_empty PASSED
+auditor/tests/test_services.py::test_analyze_diff_success PASSED
+auditor/tests/test_services.py::test_analyze_diff_fallback PASSED
+auditor/tests/test_services.py::test_analyze_diff_network_error PASSED
+
+============================== warnings summary ===============================
+auditor/tests/test_services.py::test_fetch_weekly_diffs_no_repo
+auditor/tests/test_services.py::test_fetch_weekly_diffs_success
+  C:\Users\Lenovo\AppData\Local\Programs\Python\Python314\Lib\site-packages\factory\django.py:182: DeprecationWarning: UserFactory._after_postgeneration will stop saving the instance after postgeneration hooks in the next major release.
+  If the save call is extraneous, set skip_postgeneration_save=True in the UserFactory.Meta.
+  To keep saving the instance, move the save call to your postgeneration hooks or override _after_postgeneration.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.14.0-final-0 _______________
+
+Coverage HTML written to dir htmlcov
+======================= 22 passed, 2 warnings in 29.60s =======================
+</pre>
+                        </div>
+                    </details>
+                </div>
             </div>
         </div>
 
@@ -937,10 +1034,10 @@ Average complexity: A (3.4383561643835616)
             new Chart(ctx, {
                 type: 'radar',
                 data: {
-                    labels: ['Usability', 'Code Quality', 'Complexity', 'Security'],
+                    labels: ['Usability', 'Code Quality', 'Complexity', 'Security', 'Accessibility'],
                     datasets: [{
                         label: 'Project Scores',
-                        data: [100, 45, 100, 100],
+                        data: [100, 45, 100, 100, 60],
                         backgroundColor: gradient,
                         borderColor: 'rgba(59, 130, 246, 1)',
                         borderWidth: 3,

@@ -17,12 +17,32 @@ def run_command(command, cwd=None):
 
 def run_usability_tests():
     print("Running Tests and Coverage (pytest)...")
-    out, err, code = run_command("pytest --cov=auditor --cov-report=html -v", cwd=PROJECT_ROOT)
+    env = os.environ.copy()
+    env["PYTHONUTF8"] = "1"
+    
+    # We use subprocess directly here to pass env since run_command doesn't accept env
+    process = subprocess.Popen("pytest --cov=auditor --cov-report=html -v -s", shell=True, cwd=PROJECT_ROOT, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    out, err = process.communicate()
+    code = process.returncode
+    
     passed = code == 0
+    
+    # Extract A11y violations from pytest output
+    # test_a11y.py prints: "Login page violations: X", etc.
+    violation_matches = re.findall(r"violations: (\d+)", out)
+    total_violations = sum(int(x) for x in violation_matches)
+    
+    a11y_score = max(0, 100 - (total_violations * 5))
+    a11y_details = f"Axe-core Accessibility Scan found {total_violations} violations across tested views." if total_violations > 0 else "Perfect! No accessibility violations found."
+    
     return {
         "score": 100 if passed else 0,
         "details": "All Pytest suites (Usability, API Mocks, Services) passed successfully." if passed else "Some tests failed. See details below.",
         "raw": out + err
+    }, {
+        "score": a11y_score,
+        "details": a11y_details,
+        "raw": f"Total Violations Detected: {total_violations}\n\n" + out
     }
 
 def run_pylint():
@@ -202,6 +222,24 @@ def generate_html_report(results, overall_score):
                         </div>
                     </details>
                 </div>
+                
+                <!-- Accessibility -->
+                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-bold text-cyan-400 flex items-center">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                            Accessibility (Axe-core)
+                        </h3>
+                        <span class="px-4 py-1.5 rounded-full bg-cyan-500/20 text-cyan-400 font-bold border border-cyan-500/30">{results['a11y']['score']} / 100</span>
+                    </div>
+                    <p class="text-slate-300 mb-4">{results['a11y']['details']}</p>
+                    <details class="group">
+                        <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Accessibility Violations</summary>
+                        <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
+                            <pre class="text-xs text-slate-400 whitespace-pre-wrap">{results['a11y']['raw'].replace('<', '&lt;').replace('>', '&gt;')}</pre>
+                        </div>
+                    </details>
+                </div>
             </div>
         </div>
 
@@ -216,10 +254,10 @@ def generate_html_report(results, overall_score):
             new Chart(ctx, {{
                 type: 'radar',
                 data: {{
-                    labels: ['Usability', 'Code Quality', 'Complexity', 'Security'],
+                    labels: ['Usability', 'Code Quality', 'Complexity', 'Security', 'Accessibility'],
                     datasets: [{{
                         label: 'Project Scores',
-                        data: [{results['usability']['score']}, {results['quality']['score']}, {results['complexity']['score']}, {results['security']['score']}],
+                        data: [{results['usability']['score']}, {results['quality']['score']}, {results['complexity']['score']}, {results['security']['score']}, {results['a11y']['score']}],
                         backgroundColor: gradient,
                         borderColor: 'rgba(59, 130, 246, 1)',
                         borderWidth: 3,
@@ -276,13 +314,14 @@ def generate_html_report(results, overall_score):
 
 def main():
     print("Starting Comprehensive Project Audit...\n")
-    usability_res = run_usability_tests()
+    usability_res, a11y_res = run_usability_tests()
     quality_res = run_pylint()
     complexity_res = run_radon()
     security_res = run_bandit()
     
     results = {
         "usability": usability_res,
+        "a11y": a11y_res,
         "quality": quality_res,
         "complexity": complexity_res,
         "security": security_res
@@ -290,17 +329,19 @@ def main():
     
     overall_score = (
         usability_res['score'] + 
+        a11y_res['score'] +
         quality_res['score'] + 
         complexity_res['score'] + 
         security_res['score']
-    ) / 4.0
+    ) / 5.0
     
     print("\n--- Final Scores ---")
-    print(f"Usability:  {usability_res['score']}/100")
-    print(f"Quality:    {quality_res['score']}/100")
-    print(f"Complexity: {complexity_res['score']}/100")
-    print(f"Security:   {security_res['score']}/100")
-    print(f"OVERALL:    {overall_score:.1f}/100\n")
+    print(f"Usability:     {usability_res['score']}/100")
+    print(f"Accessibility: {a11y_res['score']}/100")
+    print(f"Quality:       {quality_res['score']}/100")
+    print(f"Complexity:    {complexity_res['score']}/100")
+    print(f"Security:      {security_res['score']}/100")
+    print(f"OVERALL:       {overall_score:.1f}/100\n")
     
     generate_html_report(results, overall_score)
 
