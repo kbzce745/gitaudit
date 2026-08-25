@@ -1,0 +1,114 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GitAudit - Project Audit Report</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body class="bg-slate-900 text-slate-200 p-8 font-sans">
+        <div class="max-w-6xl mx-auto">
+            <header class="mb-10 text-center">
+                <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400 mb-2">Project Audit Report</h1>
+                <p class="text-slate-400">Generated automatically based on first principles.</p>
+            </header>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                <!-- Overall Score -->
+                <div class="col-span-1 bg-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center border border-slate-700 shadow-xl">
+                    <h2 class="text-xl font-bold text-slate-300 mb-4">Overall Health Score</h2>
+                    <div class="relative flex items-center justify-center w-48 h-48 rounded-full border-8 border-slate-700">
+                        <div class="absolute inset-0 rounded-full border-8 border-blue-500" style="clip-path: polygon(0 0, 100% 0, 100% 77.25%, 0 77.25%);"></div>
+                        <span class="text-5xl font-black text-white">77</span>
+                    </div>
+                </div>
+                
+                <!-- Radar Chart -->
+                <div class="col-span-2 bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl flex items-center justify-center">
+                    <div class="w-full max-w-md">
+                        <canvas id="auditChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Details Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Usability -->
+                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-white">Usability Testing</h3>
+                        <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 font-bold">100 / 100</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-2">All tests passed</p>
+                </div>
+                
+                <!-- Code Quality -->
+                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-white">Code Quality (Pylint)</h3>
+                        <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 font-bold">44 / 100</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-2">Pylint score: 4.45/10</p>
+                </div>
+                
+                <!-- Complexity -->
+                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-white">Complexity (Radon)</h3>
+                        <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 font-bold">100 / 100</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-2">Average Cyclomatic Complexity: 3.86</p>
+                </div>
+                
+                <!-- Security -->
+                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-white">Security (Bandit)</h3>
+                        <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 font-bold">65 / 100</span>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-2">Found 0 High, 0 Medium, 7 Low severity issues.</p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const ctx = document.getElementById('auditChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Usability', 'Code Quality', 'Complexity', 'Security'],
+                    datasets: [{
+                        label: 'Project Scores',
+                        data: [100, 44, 100, 65],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            pointLabels: { color: '#94a3b8', font: { size: 14 } },
+                            ticks: {
+                                color: '#94a3b8',
+                                backdropColor: 'transparent',
+                                min: 0,
+                                max: 100,
+                                stepSize: 20
+                            }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        </script>
+    </body>
+    </html>
+    
