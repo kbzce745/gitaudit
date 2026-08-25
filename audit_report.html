@@ -4,77 +4,1006 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>GitAudit - Project Audit Report</title>
+        <title>GitAudit - Detailed Project Audit Report</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            .log-box {
+                max-height: 250px;
+                overflow-y: auto;
+                font-family: 'Courier New', Courier, monospace;
+            }
+            /* Custom Scrollbar for logs */
+            .log-box::-webkit-scrollbar { width: 8px; }
+            .log-box::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
+            .log-box::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.5); border-radius: 4px; }
+        </style>
     </head>
     <body class="bg-slate-900 text-slate-200 p-8 font-sans">
-        <div class="max-w-6xl mx-auto">
+        <div class="max-w-7xl mx-auto">
             <header class="mb-10 text-center">
-                <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-yellow-400 mb-2">Project Audit Report</h1>
-                <p class="text-slate-400">Generated automatically based on first principles.</p>
+                <h1 class="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 mb-2">Comprehensive Project Audit</h1>
+                <p class="text-slate-400">First-principles analysis covering usability, code quality, logic complexity, and security.</p>
             </header>
             
+            <!-- Top Section: Score & Chart -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
                 <!-- Overall Score -->
-                <div class="col-span-1 bg-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center border border-slate-700 shadow-xl">
-                    <h2 class="text-xl font-bold text-slate-300 mb-4">Overall Health Score</h2>
-                    <div class="relative flex items-center justify-center w-48 h-48 rounded-full border-8 border-slate-700">
-                        <div class="absolute inset-0 rounded-full border-8 border-blue-500" style="clip-path: polygon(0 0, 100% 0, 100% 77.25%, 0 77.25%);"></div>
-                        <span class="text-5xl font-black text-white">77</span>
+                <div class="col-span-1 bg-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center border border-slate-700 shadow-xl relative overflow-hidden">
+                    <!-- Glow effect -->
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/20 blur-3xl rounded-full"></div>
+                    <h2 class="text-xl font-bold text-slate-300 mb-6 z-10">Overall Health Score</h2>
+                    <div class="relative flex items-center justify-center w-48 h-48 rounded-full border-8 border-slate-700 z-10 shadow-inner">
+                        <!-- Progress circle using conic-gradient -->
+                        <div class="absolute inset-[-8px] rounded-full" style="background: conic-gradient(#3b82f6 77.25%, transparent 0); -webkit-mask: radial-gradient(transparent 58%, black 60%);"></div>
+                        <span class="text-6xl font-black text-white">77</span>
                     </div>
                 </div>
                 
                 <!-- Radar Chart -->
-                <div class="col-span-2 bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl flex items-center justify-center">
-                    <div class="w-full max-w-md">
+                <div class="col-span-2 bg-slate-800 rounded-2xl p-6 border border-slate-700 shadow-xl flex flex-col items-center justify-center relative">
+                    <h3 class="text-sm font-bold text-slate-400 mb-2 uppercase tracking-wider w-full text-center">Dimensional Balance</h3>
+                    <div class="w-full max-w-md relative z-10">
                         <canvas id="auditChart"></canvas>
                     </div>
                 </div>
             </div>
             
             <!-- Details Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <h2 class="text-2xl font-bold text-white mb-6 border-b border-slate-700 pb-2">Detailed Metric Analysis</h2>
+            <div class="space-y-6">
                 <!-- Usability -->
-                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-white">Usability Testing</h3>
-                        <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 font-bold">100 / 100</span>
+                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-bold text-emerald-400 flex items-center">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"></path></svg>
+                            Usability Testing (Django Test Framework)
+                        </h3>
+                        <span class="px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">100 / 100</span>
                     </div>
-                    <p class="text-sm text-slate-400 mb-2">All tests passed</p>
+                    <p class="text-slate-300 mb-4">All core routing and workflow tests passed successfully.</p>
+                    <details class="group">
+                        <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Raw Execution Logs</summary>
+                        <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
+                            <pre class="text-xs text-slate-400 whitespace-pre-wrap">Found 5 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: messages, staticfiles
+  Apply all migrations: admin, auditor, auth, contenttypes, poc, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying auditor.0001_initial... OK
+  Applying auditor.0002_repository_student_event_userprofile... OK
+  Applying auditor.0003_biweeklyreport_dailygitaudit_evidenceimage... OK
+  Applying auditor.0004_biweeklyreport_supervisor_feedback... OK
+  Applying auditor.0005_biweeklyreport_text_agenda... OK
+  Applying auditor.0006_repository_access_token... OK
+  Applying auditor.0007_biweeklyreport_text_completed_and_more... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying poc.0001_initial... OK
+  Applying sessions.0001_initial... OK
+System check identified no issues (0 silenced).
+Creating test database for alias 'default' ('test_gitaudit')...
+
+test_login_page_renders (auditor.tests.test_usability.UsabilityTests.test_login_page_renders)
+Test if the login page renders correctly (HTTP 200). ... ok
+test_student_login_and_dashboard (auditor.tests.test_usability.UsabilityTests.test_student_login_and_dashboard)
+Test student login flow and dashboard rendering. ... ok
+test_student_report_submission (auditor.tests.test_usability.UsabilityTests.test_student_report_submission)
+Test if a student can submit a bi-weekly report. ... ok
+test_teacher_login_and_dashboard (auditor.tests.test_usability.UsabilityTests.test_teacher_login_and_dashboard)
+Test teacher login flow and dashboard rendering. ... ok
+test_teacher_review_page (auditor.tests.test_usability.UsabilityTests.test_teacher_review_page)
+Test if teacher can access the review page for a specific student. ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 6.224s
+
+OK
+Destroying test database for alias 'default' ('test_gitaudit')...
+
+</pre>
+                        </div>
+                    </details>
                 </div>
                 
                 <!-- Code Quality -->
-                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-white">Code Quality (Pylint)</h3>
-                        <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 font-bold">44 / 100</span>
+                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-bold text-yellow-400 flex items-center">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                            Code Quality (Pylint)
+                        </h3>
+                        <span class="px-4 py-1.5 rounded-full bg-yellow-500/20 text-yellow-400 font-bold border border-yellow-500/30">44 / 100</span>
                     </div>
-                    <p class="text-sm text-slate-400 mb-2">Pylint score: 4.45/10</p>
+                    <p class="text-slate-300 mb-4">PEP-8 and structural analysis resulted in a score of 4.45/10.</p>
+                    <details class="group">
+                        <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Detailed Linter Warnings</summary>
+                        <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
+                            <pre class="text-xs text-slate-400 whitespace-pre-wrap">************* Module auditor
+auditor\__init__.py:1:0: C0305: Trailing newlines (trailing-newlines)
+************* Module auditor.apps
+auditor\apps.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\apps.py:3:0: C0115: Missing class docstring (missing-class-docstring)
+************* Module auditor.context_builder
+auditor\context_builder.py:8:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\context_builder.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\context_builder.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\context_builder.py:4:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+************* Module auditor.diff_parser
+auditor\diff_parser.py:14:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:17:0: C0301: Line too long (106/100) (line-too-long)
+auditor\diff_parser.py:18:0: C0301: Line too long (142/100) (line-too-long)
+auditor\diff_parser.py:19:0: C0301: Line too long (161/100) (line-too-long)
+auditor\diff_parser.py:25:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:31:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:41:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:48:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:66:0: C0301: Line too long (115/100) (line-too-long)
+auditor\diff_parser.py:70:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:73:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:78:0: C0301: Line too long (116/100) (line-too-long)
+auditor\diff_parser.py:80:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:85:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:89:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:93:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\diff_parser.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\diff_parser.py:4:0: R0914: Too many local variables (28/15) (too-many-locals)
+auditor\diff_parser.py:4:0: R0912: Too many branches (16/12) (too-many-branches)
+auditor\diff_parser.py:4:0: R0915: Too many statements (55/50) (too-many-statements)
+************* Module auditor.gitlab_client
+auditor\gitlab_client.py:33:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:35:0: C0301: Line too long (112/100) (line-too-long)
+auditor\gitlab_client.py:39:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:54:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:61:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:64:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:67:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:71:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:84:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:89:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:91:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:99:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:109:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:113:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\gitlab_client.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\gitlab_client.py:35:20: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+auditor\gitlab_client.py:43:16: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+auditor\gitlab_client.py:44:16: W0707: Consider explicitly re-raising using 'raise Exception(f'GitLab connection failed: {e}') from e' (raise-missing-from)
+auditor\gitlab_client.py:44:16: W0719: Raising too general exception: Exception (broad-exception-raised)
+auditor\gitlab_client.py:46:8: W0719: Raising too general exception: Exception (broad-exception-raised)
+auditor\gitlab_client.py:30:12: W0612: Unused variable 'attempt' (unused-variable)
+auditor\gitlab_client.py:65:12: R1737: Use 'yield from' directly instead of yielding each element one by one (use-yield-from)
+auditor\gitlab_client.py:4:0: C0411: standard import "urllib.parse.urljoin" should be placed before third party import "requests" (wrong-import-order)
+auditor\gitlab_client.py:5:0: C0411: standard import "logging" should be placed before third party import "requests" (wrong-import-order)
+************* Module auditor.llm_parser
+auditor\llm_parser.py:14:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\llm_parser.py:29:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\llm_parser.py:45:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\llm_parser.py:50:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\llm_parser.py:61:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\llm_parser.py:66:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\llm_parser.py:74:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\llm_parser.py:81:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\llm_parser.py:85:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\llm_parser.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\llm_parser.py:34:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+auditor\llm_parser.py:8:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+************* Module auditor.models
+auditor\models.py:13:0: C0301: Line too long (115/100) (line-too-long)
+auditor\models.py:43:0: C0301: Line too long (115/100) (line-too-long)
+auditor\models.py:44:0: C0301: Line too long (130/100) (line-too-long)
+auditor\models.py:70:0: C0301: Line too long (107/100) (line-too-long)
+auditor\models.py:71:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\models.py:78:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\models.py:81:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\models.py:89:0: C0301: Line too long (104/100) (line-too-long)
+auditor\models.py:104:0: C0301: Line too long (101/100) (line-too-long)
+auditor\models.py:110:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\models.py:118:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\models.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\models.py:5:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\models.py:16:18: E1101: Instance of 'OneToOneField' has no 'username' member (no-member)
+auditor\models.py:18:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\models.py:37:33: E1101: Instance of 'ForeignKey' has no 'username' member (no-member)
+auditor\models.py:39:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\models.py:46:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\models.py:53:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\models.py:59:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\models.py:86:33: E1101: Instance of 'ForeignKey' has no 'username' member (no-member)
+auditor\models.py:88:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\models.py:94:4: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\models.py:95:8: C0415: Import outside toplevel (os) (import-outside-toplevel)
+auditor\models.py:98:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\models.py:116:4: C0115: Missing class docstring (missing-class-docstring)
+auditor\models.py:116:4: R0903: Too few public methods (0/2) (too-few-public-methods)
+auditor\models.py:120:53: E1101: Instance of 'ForeignKey' has no 'title' member (no-member)
+************* Module auditor.services
+auditor\services.py:18:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:22:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:28:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:32:46: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:33:29: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:40:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:43:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:55:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:58:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:61:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:68:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:71:0: C0301: Line too long (129/100) (line-too-long)
+auditor\services.py:73:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:79:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:102:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:109:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:111:0: C0301: Line too long (144/100) (line-too-long)
+auditor\services.py:113:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:117:0: C0301: Line too long (234/100) (line-too-long)
+auditor\services.py:123:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:128:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:136:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:143:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:149:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:153:0: C0301: Line too long (104/100) (line-too-long)
+auditor\services.py:154:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:163:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:169:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\services.py:178:0: C0305: Trailing newlines (trailing-newlines)
+auditor\services.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\services.py:8:0: R0914: Too many local variables (17/15) (too-many-locals)
+auditor\services.py:14:11: E1101: Class 'Repository' has no 'objects' member (no-member)
+auditor\services.py:16:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+auditor\services.py:37:11: W0718: Catching too general exception Exception (broad-exception-caught)
+auditor\services.py:38:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+auditor\services.py:65:15: W0718: Catching too general exception Exception (broad-exception-caught)
+auditor\services.py:66:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+auditor\services.py:82:0: C0413: Import "import requests" should be placed at the top of the module (wrong-import-position)
+auditor\services.py:83:0: C0413: Import "import json" should be placed at the top of the module (wrong-import-position)
+auditor\services.py:84:0: C0413: Import "import logging" should be placed at the top of the module (wrong-import-position)
+auditor\services.py:88:0: R0914: Too many local variables (19/15) (too-many-locals)
+auditor\services.py:170:11: W0718: Catching too general exception Exception (broad-exception-caught)
+auditor\services.py:171:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+auditor\services.py:88:0: R0912: Too many branches (14/12) (too-many-branches)
+auditor\services.py:6:0: C0411: standard import "re" should be placed before third party import "django.conf.settings" and local imports "models.Repository", "gitlab_client.GitLabAPIClient" (wrong-import-order)
+auditor\services.py:82:0: C0411: third party import "requests" should be placed before local imports "models.Repository", "gitlab_client.GitLabAPIClient" (wrong-import-order)
+auditor\services.py:83:0: C0411: standard import "json" should be placed before third party imports "django.conf.settings", "requests" and local imports "models.Repository", "gitlab_client.GitLabAPIClient" (wrong-import-order)
+auditor\services.py:84:0: C0411: standard import "logging" should be placed before third party imports "django.conf.settings", "requests" and local imports "models.Repository", "gitlab_client.GitLabAPIClient" (wrong-import-order)
+auditor\services.py:3:0: W0611: Unused settings imported from django.conf (unused-import)
+************* Module auditor.urls
+auditor\urls.py:9:0: C0301: Line too long (107/100) (line-too-long)
+auditor\urls.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+************* Module auditor.views
+auditor\views.py:16:0: C0301: Line too long (101/100) (line-too-long)
+auditor\views.py:19:0: C0301: Line too long (147/100) (line-too-long)
+auditor\views.py:20:0: C0301: Line too long (153/100) (line-too-long)
+auditor\views.py:30:0: C0301: Line too long (150/100) (line-too-long)
+auditor\views.py:31:0: C0301: Line too long (137/100) (line-too-long)
+auditor\views.py:39:0: C0301: Line too long (142/100) (line-too-long)
+auditor\views.py:41:0: C0301: Line too long (146/100) (line-too-long)
+auditor\views.py:42:0: C0301: Line too long (168/100) (line-too-long)
+auditor\views.py:50:0: C0301: Line too long (103/100) (line-too-long)
+auditor\views.py:51:0: C0301: Line too long (165/100) (line-too-long)
+auditor\views.py:65:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:73:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:81:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:92:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:96:33: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:105:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:107:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:114:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:123:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:134:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:138:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:142:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:147:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:170:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:178:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:197:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:221:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:227:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:230:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:233:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:240:0: C0301: Line too long (110/100) (line-too-long)
+auditor\views.py:244:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:248:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:258:0: C0301: Line too long (108/100) (line-too-long)
+auditor\views.py:259:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:263:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:281:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:286:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:289:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:292:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:297:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:304:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:309:0: C0301: Line too long (101/100) (line-too-long)
+auditor\views.py:319:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\views.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\views.py:12:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\views.py:13:4: R1705: Unnecessary "elif" after "return", remove the leading "el" from "elif" (no-else-return)
+auditor\views.py:56:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\views.py:69:15: E1101: Class 'User' has no 'DoesNotExist' member (no-member)
+auditor\views.py:74:8: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+auditor\views.py:84:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\views.py:89:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\views.py:89:0: R0914: Too many local variables (17/15) (too-many-locals)
+auditor\views.py:91:13: E1101: Class 'BiWeeklyReport' has no 'objects' member (no-member)
+auditor\views.py:95:17: E1101: Class 'BiWeeklyReport' has no 'objects' member (no-member)
+auditor\views.py:120:12: W0702: No exception type(s) specified (bare-except)
+auditor\views.py:128:22: E1101: Class 'EvidenceImage' has no 'objects' member (no-member)
+auditor\views.py:131:19: E1101: Class 'EvidenceImage' has no 'DoesNotExist' member (no-member)
+auditor\views.py:137:12: E1101: Class 'EvidenceImage' has no 'objects' member (no-member)
+auditor\views.py:141:12: E1101: Class 'DailyGitAudit' has no 'objects' member (no-member)
+auditor\views.py:157:20: E1101: Class 'DailyGitAudit' has no 'objects' member (no-member)
+auditor\views.py:89:0: R0912: Too many branches (16/12) (too-many-branches)
+auditor\views.py:89:0: R0915: Too many statements (58/50) (too-many-statements)
+auditor\views.py:217:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\views.py:256:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\views.py:256:0: R0914: Too many local variables (22/15) (too-many-locals)
+auditor\views.py:258:13: E1101: Class 'BiWeeklyReport' has no 'objects' member (no-member)
+auditor\views.py:262:17: E1101: Class 'BiWeeklyReport' has no 'objects' member (no-member)
+auditor\views.py:279:19: W0718: Catching too general exception Exception (broad-exception-caught)
+auditor\views.py:275:24: E1101: Class 'DailyGitAudit' has no 'objects' member (no-member)
+auditor\views.py:6:0: C0411: standard import "datetime.date" should be placed before third party imports "django.shortcuts.render", "django.contrib.auth.authenticate", "django.contrib.auth.models.User", "django.contrib.messages", "django.contrib.auth.decorators.login_required" (wrong-import-order)
+auditor\views.py:7:0: C0411: standard import "json" should be placed before third party imports "django.shortcuts.render", "django.contrib.auth.authenticate", "django.contrib.auth.models.User", "django.contrib.messages", "django.contrib.auth.decorators.login_required" (wrong-import-order)
+auditor\views.py:6:0: W0611: Unused timedelta imported from datetime (unused-import)
+************* Module auditor.migrations.0001_initial
+auditor\migrations\0001_initial.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\migrations\0001_initial.py:1:0: C0103: Module name "0001_initial" doesn't conform to snake_case naming style (invalid-name)
+auditor\migrations\0001_initial.py:7:0: C0115: Missing class docstring (missing-class-docstring)
+************* Module auditor.migrations.0002_repository_student_event_userprofile
+auditor\migrations\0002_repository_student_event_userprofile.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\migrations\0002_repository_student_event_userprofile.py:1:0: C0103: Module name "0002_repository_student_event_userprofile" doesn't conform to snake_case naming style (invalid-name)
+auditor\migrations\0002_repository_student_event_userprofile.py:8:0: C0115: Missing class docstring (missing-class-docstring)
+************* Module auditor.migrations.0003_biweeklyreport_dailygitaudit_evidenceimage
+auditor\migrations\0003_biweeklyreport_dailygitaudit_evidenceimage.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\migrations\0003_biweeklyreport_dailygitaudit_evidenceimage.py:1:0: C0103: Module name "0003_biweeklyreport_dailygitaudit_evidenceimage" doesn't conform to snake_case naming style (invalid-name)
+auditor\migrations\0003_biweeklyreport_dailygitaudit_evidenceimage.py:8:0: C0115: Missing class docstring (missing-class-docstring)
+************* Module auditor.migrations.0004_biweeklyreport_supervisor_feedback
+auditor\migrations\0004_biweeklyreport_supervisor_feedback.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\migrations\0004_biweeklyreport_supervisor_feedback.py:1:0: C0103: Module name "0004_biweeklyreport_supervisor_feedback" doesn't conform to snake_case naming style (invalid-name)
+auditor\migrations\0004_biweeklyreport_supervisor_feedback.py:6:0: C0115: Missing class docstring (missing-class-docstring)
+************* Module auditor.migrations.0005_biweeklyreport_text_agenda
+auditor\migrations\0005_biweeklyreport_text_agenda.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\migrations\0005_biweeklyreport_text_agenda.py:1:0: C0103: Module name "0005_biweeklyreport_text_agenda" doesn't conform to snake_case naming style (invalid-name)
+auditor\migrations\0005_biweeklyreport_text_agenda.py:6:0: C0115: Missing class docstring (missing-class-docstring)
+************* Module auditor.migrations.0006_repository_access_token
+auditor\migrations\0006_repository_access_token.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\migrations\0006_repository_access_token.py:1:0: C0103: Module name "0006_repository_access_token" doesn't conform to snake_case naming style (invalid-name)
+auditor\migrations\0006_repository_access_token.py:6:0: C0115: Missing class docstring (missing-class-docstring)
+************* Module auditor.migrations.0007_biweeklyreport_text_completed_and_more
+auditor\migrations\0007_biweeklyreport_text_completed_and_more.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\migrations\0007_biweeklyreport_text_completed_and_more.py:1:0: C0103: Module name "0007_biweeklyreport_text_completed_and_more" doesn't conform to snake_case naming style (invalid-name)
+auditor\migrations\0007_biweeklyreport_text_completed_and_more.py:6:0: C0115: Missing class docstring (missing-class-docstring)
+************* Module auditor.tests.test_usability
+auditor\tests\test_usability.py:9:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_usability.py:48:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_usability.py:57:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_usability.py:60:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_usability.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_usability.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\tests\test_usability.py:6:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\test_usability.py:12:8: E1101: Class 'UserProfile' has no 'objects' member (no-member)
+auditor\tests\test_usability.py:16:8: E1101: Class 'UserProfile' has no 'objects' member (no-member)
+auditor\tests\test_usability.py:62:17: E1101: Class 'BiWeeklyReport' has no 'objects' member (no-member)
+auditor\tests\test_usability.py:70:8: E1101: Class 'BiWeeklyReport' has no 'objects' member (no-member)
+************* Module auditor.tests.__init__
+auditor\tests\__init__.py:1:0: R0801: Similar lines in 2 files
+==auditor.migrations.0001_initial:[57:68]
+==auditor.migrations.0002_repository_student_event_userprofile:[80:91]
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ( (duplicate-code)
+auditor\tests\__init__.py:1:0: R0801: Similar lines in 2 files
+==auditor.migrations.0001_initial:[15:25]
+==auditor.migrations.0002_repository_student_event_userprofile:[28:38]
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ), (duplicate-code)
+auditor\tests\__init__.py:1:0: R0801: Similar lines in 2 files
+==auditor.migrations.0001_initial:[32:42]
+==auditor.migrations.0002_repository_student_event_userprofile:[80:90]
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ), (duplicate-code)
+auditor\tests\__init__.py:1:0: R0801: Similar lines in 2 files
+==auditor.migrations.0001_initial:[57:67]
+==auditor.migrations.0003_biweeklyreport_dailygitaudit_evidenceimage:[17:27]
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ), (duplicate-code)
+
+------------------------------------------------------------------
+Your code has been rated at 4.45/10 (previous run: 4.45/10, +0.00)
+
+</pre>
+                        </div>
+                    </details>
                 </div>
                 
                 <!-- Complexity -->
-                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-white">Complexity (Radon)</h3>
-                        <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 font-bold">100 / 100</span>
+                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-bold text-purple-400 flex items-center">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            Code Complexity (Radon)
+                        </h3>
+                        <span class="px-4 py-1.5 rounded-full bg-purple-500/20 text-purple-400 font-bold border border-purple-500/30">100 / 100</span>
                     </div>
-                    <p class="text-sm text-slate-400 mb-2">Average Cyclomatic Complexity: 3.86</p>
+                    <p class="text-slate-300 mb-4">Average Cyclomatic Complexity (CC) across all blocks is 3.86 (lower is better).</p>
+                    <details class="group">
+                        <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Complexity Breakdown per Function</summary>
+                        <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
+                            <pre class="text-xs text-slate-400 whitespace-pre-wrap">D:\intern_project\gitaudit\auditor\apps.py
+    C 3:0 AuditorConfig - A
+D:\intern_project\gitaudit\auditor\context_builder.py
+    C 4:0 LLMContextBuilder - A
+    M 31:4 LLMContextBuilder.build_commit_prompt - A
+D:\intern_project\gitaudit\auditor\diff_parser.py
+    F 4:0 parse_commit_diff - D
+D:\intern_project\gitaudit\auditor\gitlab_client.py
+    M 74:4 GitLabAPIClient.fetch_commits - B
+    M 48:4 GitLabAPIClient._paginate - B
+    C 9:0 GitLabAPIClient - A
+    M 19:4 GitLabAPIClient._request - A
+    M 13:4 GitLabAPIClient.__init__ - A
+    M 102:4 GitLabAPIClient.fetch_commit_diff - A
+D:\intern_project\gitaudit\auditor\llm_parser.py
+    M 54:4 LLMJSONParser._validate_data - B
+    C 8:0 LLMJSONParser - A
+    M 20:4 LLMJSONParser.parse_response - A
+    M 38:4 LLMJSONParser._clean_text - A
+    M 89:4 LLMJSONParser._fallback_response - A
+D:\intern_project\gitaudit\auditor\models.py
+    C 88:0 EvidenceImage - A
+    C 5:0 UserProfile - A
+    C 18:0 Event - A
+    C 59:0 BiWeeklyReport - A
+    M 94:4 EvidenceImage.filename - A
+    C 98:0 DailyGitAudit - A
+    M 15:4 UserProfile.__str__ - A
+    M 36:4 Event.__str__ - A
+    C 39:0 Repository - A
+    C 46:0 CommitLog - A
+    C 53:0 AuditSession - A
+    M 85:4 BiWeeklyReport.__str__ - A
+    M 119:4 DailyGitAudit.__str__ - A
+D:\intern_project\gitaudit\auditor\services.py
+    F 8:0 fetch_weekly_diffs - C
+    F 88:0 analyze_diff_with_ollama - C
+D:\intern_project\gitaudit\auditor\views.py
+    F 89:0 student_dashboard - C
+    F 256:0 teacher_student_review - C
+    F 56:0 login_view - B
+    F 217:0 teacher_dashboard - B
+    F 12:0 get_bi_weekly_data - A
+    F 84:0 logout_view - A
+D:\intern_project\gitaudit\auditor\migrations\0001_initial.py
+    C 7:0 Migration - A
+D:\intern_project\gitaudit\auditor\migrations\0002_repository_student_event_userprofile.py
+    C 8:0 Migration - A
+D:\intern_project\gitaudit\auditor\migrations\0003_biweeklyreport_dailygitaudit_evidenceimage.py
+    C 8:0 Migration - A
+D:\intern_project\gitaudit\auditor\migrations\0004_biweeklyreport_supervisor_feedback.py
+    C 6:0 Migration - A
+D:\intern_project\gitaudit\auditor\migrations\0005_biweeklyreport_text_agenda.py
+    C 6:0 Migration - A
+D:\intern_project\gitaudit\auditor\migrations\0006_repository_access_token.py
+    C 6:0 Migration - A
+D:\intern_project\gitaudit\auditor\migrations\0007_biweeklyreport_text_completed_and_more.py
+    C 6:0 Migration - A
+D:\intern_project\gitaudit\auditor\tests\test_usability.py
+    C 6:0 UsabilityTests - A
+    M 7:4 UsabilityTests.setUp - A
+    M 18:4 UsabilityTests.test_login_page_renders - A
+    M 24:4 UsabilityTests.test_student_login_and_dashboard - A
+    M 35:4 UsabilityTests.test_teacher_login_and_dashboard - A
+    M 45:4 UsabilityTests.test_student_report_submission - A
+    M 67:4 UsabilityTests.test_teacher_review_page - A
+
+50 blocks (classes, functions, methods) analyzed.
+Average complexity: A (3.86)
+</pre>
+                        </div>
+                    </details>
                 </div>
                 
                 <!-- Security -->
-                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-white">Security (Bandit)</h3>
-                        <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 font-bold">65 / 100</span>
+                <div class="bg-slate-800 rounded-xl p-6 border border-slate-700 shadow-md">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-xl font-bold text-red-400 flex items-center">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            Security Auditing (Bandit)
+                        </h3>
+                        <span class="px-4 py-1.5 rounded-full bg-red-500/20 text-red-400 font-bold border border-red-500/30">65 / 100</span>
                     </div>
-                    <p class="text-sm text-slate-400 mb-2">Found 0 High, 0 Medium, 7 Low severity issues.</p>
+                    <p class="text-slate-300 mb-4">Vulnerability Scan Results: 0 High, 0 Medium, 7 Low severity issues detected.</p>
+                    <details class="group">
+                        <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Security JSON Output</summary>
+                        <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
+                            <pre class="text-xs text-slate-400 whitespace-pre-wrap">{
+  "errors": [],
+  "generated_at": "2026-08-25T16:08:29Z",
+  "metrics": {
+    "D:\\intern_project\\gitaudit\\auditor\\__init__.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 0,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\apps.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 4,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\context_builder.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 43,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\diff_parser.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 75,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\gitlab_client.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 88,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\llm_parser.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 77,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\migrations\\0001_initial.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 81,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\migrations\\0002_repository_student_event_userprofile.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 113,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\migrations\\0003_biweeklyreport_dailygitaudit_evidenceimage.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 128,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\migrations\\0004_biweeklyreport_supervisor_feedback.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 12,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\migrations\\0005_biweeklyreport_text_agenda.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 12,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\migrations\\0006_repository_access_token.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 17,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\migrations\\0007_biweeklyreport_text_completed_and_more.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 27,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\migrations\\__init__.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 0,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\models.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 97,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\services.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 137,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\tests\\__init__.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 0,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 6,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 6,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 58,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\urls.py": {
+      "CONFIDENCE.HIGH": 0,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 0,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 9,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "D:\\intern_project\\gitaudit\\auditor\\views.py": {
+      "CONFIDENCE.HIGH": 1,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 0,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 1,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 275,
+      "nosec": 0,
+      "skipped_tests": 0
+    },
+    "_totals": {
+      "CONFIDENCE.HIGH": 1,
+      "CONFIDENCE.LOW": 0,
+      "CONFIDENCE.MEDIUM": 6,
+      "CONFIDENCE.UNDEFINED": 0,
+      "SEVERITY.HIGH": 0,
+      "SEVERITY.LOW": 7,
+      "SEVERITY.MEDIUM": 0,
+      "SEVERITY.UNDEFINED": 0,
+      "loc": 1253,
+      "nosec": 0,
+      "skipped_tests": 0
+    }
+  },
+  "results": [
+    {
+      "code": "10         # Create Teacher\n11         self.teacher = User.objects.create_user(username='teacher', password='password123')\n12         UserProfile.objects.create(user=self.teacher, role='teacher')\n",
+      "col_offset": 23,
+      "end_col_offset": 91,
+      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
+      "issue_confidence": "MEDIUM",
+      "issue_cwe": {
+        "id": 259,
+        "link": "https://cwe.mitre.org/data/definitions/259.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Possible hardcoded password: 'password123'",
+      "line_number": 11,
+      "line_range": [
+        11
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
+      "test_id": "B106",
+      "test_name": "hardcoded_password_funcarg"
+    },
+    {
+      "code": "14         # Create Student\n15         self.student = User.objects.create_user(username='student', password='password123')\n16         UserProfile.objects.create(user=self.student, role='student', supervisor=self.teacher)\n",
+      "col_offset": 23,
+      "end_col_offset": 91,
+      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
+      "issue_confidence": "MEDIUM",
+      "issue_cwe": {
+        "id": 259,
+        "link": "https://cwe.mitre.org/data/definitions/259.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Possible hardcoded password: 'password123'",
+      "line_number": 15,
+      "line_range": [
+        15
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
+      "test_id": "B106",
+      "test_name": "hardcoded_password_funcarg"
+    },
+    {
+      "code": "26         # Login\n27         login_success = self.client.login(username='student', password='password123')\n28         self.assertTrue(login_success)\n",
+      "col_offset": 24,
+      "end_col_offset": 85,
+      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
+      "issue_confidence": "MEDIUM",
+      "issue_cwe": {
+        "id": 259,
+        "link": "https://cwe.mitre.org/data/definitions/259.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Possible hardcoded password: 'password123'",
+      "line_number": 27,
+      "line_range": [
+        27
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
+      "test_id": "B106",
+      "test_name": "hardcoded_password_funcarg"
+    },
+    {
+      "code": "36         \"\"\"Test teacher login flow and dashboard rendering.\"\"\"\n37         login_success = self.client.login(username='teacher', password='password123')\n38         self.assertTrue(login_success)\n",
+      "col_offset": 24,
+      "end_col_offset": 85,
+      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
+      "issue_confidence": "MEDIUM",
+      "issue_cwe": {
+        "id": 259,
+        "link": "https://cwe.mitre.org/data/definitions/259.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Possible hardcoded password: 'password123'",
+      "line_number": 37,
+      "line_range": [
+        37
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
+      "test_id": "B106",
+      "test_name": "hardcoded_password_funcarg"
+    },
+    {
+      "code": "46         \"\"\"Test if a student can submit a bi-weekly report.\"\"\"\n47         self.client.login(username='student', password='password123')\n48         \n",
+      "col_offset": 8,
+      "end_col_offset": 69,
+      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
+      "issue_confidence": "MEDIUM",
+      "issue_cwe": {
+        "id": 259,
+        "link": "https://cwe.mitre.org/data/definitions/259.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Possible hardcoded password: 'password123'",
+      "line_number": 47,
+      "line_range": [
+        47
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
+      "test_id": "B106",
+      "test_name": "hardcoded_password_funcarg"
+    },
+    {
+      "code": "76         \n77         self.client.login(username='teacher', password='password123')\n78         response = self.client.get(reverse('teacher_student_review', args=[self.student.id]))\n",
+      "col_offset": 8,
+      "end_col_offset": 69,
+      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
+      "issue_confidence": "MEDIUM",
+      "issue_cwe": {
+        "id": 259,
+        "link": "https://cwe.mitre.org/data/definitions/259.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Possible hardcoded password: 'password123'",
+      "line_number": 77,
+      "line_range": [
+        77
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
+      "test_id": "B106",
+      "test_name": "hardcoded_password_funcarg"
+    },
+    {
+      "code": "119                 report.milestones = json.loads(milestones_json)\n120             except:\n121                 pass\n122         report.save()\n",
+      "col_offset": 12,
+      "end_col_offset": 20,
+      "filename": "D:\\intern_project\\gitaudit\\auditor\\views.py",
+      "issue_confidence": "HIGH",
+      "issue_cwe": {
+        "id": 703,
+        "link": "https://cwe.mitre.org/data/definitions/703.html"
+      },
+      "issue_severity": "LOW",
+      "issue_text": "Try, Except, Pass detected.",
+      "line_number": 120,
+      "line_range": [
+        120,
+        121
+      ],
+      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b110_try_except_pass.html",
+      "test_id": "B110",
+      "test_name": "try_except_pass"
+    }
+  ]
+}</pre>
+                        </div>
+                    </details>
                 </div>
             </div>
         </div>
 
         <script>
             const ctx = document.getElementById('auditChart').getContext('2d');
+            
+            // Create a gradient for the radar fill
+            let gradient = ctx.createRadialGradient(200, 200, 20, 200, 200, 200);
+            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.8)');
+            gradient.addColorStop(1, 'rgba(59, 130, 246, 0.2)');
+
             new Chart(ctx, {
                 type: 'radar',
                 data: {
@@ -82,30 +1011,50 @@
                     datasets: [{
                         label: 'Project Scores',
                         data: [100, 44, 100, 65],
-                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        backgroundColor: gradient,
                         borderColor: 'rgba(59, 130, 246, 1)',
-                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#3b82f6',
                         pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
                         pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                        pointHoverBorderColor: 'rgba(59, 130, 246, 1)',
+                        pointRadius: 5,
+                        pointHoverRadius: 8
                     }]
                 },
                 options: {
                     scales: {
                         r: {
+                            min: 0,
+                            max: 100,
+                            beginAtZero: true,
                             angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
-                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                            pointLabels: { color: '#94a3b8', font: { size: 14 } },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)', circular: true },
+                            pointLabels: { 
+                                color: '#e2e8f0', 
+                                font: { size: 14, weight: 'bold', family: "'Inter', sans-serif" } 
+                            },
                             ticks: {
-                                color: '#94a3b8',
-                                backdropColor: 'transparent',
+                                display: false, // Hide numeric ticks for a cleaner look
                                 min: 0,
-                                max: 100,
-                                stepSize: 20
+                                max: 100
                             }
                         }
                     },
-                    plugins: { legend: { display: false } }
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleColor: '#3b82f6',
+                            bodyColor: '#fff',
+                            bodyFont: { size: 14, weight: 'bold' },
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderWidth: 1,
+                            padding: 12,
+                            displayColors: false
+                        }
+                    }
                 }
             });
         </script>
