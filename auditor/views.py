@@ -117,8 +117,8 @@ def student_dashboard(request):
         if milestones_json:
             try:
                 report.milestones = json.loads(milestones_json)
-            except:
-                pass
+            except json.JSONDecodeError:
+                report.milestones = []
         report.save()
         
         # Handle Image Deletion

@@ -16,12 +16,12 @@ def run_command(command, cwd=None):
         return "", str(e), 1
 
 def run_usability_tests():
-    print("Running Usability Tests...")
-    out, err, code = run_command("python manage.py test auditor.tests -v 2", cwd=PROJECT_ROOT)
+    print("Running Tests and Coverage (pytest)...")
+    out, err, code = run_command("pytest --cov=auditor --cov-report=html -v", cwd=PROJECT_ROOT)
     passed = code == 0
     return {
         "score": 100 if passed else 0,
-        "details": "All core routing and workflow tests passed successfully." if passed else "Some tests failed. See details below.",
+        "details": "All Pytest suites (Usability, API Mocks, Services) passed successfully." if passed else "Some tests failed. See details below.",
         "raw": out + err
     }
 
@@ -57,7 +57,7 @@ def run_radon():
 
 def run_bandit():
     print("Running Bandit (Security)...")
-    out, err, code = run_command(f"bandit -r {TARGET_DIR} -f json --exit-zero", cwd=PROJECT_ROOT)
+    out, err, code = run_command(f"bandit -r {TARGET_DIR} -x tests -f json -q --exit-zero", cwd=PROJECT_ROOT)
     try:
         data = json.loads(out)
         metrics = data.get("metrics", {}).get("_totals", {})
@@ -69,7 +69,7 @@ def run_bandit():
         details = f"Vulnerability Scan Results: {high_sev} High, {med_sev} Medium, {low_sev} Low severity issues detected."
     except Exception as e:
         score = 0
-        details = "Failed to parse Bandit output."
+        details = f"Failed to parse Bandit output: {e}. Raw out starts with: {out[:50]}"
     return {
         "score": score,
         "details": details,

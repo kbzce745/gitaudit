@@ -35,8 +35,8 @@
                     <h2 class="text-xl font-bold text-slate-300 mb-6 z-10">Overall Health Score</h2>
                     <div class="relative flex items-center justify-center w-48 h-48 rounded-full border-8 border-slate-700 z-10 shadow-inner">
                         <!-- Progress circle using conic-gradient -->
-                        <div class="absolute inset-[-8px] rounded-full" style="background: conic-gradient(#3b82f6 77.25%, transparent 0); -webkit-mask: radial-gradient(transparent 58%, black 60%);"></div>
-                        <span class="text-6xl font-black text-white">77</span>
+                        <div class="absolute inset-[-8px] rounded-full" style="background: conic-gradient(#3b82f6 86.25%, transparent 0); -webkit-mask: radial-gradient(transparent 58%, black 60%);"></div>
+                        <span class="text-6xl font-black text-white">86</span>
                     </div>
                 </div>
                 
@@ -61,64 +61,53 @@
                         </h3>
                         <span class="px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30">100 / 100</span>
                     </div>
-                    <p class="text-slate-300 mb-4">All core routing and workflow tests passed successfully.</p>
+                    <p class="text-slate-300 mb-4">All Pytest suites (Usability, API Mocks, Services) passed successfully.</p>
                     <details class="group">
                         <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Raw Execution Logs</summary>
                         <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
-                            <pre class="text-xs text-slate-400 whitespace-pre-wrap">Found 5 test(s).
-Operations to perform:
-  Synchronize unmigrated apps: messages, staticfiles
-  Apply all migrations: admin, auditor, auth, contenttypes, poc, sessions
-Synchronizing apps without migrations:
-  Creating tables...
-    Running deferred SQL...
-Running migrations:
-  Applying contenttypes.0001_initial... OK
-  Applying auth.0001_initial... OK
-  Applying admin.0001_initial... OK
-  Applying admin.0002_logentry_remove_auto_add... OK
-  Applying admin.0003_logentry_add_action_flag_choices... OK
-  Applying auditor.0001_initial... OK
-  Applying auditor.0002_repository_student_event_userprofile... OK
-  Applying auditor.0003_biweeklyreport_dailygitaudit_evidenceimage... OK
-  Applying auditor.0004_biweeklyreport_supervisor_feedback... OK
-  Applying auditor.0005_biweeklyreport_text_agenda... OK
-  Applying auditor.0006_repository_access_token... OK
-  Applying auditor.0007_biweeklyreport_text_completed_and_more... OK
-  Applying contenttypes.0002_remove_content_type_name... OK
-  Applying auth.0002_alter_permission_name_max_length... OK
-  Applying auth.0003_alter_user_email_max_length... OK
-  Applying auth.0004_alter_user_username_opts... OK
-  Applying auth.0005_alter_user_last_login_null... OK
-  Applying auth.0006_require_contenttypes_0002... OK
-  Applying auth.0007_alter_validators_add_error_messages... OK
-  Applying auth.0008_alter_user_username_max_length... OK
-  Applying auth.0009_alter_user_last_name_max_length... OK
-  Applying auth.0010_alter_group_name_max_length... OK
-  Applying auth.0011_update_proxy_permissions... OK
-  Applying auth.0012_alter_user_first_name_max_length... OK
-  Applying poc.0001_initial... OK
-  Applying sessions.0001_initial... OK
-System check identified no issues (0 silenced).
-Creating test database for alias 'default' ('test_gitaudit')...
+                            <pre class="text-xs text-slate-400 whitespace-pre-wrap">============================= test session starts =============================
+platform win32 -- Python 3.14.0, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Lenovo\AppData\Local\Programs\Python\Python314\python.exe
+cachedir: .pytest_cache
+django: version: 6.0.7, settings: config.settings (from ini)
+rootdir: D:\intern_project\gitaudit
+configfile: pytest.ini
+plugins: anyio-4.14.0, Faker-40.37.0, cov-7.1.0, django-4.14.0, mock-3.15.1
+collecting ... collected 19 items
 
-test_login_page_renders (auditor.tests.test_usability.UsabilityTests.test_login_page_renders)
-Test if the login page renders correctly (HTTP 200). ... ok
-test_student_login_and_dashboard (auditor.tests.test_usability.UsabilityTests.test_student_login_and_dashboard)
-Test student login flow and dashboard rendering. ... ok
-test_student_report_submission (auditor.tests.test_usability.UsabilityTests.test_student_report_submission)
-Test if a student can submit a bi-weekly report. ... ok
-test_teacher_login_and_dashboard (auditor.tests.test_usability.UsabilityTests.test_teacher_login_and_dashboard)
-Test teacher login flow and dashboard rendering. ... ok
-test_teacher_review_page (auditor.tests.test_usability.UsabilityTests.test_teacher_review_page)
-Test if teacher can access the review page for a specific student. ... ok
+auditor/tests/test_services.py::test_fetch_weekly_diffs_no_repo PASSED   [  5%]
+auditor/tests/test_services.py::test_fetch_weekly_diffs_success PASSED   [ 10%]
+auditor/tests/test_usability.py::UsabilityTests::test_login_page_renders PASSED [ 15%]
+auditor/tests/test_usability.py::UsabilityTests::test_student_login_and_dashboard PASSED [ 21%]
+auditor/tests/test_usability.py::UsabilityTests::test_student_report_submission PASSED [ 26%]
+auditor/tests/test_usability.py::UsabilityTests::test_teacher_login_and_dashboard PASSED [ 31%]
+auditor/tests/test_usability.py::UsabilityTests::test_teacher_review_page PASSED [ 36%]
+auditor/tests/test_gitlab_client.py::test_request_success PASSED         [ 42%]
+auditor/tests/test_gitlab_client.py::test_request_rate_limit_retry PASSED [ 47%]
+auditor/tests/test_gitlab_client.py::test_request_max_retries_exceeded PASSED [ 52%]
+auditor/tests/test_gitlab_client.py::test_request_exception PASSED       [ 57%]
+auditor/tests/test_gitlab_client.py::test_paginate_single_page PASSED    [ 63%]
+auditor/tests/test_gitlab_client.py::test_paginate_multiple_pages PASSED [ 68%]
+auditor/tests/test_gitlab_client.py::test_fetch_commits PASSED           [ 73%]
+auditor/tests/test_gitlab_client.py::test_fetch_commit_diff PASSED       [ 78%]
+auditor/tests/test_services.py::test_analyze_diff_empty PASSED           [ 84%]
+auditor/tests/test_services.py::test_analyze_diff_success PASSED         [ 89%]
+auditor/tests/test_services.py::test_analyze_diff_fallback PASSED        [ 94%]
+auditor/tests/test_services.py::test_analyze_diff_network_error PASSED   [100%]
 
-----------------------------------------------------------------------
-Ran 5 tests in 6.224s
+============================== warnings summary ===============================
+auditor/tests/test_services.py::test_fetch_weekly_diffs_no_repo
+auditor/tests/test_services.py::test_fetch_weekly_diffs_success
+  C:\Users\Lenovo\AppData\Local\Programs\Python\Python314\Lib\site-packages\factory\django.py:182: DeprecationWarning: UserFactory._after_postgeneration will stop saving the instance after postgeneration hooks in the next major release.
+  If the save call is extraneous, set skip_postgeneration_save=True in the UserFactory.Meta.
+  To keep saving the instance, move the save call to your postgeneration hooks or override _after_postgeneration.
+    warnings.warn(
 
-OK
-Destroying test database for alias 'default' ('test_gitaudit')...
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.14.0-final-0 _______________
 
+Coverage HTML written to dir htmlcov
+======================= 19 passed, 2 warnings in 13.45s =======================
 </pre>
                         </div>
                     </details>
@@ -131,9 +120,9 @@ Destroying test database for alias 'default' ('test_gitaudit')...
                             <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
                             Code Quality (Pylint)
                         </h3>
-                        <span class="px-4 py-1.5 rounded-full bg-yellow-500/20 text-yellow-400 font-bold border border-yellow-500/30">44 / 100</span>
+                        <span class="px-4 py-1.5 rounded-full bg-yellow-500/20 text-yellow-400 font-bold border border-yellow-500/30">45 / 100</span>
                     </div>
-                    <p class="text-slate-300 mb-4">PEP-8 and structural analysis resulted in a score of 4.45/10.</p>
+                    <p class="text-slate-300 mb-4">PEP-8 and structural analysis resulted in a score of 4.56/10.</p>
                     <details class="group">
                         <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Detailed Linter Warnings</summary>
                         <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
@@ -347,7 +336,6 @@ auditor\views.py:89:0: C0116: Missing function or method docstring (missing-func
 auditor\views.py:89:0: R0914: Too many local variables (17/15) (too-many-locals)
 auditor\views.py:91:13: E1101: Class 'BiWeeklyReport' has no 'objects' member (no-member)
 auditor\views.py:95:17: E1101: Class 'BiWeeklyReport' has no 'objects' member (no-member)
-auditor\views.py:120:12: W0702: No exception type(s) specified (bare-except)
 auditor\views.py:128:22: E1101: Class 'EvidenceImage' has no 'objects' member (no-member)
 auditor\views.py:131:19: E1101: Class 'EvidenceImage' has no 'DoesNotExist' member (no-member)
 auditor\views.py:137:12: E1101: Class 'EvidenceImage' has no 'objects' member (no-member)
@@ -393,6 +381,90 @@ auditor\migrations\0006_repository_access_token.py:6:0: C0115: Missing class doc
 auditor\migrations\0007_biweeklyreport_text_completed_and_more.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 auditor\migrations\0007_biweeklyreport_text_completed_and_more.py:1:0: C0103: Module name "0007_biweeklyreport_text_completed_and_more" doesn't conform to snake_case naming style (invalid-name)
 auditor\migrations\0007_biweeklyreport_text_completed_and_more.py:6:0: C0115: Missing class docstring (missing-class-docstring)
+************* Module auditor.tests.factories
+auditor\tests\factories.py:9:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\factories.py:17:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\factories.py:25:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\factories.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\factories.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\tests\factories.py:6:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\factories.py:7:4: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\factories.py:7:4: R0903: Too few public methods (0/2) (too-few-public-methods)
+auditor\tests\factories.py:14:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\factories.py:15:4: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\factories.py:15:4: R0903: Too few public methods (0/2) (too-few-public-methods)
+auditor\tests\factories.py:22:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\factories.py:23:4: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\factories.py:23:4: R0903: Too few public methods (0/2) (too-few-public-methods)
+auditor\tests\factories.py:32:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\factories.py:33:4: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\factories.py:33:4: R0903: Too few public methods (0/2) (too-few-public-methods)
+auditor\tests\factories.py:4:0: C0411: third party import "django.utils.timezone" should be placed before first party import "auditor.models.UserProfile"  (wrong-import-order)
+auditor\tests\factories.py:4:0: C0412: Imports from package django are not grouped (ungrouped-imports)
+auditor\tests\factories.py:4:0: W0611: Unused timezone imported from django.utils (unused-import)
+************* Module auditor.tests.test_gitlab_client
+auditor\tests\test_gitlab_client.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_gitlab_client.py:51:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_gitlab_client.py:79:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_gitlab_client.py:94:0: C0301: Line too long (105/100) (line-too-long)
+auditor\tests\test_gitlab_client.py:95:0: C0301: Line too long (103/100) (line-too-long)
+auditor\tests\test_gitlab_client.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\tests\test_gitlab_client.py:6:0: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\test_gitlab_client.py:12:4: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_gitlab_client.py:15:4: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_gitlab_client.py:20:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_gitlab_client.py:23:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_gitlab_client.py:23:25: W0621: Redefining name 'gitlab_client' from outer scope (line 20) (redefined-outer-name)
+auditor\tests\test_gitlab_client.py:27:15: W0212: Access to a protected member _request of a client class (protected-access)
+auditor\tests\test_gitlab_client.py:32:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_gitlab_client.py:32:34: W0621: Redefining name 'gitlab_client' from outer scope (line 20) (redefined-outer-name)
+auditor\tests\test_gitlab_client.py:42:15: W0212: Access to a protected member _request of a client class (protected-access)
+auditor\tests\test_gitlab_client.py:48:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_gitlab_client.py:48:38: W0621: Redefining name 'gitlab_client' from outer scope (line 20) (redefined-outer-name)
+auditor\tests\test_gitlab_client.py:56:8: W0212: Access to a protected member _request of a client class (protected-access)
+auditor\tests\test_gitlab_client.py:61:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_gitlab_client.py:61:27: W0621: Redefining name 'gitlab_client' from outer scope (line 20) (redefined-outer-name)
+auditor\tests\test_gitlab_client.py:66:8: W0212: Access to a protected member _request of a client class (protected-access)
+auditor\tests\test_gitlab_client.py:68:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_gitlab_client.py:68:30: W0621: Redefining name 'gitlab_client' from outer scope (line 20) (redefined-outer-name)
+auditor\tests\test_gitlab_client.py:72:19: W0212: Access to a protected member _paginate of a client class (protected-access)
+auditor\tests\test_gitlab_client.py:77:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_gitlab_client.py:77:33: W0621: Redefining name 'gitlab_client' from outer scope (line 20) (redefined-outer-name)
+auditor\tests\test_gitlab_client.py:86:19: W0212: Access to a protected member _paginate of a client class (protected-access)
+auditor\tests\test_gitlab_client.py:91:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_gitlab_client.py:91:23: W0621: Redefining name 'gitlab_client' from outer scope (line 20) (redefined-outer-name)
+auditor\tests\test_gitlab_client.py:103:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_gitlab_client.py:103:27: W0621: Redefining name 'gitlab_client' from outer scope (line 20) (redefined-outer-name)
+auditor\tests\test_gitlab_client.py:3:0: C0411: third party import "requests.exceptions.RequestException" should be placed before first party import "auditor.gitlab_client.GitLabAPIClient"  (wrong-import-order)
+auditor\tests\test_gitlab_client.py:4:0: C0411: third party import "requests" should be placed before first party import "auditor.gitlab_client.GitLabAPIClient"  (wrong-import-order)
+************* Module auditor.tests.test_services
+auditor\tests\test_services.py:27:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_services.py:34:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_services.py:41:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_services.py:53:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_services.py:59:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_services.py:63:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_services.py:70:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_services.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_services.py:80:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_services.py:89:0: C0303: Trailing whitespace (trailing-whitespace)
+auditor\tests\test_services.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+auditor\tests\test_services.py:8:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_services.py:12:11: C1803: "result == {}" can be simplified to "not result", if it is strictly a sequence, as an empty dict is falsey (use-implicit-booleaness-not-comparison)
+auditor\tests\test_services.py:15:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_services.py:17:4: W0612: Unused variable 'repo' (unused-variable)
+auditor\tests\test_services.py:46:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_services.py:51:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_services.py:54:4: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\test_services.py:55:8: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_services.py:57:8: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_services.py:67:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_services.py:71:4: C0115: Missing class docstring (missing-class-docstring)
+auditor\tests\test_services.py:72:8: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_services.py:74:8: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_services.py:84:0: C0116: Missing function or method docstring (missing-function-docstring)
+auditor\tests\test_services.py:2:0: C0411: standard import "datetime.datetime" should be placed before third party import "pytest" (wrong-import-order)
+auditor\tests\test_services.py:2:0: W0611: Unused datetime imported from datetime (unused-import)
 ************* Module auditor.tests.test_usability
 auditor\tests\test_usability.py:9:0: C0303: Trailing whitespace (trailing-whitespace)
 auditor\tests\test_usability.py:48:0: C0303: Trailing whitespace (trailing-whitespace)
@@ -461,7 +533,7 @@ auditor\tests\__init__.py:1:0: R0801: Similar lines in 2 files
                 ), (duplicate-code)
 
 ------------------------------------------------------------------
-Your code has been rated at 4.45/10 (previous run: 4.45/10, +0.00)
+Your code has been rated at 4.56/10 (previous run: 4.56/10, +0.00)
 
 </pre>
                         </div>
@@ -477,7 +549,7 @@ Your code has been rated at 4.45/10 (previous run: 4.45/10, +0.00)
                         </h3>
                         <span class="px-4 py-1.5 rounded-full bg-purple-500/20 text-purple-400 font-bold border border-purple-500/30">100 / 100</span>
                     </div>
-                    <p class="text-slate-300 mb-4">Average Cyclomatic Complexity (CC) across all blocks is 3.86 (lower is better).</p>
+                    <p class="text-slate-300 mb-4">Average Cyclomatic Complexity (CC) across all blocks is 3.44 (lower is better).</p>
                     <details class="group">
                         <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Complexity Breakdown per Function</summary>
                         <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
@@ -539,6 +611,32 @@ D:\intern_project\gitaudit\auditor\migrations\0006_repository_access_token.py
     C 6:0 Migration - A
 D:\intern_project\gitaudit\auditor\migrations\0007_biweeklyreport_text_completed_and_more.py
     C 6:0 Migration - A
+D:\intern_project\gitaudit\auditor\tests\factories.py
+    C 6:0 UserFactory - A
+    C 14:0 UserProfileFactory - A
+    C 22:0 RepositoryFactory - A
+    C 32:0 BiWeeklyReportFactory - A
+D:\intern_project\gitaudit\auditor\tests\test_gitlab_client.py
+    F 32:0 test_request_rate_limit_retry - A
+    F 77:0 test_paginate_multiple_pages - A
+    F 91:0 test_fetch_commits - A
+    F 23:0 test_request_success - A
+    F 48:0 test_request_max_retries_exceeded - A
+    F 68:0 test_paginate_single_page - A
+    F 103:0 test_fetch_commit_diff - A
+    C 6:0 MockResponse - A
+    M 7:4 MockResponse.__init__ - A
+    M 15:4 MockResponse.raise_for_status - A
+    F 20:0 gitlab_client - A
+    F 61:0 test_request_exception - A
+    M 12:4 MockResponse.json - A
+D:\intern_project\gitaudit\auditor\tests\test_services.py
+    F 15:0 test_fetch_weekly_diffs_success - B
+    F 46:0 test_analyze_diff_empty - A
+    F 51:0 test_analyze_diff_success - A
+    F 67:0 test_analyze_diff_fallback - A
+    F 84:0 test_analyze_diff_network_error - A
+    F 8:0 test_fetch_weekly_diffs_no_repo - A
 D:\intern_project\gitaudit\auditor\tests\test_usability.py
     C 6:0 UsabilityTests - A
     M 7:4 UsabilityTests.setUp - A
@@ -548,8 +646,8 @@ D:\intern_project\gitaudit\auditor\tests\test_usability.py
     M 45:4 UsabilityTests.test_student_report_submission - A
     M 67:4 UsabilityTests.test_teacher_review_page - A
 
-50 blocks (classes, functions, methods) analyzed.
-Average complexity: A (3.86)
+73 blocks (classes, functions, methods) analyzed.
+Average complexity: A (3.4383561643835616)
 </pre>
                         </div>
                     </details>
@@ -562,15 +660,15 @@ Average complexity: A (3.86)
                             <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             Security Auditing (Bandit)
                         </h3>
-                        <span class="px-4 py-1.5 rounded-full bg-red-500/20 text-red-400 font-bold border border-red-500/30">65 / 100</span>
+                        <span class="px-4 py-1.5 rounded-full bg-red-500/20 text-red-400 font-bold border border-red-500/30">100 / 100</span>
                     </div>
-                    <p class="text-slate-300 mb-4">Vulnerability Scan Results: 0 High, 0 Medium, 7 Low severity issues detected.</p>
+                    <p class="text-slate-300 mb-4">Vulnerability Scan Results: 0 High, 0 Medium, 0 Low severity issues detected.</p>
                     <details class="group">
                         <summary class="cursor-pointer text-sm font-medium text-blue-400 hover:text-blue-300 mb-2">View Security JSON Output</summary>
                         <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700 log-box mt-2">
                             <pre class="text-xs text-slate-400 whitespace-pre-wrap">{
   "errors": [],
-  "generated_at": "2026-08-25T16:08:29Z",
+  "generated_at": "2026-08-25T17:14:57Z",
   "metrics": {
     "D:\\intern_project\\gitaudit\\auditor\\__init__.py": {
       "CONFIDENCE.HIGH": 0,
@@ -780,32 +878,6 @@ Average complexity: A (3.86)
       "nosec": 0,
       "skipped_tests": 0
     },
-    "D:\\intern_project\\gitaudit\\auditor\\tests\\__init__.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 0,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 0,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 0,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
-    "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py": {
-      "CONFIDENCE.HIGH": 0,
-      "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 6,
-      "CONFIDENCE.UNDEFINED": 0,
-      "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 6,
-      "SEVERITY.MEDIUM": 0,
-      "SEVERITY.UNDEFINED": 0,
-      "loc": 58,
-      "nosec": 0,
-      "skipped_tests": 0
-    },
     "D:\\intern_project\\gitaudit\\auditor\\urls.py": {
       "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
@@ -820,12 +892,12 @@ Average complexity: A (3.86)
       "skipped_tests": 0
     },
     "D:\\intern_project\\gitaudit\\auditor\\views.py": {
-      "CONFIDENCE.HIGH": 1,
+      "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
       "CONFIDENCE.MEDIUM": 0,
       "CONFIDENCE.UNDEFINED": 0,
       "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 1,
+      "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
       "loc": 275,
@@ -833,162 +905,20 @@ Average complexity: A (3.86)
       "skipped_tests": 0
     },
     "_totals": {
-      "CONFIDENCE.HIGH": 1,
+      "CONFIDENCE.HIGH": 0,
       "CONFIDENCE.LOW": 0,
-      "CONFIDENCE.MEDIUM": 6,
+      "CONFIDENCE.MEDIUM": 0,
       "CONFIDENCE.UNDEFINED": 0,
       "SEVERITY.HIGH": 0,
-      "SEVERITY.LOW": 7,
+      "SEVERITY.LOW": 0,
       "SEVERITY.MEDIUM": 0,
       "SEVERITY.UNDEFINED": 0,
-      "loc": 1253,
+      "loc": 1195,
       "nosec": 0,
       "skipped_tests": 0
     }
   },
-  "results": [
-    {
-      "code": "10         # Create Teacher\n11         self.teacher = User.objects.create_user(username='teacher', password='password123')\n12         UserProfile.objects.create(user=self.teacher, role='teacher')\n",
-      "col_offset": 23,
-      "end_col_offset": 91,
-      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
-      "issue_confidence": "MEDIUM",
-      "issue_cwe": {
-        "id": 259,
-        "link": "https://cwe.mitre.org/data/definitions/259.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Possible hardcoded password: 'password123'",
-      "line_number": 11,
-      "line_range": [
-        11
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
-      "test_id": "B106",
-      "test_name": "hardcoded_password_funcarg"
-    },
-    {
-      "code": "14         # Create Student\n15         self.student = User.objects.create_user(username='student', password='password123')\n16         UserProfile.objects.create(user=self.student, role='student', supervisor=self.teacher)\n",
-      "col_offset": 23,
-      "end_col_offset": 91,
-      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
-      "issue_confidence": "MEDIUM",
-      "issue_cwe": {
-        "id": 259,
-        "link": "https://cwe.mitre.org/data/definitions/259.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Possible hardcoded password: 'password123'",
-      "line_number": 15,
-      "line_range": [
-        15
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
-      "test_id": "B106",
-      "test_name": "hardcoded_password_funcarg"
-    },
-    {
-      "code": "26         # Login\n27         login_success = self.client.login(username='student', password='password123')\n28         self.assertTrue(login_success)\n",
-      "col_offset": 24,
-      "end_col_offset": 85,
-      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
-      "issue_confidence": "MEDIUM",
-      "issue_cwe": {
-        "id": 259,
-        "link": "https://cwe.mitre.org/data/definitions/259.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Possible hardcoded password: 'password123'",
-      "line_number": 27,
-      "line_range": [
-        27
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
-      "test_id": "B106",
-      "test_name": "hardcoded_password_funcarg"
-    },
-    {
-      "code": "36         \"\"\"Test teacher login flow and dashboard rendering.\"\"\"\n37         login_success = self.client.login(username='teacher', password='password123')\n38         self.assertTrue(login_success)\n",
-      "col_offset": 24,
-      "end_col_offset": 85,
-      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
-      "issue_confidence": "MEDIUM",
-      "issue_cwe": {
-        "id": 259,
-        "link": "https://cwe.mitre.org/data/definitions/259.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Possible hardcoded password: 'password123'",
-      "line_number": 37,
-      "line_range": [
-        37
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
-      "test_id": "B106",
-      "test_name": "hardcoded_password_funcarg"
-    },
-    {
-      "code": "46         \"\"\"Test if a student can submit a bi-weekly report.\"\"\"\n47         self.client.login(username='student', password='password123')\n48         \n",
-      "col_offset": 8,
-      "end_col_offset": 69,
-      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
-      "issue_confidence": "MEDIUM",
-      "issue_cwe": {
-        "id": 259,
-        "link": "https://cwe.mitre.org/data/definitions/259.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Possible hardcoded password: 'password123'",
-      "line_number": 47,
-      "line_range": [
-        47
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
-      "test_id": "B106",
-      "test_name": "hardcoded_password_funcarg"
-    },
-    {
-      "code": "76         \n77         self.client.login(username='teacher', password='password123')\n78         response = self.client.get(reverse('teacher_student_review', args=[self.student.id]))\n",
-      "col_offset": 8,
-      "end_col_offset": 69,
-      "filename": "D:\\intern_project\\gitaudit\\auditor\\tests\\test_usability.py",
-      "issue_confidence": "MEDIUM",
-      "issue_cwe": {
-        "id": 259,
-        "link": "https://cwe.mitre.org/data/definitions/259.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Possible hardcoded password: 'password123'",
-      "line_number": 77,
-      "line_range": [
-        77
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b106_hardcoded_password_funcarg.html",
-      "test_id": "B106",
-      "test_name": "hardcoded_password_funcarg"
-    },
-    {
-      "code": "119                 report.milestones = json.loads(milestones_json)\n120             except:\n121                 pass\n122         report.save()\n",
-      "col_offset": 12,
-      "end_col_offset": 20,
-      "filename": "D:\\intern_project\\gitaudit\\auditor\\views.py",
-      "issue_confidence": "HIGH",
-      "issue_cwe": {
-        "id": 703,
-        "link": "https://cwe.mitre.org/data/definitions/703.html"
-      },
-      "issue_severity": "LOW",
-      "issue_text": "Try, Except, Pass detected.",
-      "line_number": 120,
-      "line_range": [
-        120,
-        121
-      ],
-      "more_info": "https://bandit.readthedocs.io/en/1.9.4/plugins/b110_try_except_pass.html",
-      "test_id": "B110",
-      "test_name": "try_except_pass"
-    }
-  ]
+  "results": []
 }</pre>
                         </div>
                     </details>
@@ -1010,7 +940,7 @@ Average complexity: A (3.86)
                     labels: ['Usability', 'Code Quality', 'Complexity', 'Security'],
                     datasets: [{
                         label: 'Project Scores',
-                        data: [100, 44, 100, 65],
+                        data: [100, 45, 100, 100],
                         backgroundColor: gradient,
                         borderColor: 'rgba(59, 130, 246, 1)',
                         borderWidth: 3,
