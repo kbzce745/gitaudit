@@ -17,11 +17,7 @@
   <img src="https://img.shields.io/badge/License-Academic-blue?style=flat-square" alt="License" />
 </p>
 
----
 
-> 🌐 [中文版本](README.md)
-
----
 
 ## 📋 Table of Contents
 
