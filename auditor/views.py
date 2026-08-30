@@ -293,7 +293,7 @@ def teacher_student_review(request, student_id):
         if verdict == 'approve':
             report.status = 'Reviewed'
         elif verdict == 'reject':
-            report.status = 'Draft'
+            report.status = 'Changes Requested'
             
         report.save()
         messages.success(request, f'Report status updated to {report.status}')
