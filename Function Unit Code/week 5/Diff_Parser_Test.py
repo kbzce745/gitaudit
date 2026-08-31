@@ -2,7 +2,6 @@ import os
 import sys
 import unittest
 
-# 动态添加项目根目录到 sys.path，让测试脚本能找到 auditor 包
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.insert(0, project_root)
 

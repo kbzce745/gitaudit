@@ -2,6 +2,10 @@ import os
 import sys
 import django
 from pprint import pprint
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Add the project root directory to sys.path so Python can find 'config' and 'auditor'
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
